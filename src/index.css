@@ -13,7 +13,7 @@ body {
 }
 
 .title {
-  font-family: "Libre Barcode 39 Text", cursive;
+  font-family: 'Libre Barcode 39 Text', cursive;
 }
 
 .contact {
@@ -22,19 +22,19 @@ body {
 
 .dashboard {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  gap: 10px 10px;
+  grid-template-columns: 285px 285px 285px 285px;
+  grid-template-rows: 285px 285px 285px 285px;
+  gap: 25px 25px;
   grid-auto-flow: row;
   grid-template-areas:
-    "info info icon recent"
-    "Nix Emacs project2 recent"
-    "project1 project1 project2 project3"
-    "edu edu contact contact";
+    'info info icon todo'
+    'nix emacs skills experience'
+    'projects projects skills experience'
+    'edu edu contact contact';
 }
 
 .card {
-  @apply rounded-base bg-white shadow;
+  @apply rounded-base bg-white p-8 shadow;
 }
 
 .info {
@@ -45,28 +45,36 @@ body {
   grid-area: icon;
 }
 
-.recent {
-  grid-area: recent;
+.todo {
+  grid-area: todo;
 }
 
-.Nix {
-  grid-area: Nix;
+.nix {
+  grid-area: nix;
 }
 
-.Emacs {
-  grid-area: Emacs;
+.emacs {
+  grid-area: emacs;
 }
 
-.project1 {
-  grid-area: project1;
+.projects {
+  grid-area: projects;
 }
 
-.project2 {
-  grid-area: project2;
+.projects {
+  grid-area: projects;
 }
 
-.project3 {
-  grid-area: project3;
+.skills {
+  grid-area: skills;
+}
+
+.skill_list::-webkit-scrollbar {
+	display: none;
+}
+
+.experience {
+	grid-area: experience;
 }
 
 .edu {

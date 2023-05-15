@@ -1,20 +1,29 @@
 import { useEffect } from 'react';
 
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
-import SceneInit from './SceneInit';
+import SceneInit from '../lib/SceneInit';
 
 function Icon() {
   useEffect(() => {
-    const test = new SceneInit('myThreeJsCanvas');
-    test.initialize();
-    test.animate();
+    const scene = new SceneInit('myThreeJsCanvas');
+    scene.initialize();
+    scene.animate();
 
-    const boxGeometry = new THREE.BoxGeometry(16, 16, 16);
-    const boxMaterial = new THREE.MeshNormalMaterial();
-    const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+    const loader = new GLTFLoader();
+		
+    loader.load( 'src/assets/thing.glb', ( gltf ) => {
+      gltf.scene.traverse(c => {
+        c.castShadow = true;
+      });		
+      scene.scene.add( gltf.scene );
+			
+    }, undefined, function ( error ) {
+			
+      console.error( error );
 
-    test.scene.add(boxMesh);
+    } );
   }, []);
 
   return (

@@ -66,7 +66,7 @@ export default class SceneInit {
     window.addEventListener('resize', () => this.onWindowResize(), false);
   }
 
-  animate() {
+  animate(): any {
     // NOTE: Window is implied.
     // requestAnimationFrame(this.animate.bind(this));
     this.controls.update();

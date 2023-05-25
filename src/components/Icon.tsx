@@ -12,7 +12,7 @@ function Icon() {
 
     const loader = new GLTFLoader();
 		
-    loader.load( 'src/assets/.glb', ( gltf ) => {
+    loader.load( 'src/assets/thing.glb', ( gltf ) => {
       gltf.scene.traverse(c => {
         c.castShadow = true;
       });		

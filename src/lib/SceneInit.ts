@@ -9,13 +9,13 @@ export default class SceneInit {
   clock: THREE.Clock;
   controls: OrbitControls;
   ambientLight: THREE.AmbientLight;
-	directionalLight: THREE.DirectionalLight;
+  directionalLight: THREE.DirectionalLight;
 
   constructor(canvasId: string) {
     // NOTE: Core components to initialize Three.js app.
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
-      45, 1, 1, 1000
+      45, 1, 0.1, 1000
     );
     this.renderer = new THREE.WebGLRenderer(
       {
@@ -39,7 +39,7 @@ export default class SceneInit {
 		
     this.scene.add(this.ambientLight);
 
-	  this.directionalLight.position.set(20, 100, 10);
+    this.directionalLight.position.set(20, 100, 10);
     this.directionalLight.target.position.set(0, 0, 0);
     this.directionalLight.castShadow = true;
     this.directionalLight.shadow.bias = -0.001;
@@ -71,7 +71,7 @@ export default class SceneInit {
     // requestAnimationFrame(this.animate.bind(this));
     this.controls.update();
     this.render();
-    window.requestAnimationFrame(this.animate.bind(this));
+    return window.requestAnimationFrame(this.animate.bind(this));
   }
 
   render() {

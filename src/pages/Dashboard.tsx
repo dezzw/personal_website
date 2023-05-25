@@ -13,13 +13,13 @@ function Dashboard() {
   return (
     <div className="dashboard h-[140vh] w-[80vw]">
       <Info />
-			<Icon />
-			<Todo />
+      <Icon />
+      <Todo />
       <Nix />
       <Emacs />
-			<Projects />
-			<Skills />
-			<Experience />
+      <Projects />
+      <Skills />
+      <Experience />
       <Edu />
       <Contact />
     </div>

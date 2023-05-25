@@ -1,10 +1,26 @@
+import { useState } from 'react';
 import ExpandBtn from './ExpandBtn';
 
 function Projects() {
+  const defaultStyle = 'projects card relative';
+
+  const [style, setStyle] = useState(defaultStyle);
+  const [isExpand, setIsExpand] = useState(true);
+
+  let toggle = () => {
+    if (style === defaultStyle) {
+      setStyle(style + ' w-[1215px] h-[595px] -top-[310px] z-50');
+      setIsExpand(false);
+    } else {
+      setStyle(defaultStyle);
+      setIsExpand(true);
+    }
+  };
+
   return (
-    <div className="projects card relative bg-black">
+    <div className={style}>
       <div className="font-heading text-3xl">Projects</div>
-      <ExpandBtn />
+      <ExpandBtn toggle={toggle} isExpand={isExpand} />
     </div>
   );
 }

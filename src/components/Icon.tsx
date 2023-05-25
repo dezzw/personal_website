@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import SceneInit from '../lib/SceneInit';
@@ -9,11 +8,11 @@ function Icon() {
   useEffect(() => {
     const scene = new SceneInit('myThreeJsCanvas');
     scene.initialize();
-    scene.animate();
+    let animate = scene.animate();
 
     const loader = new GLTFLoader();
 		
-    loader.load( 'src/assets/thing.glb', ( gltf ) => {
+    loader.load( 'src/assets/.glb', ( gltf ) => {
       gltf.scene.traverse(c => {
         c.castShadow = true;
       });		
@@ -24,6 +23,10 @@ function Icon() {
       console.error( error );
 
     } );
+
+    return () => { 
+      window.cancelAnimationFrame(animate);
+    }
   }, []);
 
   return (

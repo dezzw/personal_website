@@ -19,7 +19,7 @@ function Projects() {
 
   return (
     <div className={style}>
-      <div className="font-heading text-3xl">Projects</div>
+      <div className="font-heading title">Projects</div>
       <ExpandBtn toggle={toggle} isExpand={isExpand} />
     </div>
   );

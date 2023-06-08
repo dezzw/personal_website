@@ -6,32 +6,32 @@ import SceneInit from '../lib/SceneInit';
 
 function Icon() {
   useEffect(() => {
-    const scene = new SceneInit('myThreeJsCanvas');
-    scene.initialize();
-    let animate = scene.animate();
+    // const scene = new SceneInit('myThreeJsCanvas');
+    // scene.initialize();
+    // let animate = scene.animate();
 
-    const loader = new GLTFLoader();
+    // const loader = new GLTFLoader();
 		
-    loader.load( 'src/assets/thing.glb', ( gltf ) => {
-      gltf.scene.traverse(c => {
-        c.castShadow = true;
-      });		
-      scene.scene.add( gltf.scene );
+    // loader.load( 'src/assets/thing.glb', ( gltf ) => {
+    //   gltf.scene.traverse(c => {
+    //     c.castShadow = true;
+    //   });		
+    //   scene.scene.add( gltf.scene );
 			
-    }, undefined, function ( error ) {
+    // }, undefined, function ( error ) {
 			
-      console.error( error );
+    //   console.error( error );
 
-    } );
+    // } );
 
-    return () => { 
-      window.cancelAnimationFrame(animate);
-    }
+    // return () => { 
+    //   window.cancelAnimationFrame(animate);
+    // }
   }, []);
 
   return (
     <div className="icon rounded-base bg-white shadow">
-      <canvas id="myThreeJsCanvas" className="rounded-base"/>
+
     </div>
   );
 }

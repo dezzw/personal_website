@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import html from '../assets/html.png';
 import css from '../assets/css.png';
 import js from '../assets/js.png';
@@ -27,23 +27,15 @@ function Skills() {
     neo4j,
     postgres,
   ]);
-	const [count, setCount] = useState(0);
-  const [isScrolle, setIsScrolle] = useState(true);
-  const speed = 30;
-  const list = useRef(null);
-	
-  const hoverHandler = (flag: boolean) => setIsScrolle(flag);
 
   return (
     <div className="skills card">
-      <div className="font-heading text-3xl">Skills</div>
-      <div className="skill_list h-[90%] w-full overflow-auto my-4" ref={list}>
+      <div className="font-heading title">Skills</div>
+      <div className="skill_list h-[90%] w-full overflow-auto my-4">
         {skills.map((src, key) => (
           <div key={key} className="text-center"
-						onMouseOver={() => hoverHandler(false)}
-            onMouseLeave={() => hoverHandler(true)}
-					>
-            <img src={src} className="my-4 inline-block w-[96px]" />
+	  >
+            <img src={src} className="my-4 inline-block w-[70px] lg:w-[96px]" />
           </div>
         ))}
       </div>

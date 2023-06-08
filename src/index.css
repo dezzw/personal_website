@@ -12,29 +12,49 @@ body {
   font-family: 'Comfortaa', cursive;
 }
 
-.title {
+.logo {
   font-family: 'Libre Barcode 39 Text', cursive;
-}
-
-.contact {
-  font-family: 'Righteous', cursive;
+  font-size: 15vw;
 }
 
 .dashboard {
   display: grid;
-  grid-template-columns: 285px 285px 285px 285px;
-  grid-template-rows: 285px 285px 285px 285px;
-  gap: 25px 25px;
-  grid-auto-flow: dense;
+  grid-template: repeat(8, 40vw) / repeat(2, 40vw);
+  gap: 3vw 3vw;
   grid-template-areas:
-    'info info icon todo'
-    'nix emacs skills experience'
-    'projects projects skills experience'
-    'edu edu contact contact';
+    'info info'
+    'icon todo'
+    'nix emacs'
+    'skills experience'
+    'skills experience'
+    'projects projects'
+    'edu edu'
+    'contact contact';
+}
+
+
+@media screen and (min-width: 1024px) {
+  .logo {
+    font-size: 5vw;
+  }
+
+  .dashboard {
+    grid-template: repeat(4, 20vw) / repeat(4, 20vw);
+    gap: 1.5vw 1.5vw;
+    grid-template-areas:
+      'info info icon todo'
+      'nix emacs skills experience'
+      'projects projects skills experience'
+      'edu edu contact contact';
+  }
+}
+
+.title {
+  @apply text-xl lg:text-4xl
 }
 
 .card {
-  @apply rounded-base bg-white p-8 shadow;
+  @apply rounded-base bg-white p-4 lg:p-8 shadow;
 }
 
 .info {
@@ -71,11 +91,11 @@ body {
 }
 
 .skill_list::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 .experience {
-	grid-area: experience;
+  grid-area: experience;
 }
 
 .edu {
@@ -84,4 +104,5 @@ body {
 
 .contact {
   grid-area: contact;
+  font-family: 'Righteous', cursive;
 }

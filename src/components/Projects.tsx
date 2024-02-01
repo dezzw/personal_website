@@ -2,9 +2,9 @@ import { useState } from 'react';
 import ExpandBtn from './ExpandBtn';
 
 function Projects() {
-  const defaultStyle = 'projects card relative';
+    const defaultStyle = 'projects card relative h-[285px] transition-all';
 
-  const [style, setStyle] = useState(defaultStyle);
+    const [style, setStyle] = useState(defaultStyle);
   const [isExpand, setIsExpand] = useState(true);
 
   let toggle = () => {

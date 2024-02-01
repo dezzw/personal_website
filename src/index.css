@@ -19,8 +19,8 @@ body {
 
 .dashboard {
   display: grid;
-  grid-template: repeat(8, 40vw) / repeat(2, 40vw);
-  gap: 3vw 3vw;
+  grid-template: repeat(8, 285px) / repeat(2, 285px);
+  gap: 10px 10px;
   grid-template-areas:
     'info info'
     'icon todo'
@@ -105,4 +105,12 @@ body {
 .contact {
   grid-area: contact;
   font-family: 'Righteous', cursive;
+}
+
+.cardDefault {
+  @apply relative ;
+}
+
+.cardExpand {
+  @apply relative w-[1215px] h-[595px] -top-[310px] z-50;
 }

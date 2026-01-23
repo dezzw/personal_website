@@ -28,7 +28,8 @@
 
 (defn info [{:keys [layoutId className]}]
   #jsx [motion.div {:layoutId layoutId
-                    :className (str "bento-card h-full flex flex-col md:flex-row items-center justify-center md:justify-start p-8 gap-8 relative group " className)}
+                    ;; Updated classes for glassmorphism effect
+                    :className (str "bento-card h-full flex flex-col md:flex-row items-center justify-center md:justify-start p-8 gap-8 relative group bg-white/30 backdrop-blur-md border border-white/20 shadow-xl " className)}
         [:div {:className "absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}
          #jsx [User {:size 20 :className "text-text-secondary"}]]
         

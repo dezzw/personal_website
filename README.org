@@ -1,0 +1,77 @@
+#+TITLE: Personal Website (Squint CLJS)
+#+AUTHOR: Desmond Wang
+#+DATE: 2026-01-23
+
+* Overview
+This is a high-performance personal portfolio website built with a modern, functional tech stack. It showcases my projects, skills, and experience through an interactive and visually engaging interface.
+
+* Tech Stack
+- **Language**: [[https://github.com/squint-cljs/squint][Squint CLJS]] (Lightweight ClojureScript dialect)
+- **Framework**: React (via Squint's JSX syntax)
+- **Build Tool**: Vite + Bun
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Environment**: Nix (Flakes)
+
+* Design Philosophy
+The design is inspired by Apple's clean, grid-based aesthetics, combined with a cinematic "Hero Camera" perspective.
+
+** 1. Hero Camera Perspective
+- **Initial View**: A full-screen hero section with a fixed background image.
+- **Parallax Effect**: The background stays fixed while the content slides over it.
+- **Cinematic Transition**: As the user scrolls, the dashboard content slides up from the bottom, smoothly covering the hero section like a shutter.
+- **Glassmorphism**: The dashboard container uses a backdrop blur (`backdrop-blur-xl`) to create a frosted glass effect over the hero image.
+
+** 2. Apple-style Bento Grid
+- **Grid Layout**: The main dashboard uses a responsive grid (`grid-cols-4`) reminiscent of Apple's Bento grids (e.g., Apple Services, iPhone widgets).
+- **Card Design**:
+  - Large rounded corners (`rounded-3xl`).
+  - Subtle borders and soft shadows.
+  - Minimalist typography (System UI fonts).
+  - Consistent spacing and padding.
+- **Interactivity**:
+  - **Hover Effects**: Cards scale slightly (`scale-1.02`) on hover.
+  - **Expansion**: Clicking a card triggers a seamless layout animation (using `framer-motion`'s `layoutId`), expanding it into a full-screen modal with detailed content.
+
+* Project Structure
+#+BEGIN_SRC text
+src/
+├── app.cljs            # Main application entry point (Hero + Scroll Logic)
+├── main.cljs           # React Root rendering
+├── pages/
+│   └── dashboard.cljs  # Main Grid Layout & Card Orchestration
+├── components/         # Individual Bento Cards
+│   ├── info.cljs       # Profile & Bio (Hero & Grid versions)
+│   ├── projects.cljs   # Project Showcase
+│   ├── experience.cljs # Professional Timeline
+│   ├── skills.cljs     # Tech Stack Grid
+│   ├── contact.cljs    # Social Links & Email
+│   ├── nix.cljs        # NixOS Config Highlight
+│   ├── emacs.cljs      # Emacs Workflow Highlight
+│   ├── todo.cljs       # Learning Roadmap
+│   └── icon.cljs       # Brand Logo
+└── assets/             # Images & 3D Models
+#+END_SRC
+
+* Development
+** Prerequisites
+- [[https://nixos.org/][Nix]] with Flakes enabled.
+
+** Setup
+Enter the reproducible development environment:
+#+BEGIN_SRC bash
+nix develop
+#+END_SRC
+
+** Running
+Start the development server:
+#+BEGIN_SRC bash
+bun dev
+#+END_SRC
+
+** Building
+Build for production:
+#+BEGIN_SRC bash
+bun run build
+#+END_SRC

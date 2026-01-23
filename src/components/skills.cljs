@@ -1,20 +1,31 @@
 (ns components.skills
-  (:require ["lucide-react" :refer [Code2 Database Terminal Cpu Globe]]))
+  (:require ["lucide-react" :refer [Code2 Database Terminal Cpu Globe]]
+            ["react-icons/fa" :refer [FaJava]]
+            ["react-icons/si" :refer [SiHtml5 SiCss3 SiJavascript SiDocker SiPython SiGit SiLinux SiReact SiTypescript SiPostgresql]]))
 
-(def html (js* "new URL('../assets/html.png', import.meta.url).href"))
-(def css (js* "new URL('../assets/css.png', import.meta.url).href"))
-(def js (js* "new URL('../assets/js.png', import.meta.url).href"))
-(def docker (js* "new URL('../assets/docker.png', import.meta.url).href"))
-(def python (js* "new URL('../assets/python.png', import.meta.url).href"))
-(def java (js* "new URL('../assets/java.png', import.meta.url).href"))
-(def git (js* "new URL('../assets/git.png', import.meta.url).href"))
-(def linux (js* "new URL('../assets/linux.png', import.meta.url).href"))
-(def react (js* "new URL('../assets/react.png', import.meta.url).href"))
-(def ts (js* "new URL('../assets/ts.png', import.meta.url).href"))
-(def neo4j (js* "new URL('../assets/neo4j.png', import.meta.url).href"))
-(def postgres (js* "new URL('../assets/postgres.png', import.meta.url).href"))
+;; Fallback for Neo4j since it's not in standard icon sets
+(defn Neo4jIcon [{:keys [size className]}]
+  #jsx [:svg {:xmlns "http://www.w3.org/2000/svg" 
+              :viewBox "0 0 24 24" 
+              :width size 
+              :height size 
+              :fill "currentColor" 
+              :className className}
+        [:path {:d "M1.511 23.336l5.712-2.855a.423.423 0 0 0 .23-.377V8.71a.423.423 0 0 0-.612-.378L1.13 11.187a.423.423 0 0 0-.23.378v11.392a.423.423 0 0 0 .611.379zM8.32 7.664l5.712-2.856a.423.423 0 0 0 .23-.378V.664a.423.423 0 0 0-.612-.378L7.94 3.142a.423.423 0 0 0-.23.378v11.392a.423.423 0 0 0 .611.379zm6.81 15.672l5.712-2.856a.423.423 0 0 0 .23-.378V8.71a.423.423 0 0 0-.612-.378l-5.712 2.856a.423.423 0 0 0-.23.378v11.392a.423.423 0 0 0 .611.378zM22.87 7.664l.23-.116V.664a.423.423 0 0 0-.612-.378l-5.712 2.856a.423.423 0 0 0-.23.378v3.794l5.712-2.856a.423.423 0 0 1 .612.378v2.828z"}]])
 
-(def skills-list [ts js html css react python java docker git linux neo4j postgres])
+(def skills-list 
+  [{:icon SiTypescript :color "text-[#3178C6]"}
+   {:icon SiJavascript :color "text-[#F7DF1E]"}
+   {:icon SiHtml5 :color "text-[#E34F26]"}
+   {:icon SiCss3 :color "text-[#1572B6]"}
+   {:icon SiReact :color "text-[#61DAFB]"}
+   {:icon SiPython :color "text-[#3776AB]"}
+   {:icon FaJava :color "text-[#007396]"}
+   {:icon SiDocker :color "text-[#2496ED]"}
+   {:icon SiGit :color "text-[#F05032]"}
+   {:icon SiLinux :color "text-[#FCC624]"}
+   {:icon Neo4jIcon :color "text-[#008CC1]"}
+   {:icon SiPostgresql :color "text-[#4169E1]"}])
 
 (defn SkillCategory [{:keys [title icon items color]}]
   #jsx [:div {:className "bg-gray-50 rounded-3xl p-6 md:p-8"}
@@ -63,7 +74,8 @@
         
         [:h2 {:className "text-xl font-bold text-text-primary mb-6"} "Skills"]
         [:div {:className "grid grid-cols-3 gap-4 overflow-y-auto pr-1 pb-2"}
-         (map (fn [src]
-                #jsx [:div {:className "aspect-square flex items-center justify-center bg-bg rounded-2xl p-3 hover:bg-gray-100 transition-colors" :key src}
-                      [:img {:src src :className "w-full h-full object-contain"}]])
+         (map (fn [{:keys [icon color]}]
+                (let [Icon icon]
+                  #jsx [:div {:className "aspect-square flex items-center justify-center bg-bg rounded-2xl p-3 hover:bg-gray-100 transition-colors" :key color}
+                        [Icon {:size 32 :className color}]]))
               skills-list)]])

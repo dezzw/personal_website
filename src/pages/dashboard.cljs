@@ -1,5 +1,6 @@
 (ns pages.dashboard
   (:require ["react" :as react]
+            ["react-dom" :as react-dom]
             ["framer-motion" :refer [motion AnimatePresence]]
             ["lucide-react" :refer [X]]
             [components.info :as info]
@@ -23,19 +24,21 @@
         children])
 
 (defn ExpandedOverlay [{:keys [id on-close component]}]
-  #jsx [motion.div {:className "fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/40 backdrop-blur-md"
-                    :initial {:opacity 0}
-                    :animate {:opacity 1}
-                    :exit {:opacity 0}
-                    :onClick on-close}
-        #jsx [motion.div {:layoutId id
-                          :className "bg-white w-full max-w-5xl h-[85vh] rounded-[2rem] shadow-2xl overflow-hidden flex flex-col relative"
-                          :onClick #(.stopPropagation %)}
-              [:button {:className "absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
-                        :onClick on-close}
-               #jsx [X {:size 24 :className "text-gray-600"}]]
-              [:div {:className "h-full overflow-y-auto"}
-               component]]])
+  (react-dom/createPortal
+   #jsx [motion.div {:className "fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/40 backdrop-blur-md"
+                     :initial {:opacity 0}
+                     :animate {:opacity 1}
+                     :exit {:opacity 0}
+                     :onClick on-close}
+         #jsx [motion.div {:layoutId id
+                           :className "bg-white w-full max-w-5xl h-[85vh] rounded-[2rem] shadow-2xl overflow-hidden flex flex-col relative"
+                           :onClick #(.stopPropagation %)}
+               [:button {:className "absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
+                         :onClick on-close}
+                #jsx [X {:size 24 :className "text-gray-600"}]]
+               [:div {:className "h-full overflow-y-auto"}
+                component]]]
+   js/document.body))
 
 (def expanded-components
   {"info" info/info-expanded
@@ -62,6 +65,16 @@
 (defn dashboard [{:keys [heroMode]}]
   (let [[selected-id set-selected-id] (react/useState nil)
         SelectedComponent (get expanded-components selected-id)]
+    
+    ;; Lock body scroll when a card is expanded
+    (react/useEffect
+     (fn []
+       (if selected-id
+         (set! (.-overflow (.-style js/document.body)) "hidden")
+         (set! (.-overflow (.-style js/document.body)) "unset"))
+       (fn [] (set! (.-overflow (.-style js/document.body)) "unset")))
+     #js [selected-id])
+
     #jsx [:div {:className "min-h-screen w-full p-4 md:p-8 lg:p-12 flex justify-center bg-bg font-sans"}
           [motion.div {:className "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-[1400px]"
                        :variants container-variants
@@ -69,7 +82,6 @@
                        :animate (if heroMode "hidden" "visible")}
            
            ;; Info/Profile
-           ;; We use a placeholder div when in heroMode to maintain grid layout
            (if heroMode
              #jsx [:div {:className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2"}]
              #jsx [CardWrapper {:id "info" 

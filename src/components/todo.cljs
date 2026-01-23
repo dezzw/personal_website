@@ -12,14 +12,14 @@
            "In Progress"]
           [:div {:className "space-y-3"}
            [:div {:className "flex items-center gap-3"}
-            [:div {:className "w-2 h-2 rounded-full bg-yellow-400 animate-pulse"}]
-            [:span {:className "font-medium"} "Advanced 3D Modeling (Blender)"]]
+            [:div {:className "w-2 h-2 rounded-full bg-orange-500 animate-pulse"}]
+            [:span {:className "font-medium"} "Rust Systems Programming"]]
            [:div {:className "flex items-center gap-3"}
-            [:div {:className "w-2 h-2 rounded-full bg-yellow-400 animate-pulse"}]
-            [:span {:className "font-medium"} "Three.js Shaders & Physics"]]
+            [:div {:className "w-2 h-2 rounded-full bg-green-500 animate-pulse"}]
+            [:span {:className "font-medium"} "Advanced Clojure & Lisp"]]
            [:div {:className "flex items-center gap-3"}
-            [:div {:className "w-2 h-2 rounded-full bg-yellow-400 animate-pulse"}]
-            [:span {:className "font-medium"} "Unity Game Development"]]]]
+            [:div {:className "w-2 h-2 rounded-full bg-blue-500 animate-pulse"}]
+            [:span {:className "font-medium"} "Embedded Systems & IoT"]]]]
          
          [:div {:className "bg-gray-50 p-6 rounded-2xl opacity-70"}
           [:h3 {:className "text-xl font-bold text-text-primary mb-4 flex items-center gap-2"}
@@ -28,7 +28,7 @@
           [:div {:className "space-y-3 text-text-secondary line-through"}
            [:div "React & Tailwind CSS Mastery"]
            [:div "NixOS System Configuration"]
-           [:div "Basic Rust Programming"]]]]])
+           [:div "Basic 3D Modeling"]]]]])
 
 (defn todo []
   #jsx [:div {:className "bento-card h-full flex flex-col justify-between p-5 bg-black text-white relative group"}
@@ -38,11 +38,11 @@
         [:h3 {:className "text-lg font-bold text-gray-400"} "Learning"]
         [:div {:className "space-y-2"}
          [:div {:className "flex items-center gap-2"}
-          [:div {:className "w-1.5 h-1.5 rounded-full bg-green-400"}]
-          [:span {:className "font-medium"} "3D Modeling"]]
+          [:div {:className "w-1.5 h-1.5 rounded-full bg-orange-500"}]
+          [:span {:className "font-medium"} "Rust"]]
          [:div {:className "flex items-center gap-2"}
-          [:div {:className "w-1.5 h-1.5 rounded-full bg-yellow-400"}]
-          [:span {:className "font-medium"} "Three.js"]]
+          [:div {:className "w-1.5 h-1.5 rounded-full bg-green-500"}]
+          [:span {:className "font-medium"} "Clojure"]]
          [:div {:className "flex items-center gap-2"}
-          [:div {:className "w-1.5 h-1.5 rounded-full bg-blue-400"}]
-          [:span {:className "font-medium"} "Unity"]]]])
+          [:div {:className "w-1.5 h-1.5 rounded-full bg-blue-500"}]
+          [:span {:className "font-medium"} "Embedded"]]]])

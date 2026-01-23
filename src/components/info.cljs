@@ -24,7 +24,7 @@
           "Toronto, Canada"]
          [:div {:className "flex items-center gap-2 text-text-secondary"}
           #jsx [Mail {:size 20}]
-          "pengcheng.wang@mail.utoronto.ca"]]])
+          "dw@dezzw.com"]]])
 
 (defn info [{:keys [layoutId className]}]
   #jsx [motion.div {:layoutId layoutId

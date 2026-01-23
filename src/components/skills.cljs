@@ -1,0 +1,69 @@
+(ns components.skills
+  (:require ["lucide-react" :refer [Code2 Database Terminal Cpu Globe]]))
+
+(def html (js* "new URL('../assets/html.png', import.meta.url).href"))
+(def css (js* "new URL('../assets/css.png', import.meta.url).href"))
+(def js (js* "new URL('../assets/js.png', import.meta.url).href"))
+(def docker (js* "new URL('../assets/docker.png', import.meta.url).href"))
+(def python (js* "new URL('../assets/python.png', import.meta.url).href"))
+(def java (js* "new URL('../assets/java.png', import.meta.url).href"))
+(def git (js* "new URL('../assets/git.png', import.meta.url).href"))
+(def linux (js* "new URL('../assets/linux.png', import.meta.url).href"))
+(def react (js* "new URL('../assets/react.png', import.meta.url).href"))
+(def ts (js* "new URL('../assets/ts.png', import.meta.url).href"))
+(def neo4j (js* "new URL('../assets/neo4j.png', import.meta.url).href"))
+(def postgres (js* "new URL('../assets/postgres.png', import.meta.url).href"))
+
+(def skills-list [ts js html css react python java docker git linux neo4j postgres])
+
+(defn SkillCategory [{:keys [title icon items color]}]
+  #jsx [:div {:className "bg-gray-50 rounded-3xl p-6 md:p-8"}
+        [:div {:className "flex items-center gap-3 mb-6"}
+         [:div {:className (str "w-10 h-10 rounded-full flex items-center justify-center " color)}
+          icon]
+         [:h3 {:className "font-bold text-xl text-text-primary"} title]]
+        [:div {:className "flex flex-wrap gap-3"}
+         (map (fn [item]
+                #jsx [:span {:key item :className "px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-medium text-text-secondary shadow-sm"}
+                      item])
+              items)]])
+
+(defn skills-expanded []
+  #jsx [:div {:className "p-8 md:p-12"}
+        [:div {:className "max-w-3xl mb-12"}
+         [:h2 {:className "text-4xl md:text-5xl font-bold text-text-primary mb-4"} "Skills"]
+         [:p {:className "text-xl text-text-secondary leading-relaxed"}
+          "A comprehensive overview of my technical expertise and toolset."]]
+        
+        [:div {:className "grid grid-cols-1 md:grid-cols-2 gap-6"}
+         [SkillCategory {:title "Languages"
+                         :icon #jsx [Code2 {:size 20 :className "text-white"}]
+                         :items ["Java" "Python" "JavaScript" "TypeScript" "Clojure" "ClojureScript" "Rust" "C/C++" "SQL"]
+                         :color "bg-blue-500"}]
+         
+         [SkillCategory {:title "Frontend & Web"
+                         :icon #jsx [Globe {:size 20 :className "text-white"}]
+                         :items ["React" "Next.js" "Tailwind CSS" "HTML5" "CSS3" "Vite" "Squint CLJS"]
+                         :color "bg-green-500"}]
+         
+         [SkillCategory {:title "Backend & Database"
+                         :icon #jsx [Database {:size 20 :className "text-white"}]
+                         :items ["PostgreSQL" "Neo4j" "Node.js" "Express" "FastAPI" "Django" "Redis"]
+                         :color "bg-purple-500"}]
+         
+         [SkillCategory {:title "Tools & DevOps"
+                         :icon #jsx [Terminal {:size 20 :className "text-white"}]
+                         :items ["Git" "Docker" "Kubernetes" "Linux" "Nix" "Emacs" "Bash" "AWS"]
+                         :color "bg-orange-500"}]]])
+
+(defn skills []
+  #jsx [:div {:className "bento-card h-full flex flex-col relative group"}
+        [:div {:className "absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}
+         #jsx [Cpu {:size 20 :className "text-text-secondary"}]]
+        
+        [:h2 {:className "text-xl font-bold text-text-primary mb-6"} "Skills"]
+        [:div {:className "grid grid-cols-3 gap-4 overflow-y-auto pr-1 pb-2"}
+         (map (fn [src]
+                #jsx [:div {:className "aspect-square flex items-center justify-center bg-bg rounded-2xl p-3 hover:bg-gray-100 transition-colors" :key src}
+                      [:img {:src src :className "w-full h-full object-contain"}]])
+              skills-list)]])

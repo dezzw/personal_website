@@ -1,42 +1,48 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx,cljs}'],
   theme: {
     extend: {
       colors: {
-        white: {
-          DEFAULT: '#FFF',
-        },
-        black: {
-          DEFAULT: '#000',
-        },
-        prime: {
-          DEFAULT: '#0b66c2',
-          2: '#1682FD',
-        },
         bg: {
-          DEFAULT: '#FAFAFA',
+          DEFAULT: '#F5F5F7', // Apple-style light gray background
+        },
+        card: {
+          DEFAULT: '#FFFFFF',
+        },
+        text: {
+          primary: '#1D1D1F', // Apple-style dark gray/black
+          secondary: '#86868B', // Apple-style lighter gray
+        },
+        accent: {
+          blue: '#0071e3', // Apple blue
         },
         border: {
-          DEFAULT: '#EAEAEA',
-        },
-        gray: {
-          DEFAULT: 'rgb(156 163 175)',
-          font: '#808080',
+          DEFAULT: '#D2D2D7',
         },
       },
       borderRadius: {
-        base: '20px',
+        '3xl': '1.5rem', // Large rounded corners
       },
       boxShadow: {
-        base: '0 2px 4px 0 rgba(0,0,0,0.25)',
-        btn: 'rgb(255, 255, 255) 0px 0px 0px 1px, rgba(255, 255, 255, 0.5) 0px 0px 0px 6px;',
+        sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+      },
+      fontFamily: {
+        sans: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          'Helvetica',
+          'Arial',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+        ],
       },
     },
-    fontFamily: {
-      body: ['Comfortaa', 'sans-serif'],
-      heading: ['Righteous', 'sans-serif'],
-    },
-    plugins: [],
   },
+  plugins: [],
 };

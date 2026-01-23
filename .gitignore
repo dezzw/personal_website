@@ -7,11 +7,23 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+.pnp
+.pnp.js
+
+# Build Output
 dist
 dist-ssr
 build
-*.local
+.output
+
+# Squint/ClojureScript Generated Files
+# We want to ignore the generated .mjs and .jsx files in src/
+# but keep the source .cljs files
+src/**/*.mjs
+src/**/*.jsx
+!src/vite-env.d.ts
 
 # Editor directories and files
 .vscode/*
@@ -23,3 +35,13 @@ build
 *.njsproj
 *.sln
 *.sw?
+.cursor/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

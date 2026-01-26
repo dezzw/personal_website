@@ -30,14 +30,14 @@
                      :animate {:opacity 1}
                      :exit {:opacity 0}
                      :onClick on-close}
-         #jsx [motion.div {:layoutId id
-                           :className "bg-white w-full max-w-5xl h-[85vh] rounded-[2rem] shadow-2xl overflow-hidden flex flex-col relative"
-                           :onClick #(.stopPropagation %)}
-               [:button {:className "absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
-                         :onClick on-close}
-                #jsx [X {:size 24 :className "text-gray-600"}]]
-               [:div {:className "h-full overflow-y-auto"}
-                component]]]
+          #jsx [motion.div {:layoutId id
+                            :className "bg-white w-full max-w-5xl h-[85vh] rounded-[2rem] shadow-2xl overflow-hidden flex flex-col relative"
+                            :onClick #(.stopPropagation %)}
+                [:button {:className "absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
+                          :onClick on-close}
+                 #jsx [X {:size 24 :className "text-gray-600"}]]
+                [:div {:className "h-full overflow-y-auto"}
+                 component]]]
    js/document.body))
 
 (def expanded-components
@@ -152,9 +152,10 @@
                          :on-click set-selected-id}
             [contact/contact]]]
 
-          [AnimatePresence
+          [AnimatePresence {:mode "wait"}
            (when selected-id
-             #jsx [ExpandedOverlay {:id selected-id 
+             #jsx [ExpandedOverlay {:key selected-id
+                                    :id selected-id 
                                     :on-close #(set-selected-id nil)
                                     :component (when SelectedComponent
                                                  (react/createElement SelectedComponent))}])]]))

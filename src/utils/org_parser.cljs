@@ -26,27 +26,44 @@
 (defn use-org-content [org-path]
   (let [[content set-content] (react/useState nil)
         [loading set-loading] (react/useState true)
-        [error set-error] (react/useState nil)]
+        [error set-error] (react/useState nil)
+        mounted-ref (react/useRef true)]
     
     (react/useEffect
      (fn []
-       (set-loading true)
-       (set-error nil)
-       (-> (js/fetch org-path)
-           (.then (fn [response]
-                    (if (.-ok response)
-                      (.text response)
-                      (throw (js/Error (str "Failed to load org file: " (.-status response)))))))
-           (.then (fn [text]
-                    (let [processor (create-processor)]
-                      (parse-org-file text processor))))
-           (.then (fn [html]
-                    (set-content html)
-                    (set-loading false)))
-           (.catch (fn [err]
-                     (js/console.error "Error loading org file:" err)
-                     (set-error (str "Failed to load content: " (.-message err)))
-                     (set-loading false)))))
+       ;; Mark as mounted
+       (set! (.-current mounted-ref) true)
+       
+       (if (or (not org-path) (= org-path ""))
+         (do
+           (set-loading false)
+           (set-error "No path provided")
+           (set-content nil))
+         (do
+           (set-loading true)
+           (set-error nil)
+           (-> (js/fetch org-path)
+               (.then (fn [response]
+                        (if (.-ok response)
+                          (.text response)
+                          (throw (js/Error (str "Failed to load org file: " (.-status response)))))))
+               (.then (fn [text]
+                        (let [processor (create-processor)]
+                          (parse-org-file text processor))))
+               (.then (fn [html]
+                        ;; Only update state if still mounted
+                        (when (.-current mounted-ref)
+                          (set-content html)
+                          (set-loading false))))
+               (.catch (fn [err]
+                         ;; Only update state if still mounted
+                         (when (.-current mounted-ref)
+                           (js/console.error "Error loading org file:" err)
+                           (set-error (str "Failed to load content: " (.-message err)))
+                           (set-loading false)))))))
+       ;; Cleanup function - mark as unmounted
+       (fn []
+         (set! (.-current mounted-ref) false)))
      #js [org-path])
     
     {:content content

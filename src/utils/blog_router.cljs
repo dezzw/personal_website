@@ -11,6 +11,7 @@
     
     {:route route
      :selected-slug selected-slug
+     :reset #(do (set-route "list") (set-selected-slug nil))
      :navigate-to-list #(do (set-route "list") (set-selected-slug nil))
      :navigate-to-post #(do (set-route "post") (set-selected-slug %))
      :navigate-to-component #(do (set-route "component") (set-selected-slug %))

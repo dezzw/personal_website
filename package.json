@@ -24,7 +24,12 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-icons": "^5.5.0",
-    "tailwindcss": "^3.3.1"
+    "react-router-dom": "^7.13.0",
+    "rehype-stringify": "^10.0.1",
+    "tailwindcss": "^3.3.1",
+    "unified": "^11.0.5",
+    "uniorg-parse": "^3.2.0",
+    "uniorg-rehype": "^2.2.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",

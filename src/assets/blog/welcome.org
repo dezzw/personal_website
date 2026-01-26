@@ -1,0 +1,18 @@
+#+TITLE: Welcome to My Blog
+#+AUTHOR: Desmond Wang
+#+DATE: 2026-01-25
+
+* Introduction
+
+Welcome to my blog! This is where I share my thoughts, projects, and technical insights.
+
+* What You'll Find Here
+
+- Technical tutorials and guides
+- Project showcases
+- Thoughts on software development
+- Tips and tricks I've learned along the way
+
+* Stay Connected
+
+Feel free to reach out if you have questions or want to collaborate!

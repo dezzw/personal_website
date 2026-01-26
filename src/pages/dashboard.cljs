@@ -88,8 +88,8 @@
                                 :className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2 h-full"
                                 :on-click set-selected-id}
                    [info/info {:layoutId "info-card"}]])
-
-           ;; Icon
+           
+           ;; Icon (Blog Entry)
            [CardWrapper {:id "icon" 
                          :className "col-span-1 row-span-1"
                          :variants item-variants

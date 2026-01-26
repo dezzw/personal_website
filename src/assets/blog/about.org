@@ -1,0 +1,50 @@
+#+TITLE: About This Website
+#+AUTHOR: Desmond Wang
+#+DATE: 2026
+
+* Welcome to My Personal Website
+
+This is my personal website built with modern web technologies. It showcases my work, projects, and interests as a Full Stack Developer.
+
+* Tech Stack
+
+This website is built using:
+
+- **Squint-CLJS** - A ClojureScript compiler that targets JavaScript
+- **React** - For building interactive user interfaces
+- **Vite** - Fast build tool and dev server
+- **Tailwind CSS** - Utility-first CSS framework
+- **Framer Motion** - Animation library for React
+- **Nix** - Reproducible development environment
+
+* Features
+
+The website includes:
+
+- Interactive dashboard with expandable cards
+- Smooth animations and transitions
+- Responsive design for all devices
+- Modern glassmorphism UI effects
+- Org-mode content support (like this page!)
+
+* Development
+
+The project uses:
+
+- Nix flakes for reproducible development environments
+- Bun for fast package management
+- Squint for ClojureScript compilation
+- Vite for hot module replacement
+
+* Philosophy
+
+I believe in:
+
+- Open source software
+- Reproducible systems (NixOS!)
+- Functional programming
+- Clean, maintainable code
+
+* Contact
+
+Feel free to reach out at dw@dezzw.com or check out my other projects!

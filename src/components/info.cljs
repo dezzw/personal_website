@@ -11,11 +11,11 @@
          [:img {:src memoji :className "relative w-48 h-48 md:w-64 md:h-64 object-cover drop-shadow-2xl"}]]
         
         [:h1 {:className "text-4xl md:text-6xl font-bold text-text-primary mb-4 tracking-tight"} "Pengcheng Wang"]
-        [:p {:className "text-2xl text-accent-blue font-medium mb-8"} "Information Security Student @ UofT"]
+        [:p {:className "text-2xl text-accent-blue font-medium mb-8"} "Full Stack Developer"]
         
         [:div {:className "max-w-2xl space-y-6 text-lg text-text-secondary leading-relaxed"}
-         [:p "I am a passionate developer and security researcher based in Toronto. My journey in tech is driven by a curiosity for how systems work at a fundamental level, from the kernel to the web browser."]
-         [:p "I specialize in cybersecurity, focusing on software verification and vulnerability analysis. When I'm not auditing code, I'm building full-stack applications or tweaking my Emacs configuration."]
+         [:p "I am a passionate Full Stack Developer based in Toronto. My journey in tech is driven by a curiosity for how systems work at a fundamental level, from the kernel to the web browser."]
+         [:p "I specialize in building modern web applications and robust backend systems. When I'm not writing code, I'm exploring new technologies or tweaking my Emacs configuration."]
          [:p "I believe in open source, reproducible systems (NixOS ftw!), and the power of functional programming."]]
         
         [:div {:className "flex flex-wrap justify-center gap-6 mt-12"}
@@ -39,7 +39,7 @@
         [:div {:className "text-center md:text-left space-y-4 max-w-lg"}
          [:div
           [:h1 {:className "text-3xl md:text-4xl font-bold text-text-primary tracking-tight"} "Hi, I'm Desmond."]
-          [:p {:className "text-lg text-accent-blue font-medium"} "Information Security Student"]]
+          [:p {:className "text-lg text-accent-blue font-medium"} "Full Stack Developer"]]
          [:p {:className "text-text-secondary leading-relaxed text-lg"}
-          "I study at the University of Toronto, specializing in cybersecurity and full-stack development. "
+          "I am a Full Stack Developer based in Toronto, specializing in building modern web applications. "
           "I'm passionate about building secure, efficient systems and exploring the depths of Emacs."]]])

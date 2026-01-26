@@ -20,6 +20,7 @@
       (.then (fn [file]
                (.-value file)))
       (.catch (fn [error]
+                (js/console.error "Error parsing org file:" error)
                 ""))))
 
 (defn use-org-content [org-path]
@@ -43,6 +44,7 @@
                     (set-content html)
                     (set-loading false)))
            (.catch (fn [err]
+                     (js/console.error "Error loading org file:" err)
                      (set-error (str "Failed to load content: " (.-message err)))
                      (set-loading false)))))
      #js [org-path])

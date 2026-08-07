@@ -12,6 +12,7 @@
     "dev": "npx concurrently \"npx squint watch\" \"npx vite --port 8000\"",
     "predev": "node scripts/prebuild.mjs",
     "build": "npx vite build",
+    "pages:build": "bun install --frozen-lockfile && bun run build",
     "preview": "npx vite preview",
     "watch:squint": "npx squint watch",
     "watch:vite": "npx vite --port 8000",

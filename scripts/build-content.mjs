@@ -5,6 +5,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { parseEDNString } from 'edn-data';
 
 const root = process.cwd();
 const contentDir = path.join(root, 'content');
@@ -83,14 +84,24 @@ function parseOrgFile(filePath) {
   return { slug, title, date, html: orgBodyToHtml(bodyLines) };
 }
 
+function keywordize(value) {
+  if (Array.isArray(value)) {
+    return value.map(keywordize);
+  }
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, val]) => [
+        key.startsWith(':') ? key.slice(1) : key,
+        keywordize(val),
+      ]),
+    );
+  }
+  return value;
+}
+
 function readEdnFile(filePath) {
   const raw = fs.readFileSync(filePath, 'utf8');
-  // Content EDN files use JSON-compatible literals (strings, keywords as strings).
-  const jsonish = raw
-    .replace(/:([a-zA-Z0-9_-]+)/g, '"$1"')
-    .replace(/\\"/g, '__QUOTE__');
-
-  return JSON.parse(jsonish.replace(/__QUOTE__/g, '\\"'));
+  return keywordize(parseEDNString(raw));
 }
 
 function writeJson(filePath, data) {

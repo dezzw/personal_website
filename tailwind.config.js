@@ -2,7 +2,7 @@
 import typography from '@tailwindcss/typography';
 
 export default {
-  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx,cljs}'],
+  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx,cljs}', './src/gen/**/*.{js,jsx}'],
   theme: {
     extend: {
       colors: {

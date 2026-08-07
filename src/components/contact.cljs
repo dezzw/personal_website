@@ -4,6 +4,7 @@
 (defn ContactCard [{:keys [icon title value link color]}]
   #jsx [:a {:href link 
             :target "_blank"
+            :rel "noopener noreferrer"
             :className "flex items-center gap-4 p-6 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-md transition-all duration-300 border border-transparent hover:border-gray-100 group w-full"} ;; Added w-full
         [:div {:className (str "w-12 h-12 rounded-full flex items-center justify-center text-white transition-transform group-hover:scale-110 shrink-0 " color)} ;; Added shrink-0
          icon]
@@ -40,7 +41,7 @@
          [ContactCard {:icon #jsx [FileText {:size 24}]
                        :title "Resume"
                        :value "View PDF"
-                       :link "#"
+                       :link "/resume.pdf"
                        :color "bg-accent-blue"}]]])
 
 (defn contact []
@@ -65,7 +66,9 @@
               :className "px-6 py-3 rounded-full bg-[#0077b5] text-white font-medium hover:bg-[#006396] transition-colors shadow-sm min-w-[120px] text-center"
               :onClick #(.stopPropagation %)} 
           "LinkedIn"]
-         [:a {:href "#" 
+         [:a {:href "/resume.pdf" 
+              :target "_blank"
+              :rel "noopener noreferrer"
               :className "px-6 py-3 rounded-full bg-accent-blue text-white font-medium hover:bg-blue-600 transition-colors shadow-sm flex items-center justify-center gap-2 min-w-[120px]"
               :onClick #(.stopPropagation %)} 
           "Resume"

@@ -14,6 +14,7 @@
       {
         devShells.default = pkgs.mkShell {
           packages = [
+            pkgs.babashka
             pkgs.bun
             pkgs.nodejs_20
           ];

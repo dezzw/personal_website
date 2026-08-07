@@ -7,12 +7,14 @@ This is a high-performance personal portfolio website built with a modern, funct
 
 * Tech Stack
 - **Language**: [[https://github.com/squint-cljs/squint][Squint CLJS]] (Lightweight ClojureScript dialect)
+- **Content Build**: [[https://babashka.org/][Babashka]] (Org/EDN → static JSON at build time)
 - **Framework**: React (via Squint's JSX syntax)
 - **Build Tool**: Vite + Bun
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
 - **Icons**: Lucide React
 - **Environment**: Nix (Flakes)
+- **Deploy**: Cloudflare Pages (Git push)
 
 * Design Philosophy
 The design is inspired by Apple's clean, grid-based aesthetics, combined with a cinematic "Hero Camera" perspective.
@@ -36,27 +38,25 @@ The design is inspired by Apple's clean, grid-based aesthetics, combined with a 
 
 * Project Structure
 #+BEGIN_SRC text
+content/
+├── blog/               # Org-mode blog posts
+└── data/               # EDN data (projects, experience)
+
 src/
-├── app.cljs            # Main application entry point (Hero + Scroll Logic)
-├── main.cljs           # React Root rendering
-├── pages/
-│   └── dashboard.cljs  # Main Grid Layout & Card Orchestration
-├── components/         # Individual Bento Cards
-│   ├── info.cljs       # Profile & Bio (Hero & Grid versions)
-│   ├── projects.cljs   # Project Showcase
-│   ├── experience.cljs # Professional Timeline
-│   ├── skills.cljs     # Tech Stack Grid
-│   ├── contact.cljs    # Social Links & Email
-│   ├── nix.cljs        # NixOS Config Highlight
-│   ├── emacs.cljs      # Emacs Workflow Highlight
-│   ├── todo.cljs       # Learning Roadmap
-│   └── icon.cljs       # Brand Logo
-└── assets/             # Images & 3D Models
+├── gen/                # Squint compiled JSX (gitignored)
+├── app.cljs            # Hero + scroll logic
+├── main.cljs           # Router entry
+├── pages/              # Dashboard, blog pages
+├── components/         # Bento cards
+└── assets/             # Images
+
+build.clj               # Babashka content builder
 #+END_SRC
 
 * Development
 ** Prerequisites
-- [[https://nixos.org/][Nix]] with Flakes enabled.
+- [[https://nixos.org/][Nix]] with Flakes enabled (includes Babashka + Bun).
+- Or: Bun, Node 20+, and Babashka installed locally.
 
 ** Setup
 Enter the reproducible development environment:
@@ -65,7 +65,7 @@ nix develop
 #+END_SRC
 
 ** Running
-Start the development server:
+Start the development server (runs =bb build.clj= first):
 #+BEGIN_SRC bash
 bun dev
 #+END_SRC
@@ -75,3 +75,12 @@ Build for production:
 #+BEGIN_SRC bash
 bun run build
 #+END_SRC
+
+** Deploy
+Push to =main= triggers Cloudflare Pages. Build command (matches CI):
+#+BEGIN_SRC bash
+bun install --frozen-lockfile && bun run build
+#+END_SRC
+Output directory: =dist= (Cloudflare React/Vite preset default)
+
+Add your resume PDF at =public/resume.pdf= for the Resume link to work.

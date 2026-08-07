@@ -1,7 +1,7 @@
 (ns components.nix
   (:require ["lucide-react" :refer [Settings]]))
 
-(def nix-img (js* "new URL('../assets/nix.svg', import.meta.url).href"))
+(def nix-img (js* "new URL('../../assets/nix.svg', import.meta.url).href"))
 
 (def config-snippet (str
   "{\n"

@@ -16,11 +16,15 @@ node_modules
 dist
 dist-ssr
 build
-.output
+
+# Generated content (produced by bb build.clj)
+public/blog/
+public/data/
+public/sitemap.xml
+public/robots.txt
 
 # Squint/ClojureScript Generated Files
-# We want to ignore the generated .mjs and .jsx files in src/
-# but keep the source .cljs files
+src/gen/
 src/**/*.mjs
 src/**/*.jsx
 !src/vite-env.d.ts

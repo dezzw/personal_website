@@ -16,7 +16,6 @@ node_modules
 dist
 dist-ssr
 build
-.output
 
 # Generated content (produced by bb build.clj)
 public/blog/

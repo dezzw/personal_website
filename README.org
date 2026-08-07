@@ -81,6 +81,6 @@ Push to =main= triggers Cloudflare Pages. Build command:
 #+BEGIN_SRC bash
 bun install && bun run build
 #+END_SRC
-Output directory: =build=
+Output directory: =dist= (Cloudflare React/Vite preset default)
 
 Add your resume PDF at =public/resume.pdf= for the Resume link to work.

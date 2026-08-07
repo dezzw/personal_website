@@ -19,7 +19,7 @@ function siteBuildPlugin() {
 export default defineConfig({
   plugins: [react(), siteBuildPlugin()],
   build: {
-    outDir: './build',
+    outDir: './dist',
   },
   server: {
     host: true,

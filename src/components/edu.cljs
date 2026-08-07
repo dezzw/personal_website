@@ -1,16 +1,16 @@
 (ns components.edu
   (:require ["lucide-react" :refer [GraduationCap BookOpen Award]]))
 
-(def uoft (js* "new URL('../assets/uoft.png', import.meta.url).href"))
+(def uoft (js* "new URL('../../assets/uoft.png', import.meta.url).href"))
 
 (defn edu-expanded []
   #jsx [:div {:className "p-8 md:p-12"}
         [:div {:className "flex flex-col md:flex-row items-center gap-8 mb-12"}
-         [:img {:src uoft :className "w-32 h-auto object-contain"}]
+         [:img {:src uoft :alt "University of Toronto logo" :className "w-32 h-auto object-contain"}]
          [:div {:className "text-center md:text-left"}
           [:h2 {:className "text-4xl md:text-5xl font-bold text-text-primary mb-2"} "University of Toronto"]
           [:p {:className "text-2xl text-accent-blue font-medium"} "Bachelor of Science"]
-          [:p {:className "text-xl text-text-secondary"} "2021 - 2025 (Expected)"]]]
+          [:p {:className "text-xl text-text-secondary"} "2021 - 2026"]]]
         
         [:div {:className "grid grid-cols-1 md:grid-cols-2 gap-8"}
          [:div {:className "bg-gray-50 rounded-3xl p-8"}
@@ -41,7 +41,7 @@
         [:div {:className "absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}
          #jsx [GraduationCap {:size 20 :className "text-text-secondary"}]]
         
-        [:img {:src uoft :className "w-16 h-auto md:w-20 object-contain"}]
+        [:img {:src uoft :alt "University of Toronto logo" :className "w-16 h-auto md:w-20 object-contain"}]
         [:div {:className "flex-1 text-center md:text-left"}
          [:h2 {:className "text-xl font-bold text-text-primary mb-2"} "University of Toronto"]
          [:div {:className "space-y-1 text-sm text-text-secondary"}

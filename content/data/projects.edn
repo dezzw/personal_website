@@ -1,0 +1,28 @@
+[{:title "Personal Website"
+  :desc "A high-performance personal portfolio built with Squint CLJS, a lightweight ClojureScript dialect. Features a responsive Bento grid layout, Apple-inspired design system, and smooth Framer Motion animations."
+  :short-desc "High-performance portfolio with Squint CLJS."
+  :tags ["ClojureScript" "React" "Tailwind" "Vite"]
+  :color "bg-green-500"
+  :status "finished"
+  :github "https://github.com/dezzw/personal_website"}
+ {:title "Emacs Configuration"
+  :desc "A comprehensive, opinionated Emacs setup focused on productivity, modal editing (Evil), and development workflows. Optimized for startup time and extensibility."
+  :short-desc "Productivity-focused Emacs setup."
+  :tags ["Elisp" "Org Mode" "Evil" "Lisp"]
+  :color "bg-purple-500"
+  :status "finished"
+  :github "https://github.com/dezzw/.emacs.d"}
+ {:title "NixOS Dotfiles"
+  :desc "Reproducible system configuration using NixOS and Home Manager. Manages everything from system packages to user dotfiles, ensuring a consistent environment across machines."
+  :short-desc "Reproducible system configuration."
+  :tags ["Nix" "NixOS" "Home Manager" "Shell"]
+  :color "bg-blue-500"
+  :status "finished"
+  :github "https://github.com/dezzw/dotfiles"}
+ {:title "Security Tooling"
+  :desc "A suite of automated vulnerability scanning and analysis tools. Includes scripts for network reconnaissance, static analysis, and fuzzing."
+  :short-desc "Vulnerability scanning tools."
+  :tags ["Python" "Rust" "Security" "Automation"]
+  :color "bg-red-500"
+  :status "archived"
+  :github "https://github.com/dezzw/sec-tools"}]

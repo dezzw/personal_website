@@ -17,15 +17,31 @@
 (defn CardWrapper [{:keys [id className children on-click variants]}]
   #jsx [motion.div {:layoutId id
                     :variants variants
+                    :role "button"
+                    :tabIndex 0
                     :className (str "cursor-pointer " className)
                     :onClick #(on-click id)
+                    :onKeyDown (fn [e]
+                                 (when (contains? #{"Enter" " "} (.-key e))
+                                   (.preventDefault e)
+                                   (on-click id)))
                     :whileHover {:scale 1.02}
                     :transition {:duration 0.2}}
         children])
 
 (defn ExpandedOverlay [{:keys [id on-close component]}]
+  (react/useEffect
+   (fn []
+     (let [handle-key (fn [e]
+                        (when (= (.-key e) "Escape")
+                          (on-close)))]
+       (.addEventListener js/document "keydown" handle-key)
+       (fn [] (.removeEventListener js/document "keydown" handle-key))))
+   #js [on-close])
   (react-dom/createPortal
    #jsx [motion.div {:className "fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/40 backdrop-blur-md"
+                     :role "dialog"
+                     :aria-modal "true"
                      :initial {:opacity 0}
                      :animate {:opacity 1}
                      :exit {:opacity 0}
@@ -33,7 +49,9 @@
           #jsx [motion.div {:layoutId id
                             :className "bg-white w-full max-w-5xl h-[85vh] rounded-[2rem] shadow-2xl overflow-hidden flex flex-col relative"
                             :onClick #(.stopPropagation %)}
-                [:button {:className "absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
+                [:button {:type "button"
+                          :aria-label "Close"
+                          :className "absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
                           :onClick on-close}
                  #jsx [X {:size 24 :className "text-gray-600"}]]
                 [:div {:className "h-full overflow-y-auto"}
@@ -49,8 +67,7 @@
    "contact" contact/contact-expanded
    "nix" nix/nix-expanded
    "emacs" emacs/emacs-expanded
-   "todo" todo/todo-expanded
-   "icon" icon/icon-expanded})
+   "todo" todo/todo-expanded})
 
 (def container-variants
   {:hidden {:opacity 0}
@@ -66,7 +83,6 @@
   (let [[selected-id set-selected-id] (react/useState nil)
         SelectedComponent (get expanded-components selected-id)]
     
-    ;; Lock body scroll when a card is expanded
     (react/useEffect
      (fn []
        (if selected-id
@@ -81,7 +97,6 @@
                        :initial "hidden"
                        :animate (if heroMode "hidden" "visible")}
            
-           ;; Info/Profile
            (if heroMode
              #jsx [:div {:className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2"}]
              #jsx [CardWrapper {:id "info" 
@@ -89,63 +104,52 @@
                                 :on-click set-selected-id}
                    [info/info {:layoutId "info-card"}]])
            
-           ;; Icon (Blog Entry)
-           [CardWrapper {:id "icon" 
-                         :className "col-span-1 row-span-1"
-                         :variants item-variants
-                         :on-click set-selected-id}
-            [icon/icon]]
+           #jsx [motion.div {:variants item-variants
+                             :className "col-span-1 row-span-1"}
+                 [icon/icon]]
 
-           ;; Todo
            [CardWrapper {:id "todo" 
                          :className "col-span-1 row-span-1"
                          :variants item-variants
                          :on-click set-selected-id}
             [todo/todo]]
 
-           ;; Projects
            [CardWrapper {:id "projects" 
                          :className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2"
                          :variants item-variants
                          :on-click set-selected-id}
             [projects/projects]]
 
-           ;; Nix
            [CardWrapper {:id "nix" 
                          :className "col-span-1 row-span-1"
                          :variants item-variants
                          :on-click set-selected-id}
             [nix/nix]]
 
-           ;; Emacs
            [CardWrapper {:id "emacs" 
                          :className "col-span-1 row-span-1"
                          :variants item-variants
                          :on-click set-selected-id}
             [emacs/emacs]]
 
-           ;; Skills
            [CardWrapper {:id "skills" 
                          :className "col-span-1 row-span-2"
                          :variants item-variants
                          :on-click set-selected-id}
             [skills/skills]]
 
-           ;; Experience
            [CardWrapper {:id "experience" 
                          :className "col-span-1 row-span-2"
                          :variants item-variants
                          :on-click set-selected-id}
             [experience/experience]]
 
-           ;; Education
            [CardWrapper {:id "edu" 
                          :className "col-span-1 md:col-span-2 row-span-1"
                          :variants item-variants
                          :on-click set-selected-id}
             [edu/edu]]
 
-           ;; Contact
            [CardWrapper {:id "contact" 
                          :className "col-span-1 md:col-span-2 row-span-1"
                          :variants item-variants

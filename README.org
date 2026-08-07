@@ -7,12 +7,14 @@ This is a high-performance personal portfolio website built with a modern, funct
 
 * Tech Stack
 - **Language**: [[https://github.com/squint-cljs/squint][Squint CLJS]] (Lightweight ClojureScript dialect)
+- **Content Build**: [[https://babashka.org/][Babashka]] (Org/EDN → static JSON at build time)
 - **Framework**: React (via Squint's JSX syntax)
 - **Build Tool**: Vite + Bun
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
 - **Icons**: Lucide React
 - **Environment**: Nix (Flakes)
+- **Deploy**: Cloudflare Pages (Git push)
 
 * Design Philosophy
 The design is inspired by Apple's clean, grid-based aesthetics, combined with a cinematic "Hero Camera" perspective.

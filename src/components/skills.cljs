@@ -1,7 +1,7 @@
 (ns components.skills
   (:require ["lucide-react" :refer [Code2 Database Terminal Cpu Globe]]
             ["react-icons/fa" :refer [FaJava]]
-            ["react-icons/si" :refer [SiHtml5 SiCss3 SiJavascript SiDocker SiPython SiGit SiLinux SiReact SiTypescript SiPostgresql]]))
+            ["react-icons/si" :refer [SiHtml5 SiCss SiJavascript SiDocker SiPython SiGit SiLinux SiReact SiTypescript SiPostgresql]]))
 
 ;; Fallback for Neo4j since it's not in standard icon sets
 (defn Neo4jIcon [{:keys [size className]}]
@@ -17,7 +17,7 @@
   [{:icon SiTypescript :color "text-[#3178C6]"}
    {:icon SiJavascript :color "text-[#F7DF1E]"}
    {:icon SiHtml5 :color "text-[#E34F26]"}
-   {:icon SiCss3 :color "text-[#1572B6]"}
+   {:icon SiCss :color "text-[#1572B6]"}
    {:icon SiReact :color "text-[#61DAFB]"}
    {:icon SiPython :color "text-[#3776AB]"}
    {:icon FaJava :color "text-[#007396]"}

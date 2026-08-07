@@ -4,32 +4,30 @@
   "version": "0.0.0",
   "homepage": "https://www.dezzw.com/",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "bunx concurrently \"bunx squint watch\" \"bunx vite --port 8000\"",
+    "predev": "bb build.clj",
+    "prebuild": "bb build.clj",
     "build": "bunx squint compile && bunx vite build",
     "preview": "bunx vite preview",
     "watch:squint": "bunx squint watch",
     "watch:vite": "bunx vite --port 8000",
     "watch": "bunx concurrently \"bunx squint watch\" \"bunx vite --port 8000\"",
-    "predeploy": "bun run build",
-    "deploy": "gh-pages -d build",
     "format": "bunx prettier --write ."
   },
   "dependencies": {
     "autoprefixer": "^10.4.14",
     "framer-motion": "^12.29.0",
-    "gh-pages": "^5.0.0",
     "lucide-react": "^0.563.0",
     "postcss": "^8.4.21",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.13.0",
-    "rehype-stringify": "^10.0.1",
-    "tailwindcss": "^3.3.1",
-    "unified": "^11.0.5",
-    "uniorg-parse": "^3.2.0",
-    "uniorg-rehype": "^2.2.0"
+    "tailwindcss": "^3.3.1"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",
@@ -37,7 +35,7 @@
     "concurrently": "^9.2.1",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.7",
-    "squint-cljs": "latest",
+    "squint-cljs": "^0.14.207",
     "vite": "^4.2.0"
   }
 }

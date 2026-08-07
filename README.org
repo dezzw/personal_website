@@ -77,9 +77,9 @@ bun run build
 #+END_SRC
 
 ** Deploy
-Push to =main= triggers Cloudflare Pages. Build command:
+Push to =main= triggers Cloudflare Pages. Build command (matches CI):
 #+BEGIN_SRC bash
-bun install && bun run build
+bun install --frozen-lockfile && bun run build
 #+END_SRC
 Output directory: =dist= (Cloudflare React/Vite preset default)
 

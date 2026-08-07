@@ -12,12 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
 
       - name: Install Babashka
         run: |
           curl -fsSL https://raw.githubusercontent.com/babashka/babashka/master/install | bash -s -- --dir ~/.local/bin
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
-      - run: bun install
-      - run: bun run build
+      - run: npm ci
+      - run: npm run build

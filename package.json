@@ -8,15 +8,15 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "bunx concurrently \"bunx squint watch\" \"bunx vite --port 8000\"",
-    "predev": "bb build.clj",
-    "prebuild": "bb build.clj",
-    "build": "bunx squint compile && bunx vite build",
-    "preview": "bunx vite preview",
-    "watch:squint": "bunx squint watch",
-    "watch:vite": "bunx vite --port 8000",
-    "watch": "bunx concurrently \"bunx squint watch\" \"bunx vite --port 8000\"",
-    "format": "bunx prettier --write ."
+    "dev": "npx concurrently \"npx squint watch\" \"npx vite --port 8000\"",
+    "predev": "node scripts/prebuild.mjs",
+    "prebuild": "node scripts/prebuild.mjs",
+    "build": "npx squint compile && npx vite build",
+    "preview": "npx vite preview",
+    "watch:squint": "npx squint watch",
+    "watch:vite": "npx vite --port 8000",
+    "watch": "npx concurrently \"npx squint watch\" \"npx vite --port 8000\"",
+    "format": "npx prettier --write ."
   },
   "dependencies": {
     "autoprefixer": "^10.4.14",
@@ -25,7 +25,6 @@
     "postcss": "^8.4.21",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-icons": "^5.5.0",
     "react-router-dom": "^7.13.0",
     "tailwindcss": "^3.3.1"
   },

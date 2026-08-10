@@ -44,20 +44,25 @@
        (.addEventListener js/document "keydown" handle-key)
        (fn [] (.removeEventListener js/document "keydown" handle-key))))
    #js [on-close])
-  #jsx [motion.div {:role "dialog"
-                    :aria-modal "true"
-                    :className "fixed z-[101] left-1/2 top-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-5xl h-[85vh] -translate-x-1/2 -translate-y-1/2 bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col"
-                    :initial {:opacity 0 :scale 0.96}
-                    :animate {:opacity 1 :scale 1}
-                    :exit {:opacity 0 :scale 0.96}
-                    :transition {:type "spring" :stiffness 400 :damping 32}}
-        [:button {:type "button"
-                  :aria-label "Close"
-                  :className "absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
-                  :onClick on-close}
-         #jsx [X {:size 24 :className "text-gray-600"}]]
-        [:div {:className "h-full overflow-y-auto"}
-         component]])
+  #jsx [motion.div {:className "fixed inset-0 z-[101] flex items-center justify-center p-4 md:p-8 pointer-events-none"
+                    :initial {:opacity 0}
+                    :animate {:opacity 1}
+                    :exit {:opacity 0}
+                    :transition {:duration 0.2}}
+        #jsx [motion.div {:role "dialog"
+                          :aria-modal "true"
+                          :className "relative w-full max-w-5xl h-[85vh] bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col pointer-events-auto"
+                          :initial {:opacity 0 :scale 0.96}
+                          :animate {:opacity 1 :scale 1}
+                          :exit {:opacity 0 :scale 0.96}
+                          :transition {:type "spring" :stiffness 400 :damping 32}}
+              [:button {:type "button"
+                        :aria-label "Close"
+                        :className "absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
+                        :onClick on-close}
+               #jsx [X {:size 24 :className "text-gray-600"}]]
+              [:div {:className "h-full overflow-y-auto"}
+               component]]])
 
 (def expanded-components
   {"info" info/info-expanded

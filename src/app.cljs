@@ -98,4 +98,6 @@
                                                                    {:stiffness 30 :damping 15 :mass 1.2})}
            [:div {:className "flex items-center justify-center flex-col pt-24 pb-20 min-h-full"}
             [:div {:className "w-full"}
-             [dashboard/dashboard {:heroMode heroMode :reduced-motion reduced-motion}]]]]]))
+             [dashboard/dashboard {:heroMode heroMode
+                                   :reduced-motion reduced-motion
+                                   :scroll-container-ref dashboardRef}]]]]]))

@@ -1,5 +1,6 @@
 (ns pages.dashboard
   (:require ["react" :as react]
+            ["react-dom" :as react-dom]
             ["framer-motion" :refer [motion AnimatePresence LayoutGroup]]
             ["lucide-react" :refer [X]]
             [components.info :as info]
@@ -13,6 +14,9 @@
             [components.projects :as projects]
             [components.todo :as todo]
             [utils.motion :as motion-utils]))
+
+(defn Portal [{:keys [children]}]
+  (react-dom/createPortal children js/document.body))
 
 (defn CardWrapper [{:keys [id className children on-click variants reduced-motion]}]
   #jsx [motion.div {:variants variants
@@ -83,7 +87,28 @@
    "emacs" emacs/emacs-expanded
    "todo" todo/todo-expanded})
 
-(defn dashboard [{:keys [heroMode reduced-motion]}]
+(defn ExpandedLayer [{:keys [selected-id on-close SelectedComponent reduced-motion]}]
+  (when selected-id
+    (Portal
+     {:children
+      (react/createElement
+       react/Fragment
+       nil
+       (ExpandedBackdrop {:on-close on-close :reduced-motion reduced-motion})
+       (react/createElement
+        AnimatePresence
+        nil
+        (react/createElement
+         ExpandedOverlay
+         #js {:key selected-id
+              :id selected-id
+              :on-close on-close
+              :reduced-motion reduced-motion
+              :component (when SelectedComponent
+                           (react/createElement SelectedComponent
+                                                #js {:reducedMotion reduced-motion}))})))})))
+
+(defn dashboard [{:keys [heroMode reduced-motion scroll-container-ref]}]
   (let [[selected-id set-selected-id] (react/useState nil)
         SelectedComponent (get expanded-components selected-id)
         container-v (motion-utils/container-variants reduced-motion)
@@ -92,10 +117,19 @@
     (react/useEffect
      (fn []
        (if selected-id
-         (set! (.-overflow (.-style js/document.body)) "hidden")
-         (set! (.-overflow (.-style js/document.body)) "unset"))
-       (fn [] (set! (.-overflow (.-style js/document.body)) "unset")))
-     #js [selected-id])
+         (do
+           (set! (.-overflow (.-style js/document.body)) "hidden")
+           (when-let [el (.-current scroll-container-ref)]
+             (set! (.-overflow (.-style el)) "hidden")))
+         (do
+           (set! (.-overflow (.-style js/document.body)) "unset")
+           (when-let [el (.-current scroll-container-ref)]
+             (set! (.-overflow (.-style el)) "unset"))))
+       (fn []
+         (set! (.-overflow (.-style js/document.body)) "unset")
+         (when-let [el (.-current scroll-container-ref)]
+           (set! (.-overflow (.-style el)) "unset"))))
+     #js [selected-id scroll-container-ref])
 
     #jsx [:div {:className "min-h-screen w-full p-4 md:p-8 lg:p-12 flex justify-center bg-bg font-sans"}
           #jsx [LayoutGroup
@@ -172,16 +206,7 @@
                                    :reduced-motion reduced-motion}
                       [contact/contact {:layoutId "contact-card"}]]]
 
-                (when selected-id
-                  #jsx [ExpandedBackdrop {:on-close #(set-selected-id nil)
-                                           :reduced-motion reduced-motion}])
-
-                #jsx [AnimatePresence
-                      (when selected-id
-                        #jsx [ExpandedOverlay {:key selected-id
-                                               :id selected-id
-                                               :on-close #(set-selected-id nil)
-                                               :reduced-motion reduced-motion
-                                               :component (when SelectedComponent
-                                                            (react/createElement SelectedComponent
-                                                                                 #js {:reducedMotion reduced-motion}))}])]]]))
+                [ExpandedLayer {:selected-id selected-id
+                                :on-close #(set-selected-id nil)
+                                :SelectedComponent SelectedComponent
+                                :reduced-motion reduced-motion}]]]))

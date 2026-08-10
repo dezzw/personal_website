@@ -1,6 +1,8 @@
 (ns components.experience
-  (:require ["lucide-react" :refer [Briefcase Calendar MapPin]]
-            [utils.site-data :as site-data]))
+  (:require ["framer-motion" :refer [motion]]
+            ["lucide-react" :refer [Briefcase Calendar MapPin]]
+            [utils.site-data :as site-data]
+            [utils.motion :as motion-utils]))
 
 (defn ExperienceItem [{:keys [role company date location desc color]}]
   #jsx [:div {:className "relative pl-8 md:pl-10 py-2 group"}
@@ -22,8 +24,10 @@
             location]]]
          [:p {:className "text-text-secondary leading-relaxed"} desc]]])
 
-(defn experience-expanded []
-  (let [{:keys [data loading]} (site-data/use-experience)]
+(defn experience-expanded [{:keys [reducedMotion]}]
+  (let [{:keys [data loading]} (site-data/use-experience)
+        container-v (motion-utils/list-container-variants reducedMotion)
+        item-v (motion-utils/list-item-variants reducedMotion)]
     #jsx [:div {:className "p-8 md:p-12"}
           [:div {:className "max-w-3xl mb-12"}
            [:h2 {:className "text-4xl md:text-5xl font-bold text-text-primary mb-4"} "Experience"]
@@ -31,21 +35,25 @@
             "My professional journey in software engineering and security research."]]
           (if loading
             #jsx [:p {:className "text-text-secondary"} "Loading..."]
-            #jsx [:div {:className "max-w-4xl"}
+            #jsx [motion.div {:className "max-w-4xl"
+                              :variants container-v
+                              :initial "hidden"
+                              :animate "visible"}
                   (map (fn [item]
-                         #jsx [ExperienceItem {:key (:role item)
-                                                :role (:role item)
+                         #jsx [motion.div {:key (:role item) :variants item-v}
+                               [ExperienceItem {:role (:role item)
                                                 :company (:company item)
                                                 :date (:date item)
                                                 :location (:location item)
                                                 :desc (:desc item)
-                                                :color (:color item)}])
+                                                :color (:color item)}]])
                        (or data []))])]))
 
-(defn experience []
+(defn experience [{:keys [layoutId]}]
   (let [{:keys [data loading]} (site-data/use-experience)
         preview (take 2 (or data []))]
-    #jsx [:div {:className "bento-card h-full flex flex-col relative group"}
+    #jsx [motion.div {:layoutId layoutId
+                      :className "bento-card h-full flex flex-col relative group"}
           [:div {:className "absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}
            #jsx [Briefcase {:size 20 :className "text-text-secondary"}]]
           [:h2 {:className "text-xl font-bold text-text-primary mb-6"} "Experience"]

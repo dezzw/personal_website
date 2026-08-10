@@ -1,5 +1,7 @@
 (ns components.skills
-  (:require ["lucide-react" :refer [Code2 Database Terminal Cpu Globe FileCode Brackets Atom Container GitBranch Coffee]]))
+  (:require ["framer-motion" :refer [motion]]
+            ["lucide-react" :refer [Code2 Database Terminal Cpu Globe FileCode Brackets Atom Container GitBranch Coffee]]
+            [utils.motion :as motion-utils]))
 
 (defn Neo4jIcon [{:keys [size className]}]
   #jsx [:svg {:xmlns "http://www.w3.org/2000/svg"
@@ -36,32 +38,42 @@
                       item])
               items)]])
 
-(defn skills-expanded []
-  #jsx [:div {:className "p-8 md:p-12"}
-        [:div {:className "max-w-3xl mb-12"}
-         [:h2 {:className "text-4xl md:text-5xl font-bold text-text-primary mb-4"} "Skills"]
-         [:p {:className "text-xl text-text-secondary leading-relaxed"}
-          "A comprehensive overview of my technical expertise and toolset."]]
-        [:div {:className "grid grid-cols-1 md:grid-cols-2 gap-6"}
-         [SkillCategory {:title "Languages"
-                         :icon #jsx [Code2 {:size 20 :className "text-white"}]
-                         :items ["Java" "Python" "JavaScript" "TypeScript" "Clojure" "ClojureScript" "Rust" "C/C++" "SQL"]
-                         :color "bg-blue-500"}]
-         [SkillCategory {:title "Frontend & Web"
-                         :icon #jsx [Globe {:size 20 :className "text-white"}]
-                         :items ["React" "Next.js" "Tailwind CSS" "HTML5" "CSS3" "Vite" "Squint CLJS"]
-                         :color "bg-green-500"}]
-         [SkillCategory {:title "Backend & Database"
-                         :icon #jsx [Database {:size 20 :className "text-white"}]
-                         :items ["PostgreSQL" "Neo4j" "Node.js" "Express" "FastAPI" "Django" "Redis"]
-                         :color "bg-purple-500"}]
-         [SkillCategory {:title "Tools & DevOps"
-                         :icon #jsx [Terminal {:size 20 :className "text-white"}]
-                         :items ["Git" "Docker" "Kubernetes" "Linux" "Nix" "Emacs" "Bash" "AWS"]
-                         :color "bg-orange-500"}]]])
+(defn skills-expanded [{:keys [reducedMotion]}]
+  (let [container-v (motion-utils/list-container-variants reducedMotion)
+        item-v (motion-utils/list-item-variants reducedMotion)
+        categories [{:title "Languages"
+                     :icon #jsx [Code2 {:size 20 :className "text-white"}]
+                     :items ["Java" "Python" "JavaScript" "TypeScript" "Clojure" "ClojureScript" "Rust" "C/C++" "SQL"]
+                     :color "bg-blue-500"}
+                    {:title "Frontend & Web"
+                     :icon #jsx [Globe {:size 20 :className "text-white"}]
+                     :items ["React" "Next.js" "Tailwind CSS" "HTML5" "CSS3" "Vite" "Squint CLJS"]
+                     :color "bg-green-500"}
+                    {:title "Backend & Database"
+                     :icon #jsx [Database {:size 20 :className "text-white"}]
+                     :items ["PostgreSQL" "Neo4j" "Node.js" "Express" "FastAPI" "Django" "Redis"]
+                     :color "bg-purple-500"}
+                    {:title "Tools & DevOps"
+                     :icon #jsx [Terminal {:size 20 :className "text-white"}]
+                     :items ["Git" "Docker" "Kubernetes" "Linux" "Nix" "Emacs" "Bash" "AWS"]
+                     :color "bg-orange-500"}]]
+    #jsx [:div {:className "p-8 md:p-12"}
+          [:div {:className "max-w-3xl mb-12"}
+           [:h2 {:className "text-4xl md:text-5xl font-bold text-text-primary mb-4"} "Skills"]
+           [:p {:className "text-xl text-text-secondary leading-relaxed"}
+            "A comprehensive overview of my technical expertise and toolset."]]
+          #jsx [motion.div {:className "grid grid-cols-1 md:grid-cols-2 gap-6"
+                            :variants container-v
+                            :initial "hidden"
+                            :animate "visible"}
+                (map (fn [{:keys [title icon items color]}]
+                       #jsx [motion.div {:key title :variants item-v}
+                             [SkillCategory {:title title :icon icon :items items :color color}]])
+                     categories)]]))
 
-(defn skills []
-  #jsx [:div {:className "bento-card h-full flex flex-col relative group"}
+(defn skills [{:keys [layoutId]}]
+  #jsx [motion.div {:layoutId layoutId
+                    :className "bento-card h-full flex flex-col relative group"}
         [:div {:className "absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}
          #jsx [Cpu {:size 20 :className "text-text-secondary"}]]
         [:h2 {:className "text-xl font-bold text-text-primary mb-6"} "Skills"]

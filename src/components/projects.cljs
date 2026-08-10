@@ -1,6 +1,8 @@
 (ns components.projects
-  (:require ["lucide-react" :refer [Github ExternalLink FolderGit2 CheckCircle2 Clock AlertCircle]]
-            [utils.site-data :as site-data]))
+  (:require ["framer-motion" :refer [motion]]
+            ["lucide-react" :refer [Github ExternalLink FolderGit2 CheckCircle2 Clock AlertCircle]]
+            [utils.site-data :as site-data]
+            [utils.motion :as motion-utils]))
 
 (defn status-icon [status]
   (case status
@@ -60,8 +62,10 @@
       (.includes color "blue") "bg-blue-500"
       (.includes color "red") "bg-red-500"
       :else "bg-gray-400")))
-(defn projects-expanded []
-  (let [{:keys [data loading]} (site-data/use-projects)]
+(defn projects-expanded [{:keys [reducedMotion]}]
+  (let [{:keys [data loading]} (site-data/use-projects)
+        container-v (motion-utils/list-container-variants reducedMotion)
+        item-v (motion-utils/list-item-variants reducedMotion)]
     #jsx [:div {:className "p-8 md:p-12"}
           [:div {:className "max-w-3xl mb-12"}
            [:h2 {:className "text-4xl md:text-5xl font-bold text-text-primary mb-4"} "Projects"]
@@ -69,21 +73,25 @@
             "A collection of my work in software development, security research, and system configuration."]]
           (if loading
             #jsx [:p {:className "text-text-secondary"} "Loading..."]
-            #jsx [:div {:className "grid grid-cols-1 md:grid-cols-2 gap-6"}
+            #jsx [motion.div {:className "grid grid-cols-1 md:grid-cols-2 gap-6"
+                              :variants container-v
+                              :initial "hidden"
+                              :animate "visible"}
                   (map (fn [project]
-                         #jsx [ProjectCard {:key (:title project)
-                                            :title (:title project)
-                                            :desc (:desc project)
-                                            :tags (:tags project)
-                                            :color (:color project)
-                                            :status (:status project)
-                                            :github (:github project)
-                                            :link (:link project)}])
+                         #jsx [motion.div {:key (:title project) :variants item-v}
+                               #jsx [ProjectCard {:title (:title project)
+                                                  :desc (:desc project)
+                                                  :tags (:tags project)
+                                                  :color (:color project)
+                                                  :status (:status project)
+                                                  :github (:github project)
+                                                  :link (:link project)}]])
                        (or data []))])]))
 
-(defn projects []
+(defn projects [{:keys [layoutId]}]
   (let [{:keys [data loading]} (site-data/use-projects)]
-    #jsx [:div {:className "bento-card h-full flex flex-col overflow-hidden relative group"}
+    #jsx [motion.div {:layoutId layoutId
+                      :className "bento-card h-full flex flex-col overflow-hidden relative group"}
           [:div {:className "absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}
            #jsx [ExternalLink {:size 20 :className "text-text-secondary"}]]
           [:div {:className "flex items-center justify-between mb-6"}

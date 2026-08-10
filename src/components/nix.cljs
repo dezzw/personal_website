@@ -1,5 +1,6 @@
 (ns components.nix
-  (:require ["lucide-react" :refer [Settings]]))
+  (:require ["framer-motion" :refer [motion]]
+            ["lucide-react" :refer [Settings]]))
 
 (def nix-img (js* "new URL('../../assets/nix.svg', import.meta.url).href"))
 
@@ -29,8 +30,9 @@
         [:div {:className "bg-gray-900 text-gray-100 p-6 rounded-2xl text-left w-full max-w-2xl overflow-x-auto font-mono text-sm"}
          [:pre config-snippet]]])
 
-(defn nix []
-  #jsx [:div {:className "bento-card h-full flex items-center justify-center bg-[#f0f8ff] hover:bg-[#e6f2ff] transition-colors group relative"}
+(defn nix [{:keys [layoutId]}]
+  #jsx [motion.div {:layoutId layoutId
+                    :className "bento-card h-full flex items-center justify-center bg-[#f0f8ff] hover:bg-[#e6f2ff] transition-colors group relative"}
         [:div {:className "absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}
          #jsx [Settings {:size 16 :className "text-blue-400"}]]
         [:img {:src nix-img :className "w-16 h-16 md:w-20 md:h-20 opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"}]])

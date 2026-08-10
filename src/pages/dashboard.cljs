@@ -1,6 +1,6 @@
 (ns pages.dashboard
   (:require ["react" :as react]
-            ["framer-motion" :refer [motion AnimatePresence]]
+            ["framer-motion" :refer [motion AnimatePresence LayoutGroup]]
             ["lucide-react" :refer [X]]
             [components.info :as info]
             [components.icon :as icon]
@@ -11,9 +11,10 @@
             [components.skills :as skills]
             [components.experience :as experience]
             [components.projects :as projects]
-            [components.todo :as todo]))
+            [components.todo :as todo]
+            [utils.motion :as motion-utils]))
 
-(defn CardWrapper [{:keys [id className children on-click variants]}]
+(defn CardWrapper [{:keys [id className children on-click variants reduced-motion]}]
   #jsx [motion.div {:variants variants
                     :role "button"
                     :tabIndex 0
@@ -23,46 +24,53 @@
                                  (when (contains? #{"Enter" " "} (.-key e))
                                    (.preventDefault e)
                                    (on-click id)))
-                    :whileHover {:scale 1.02}
-                    :transition {:duration 0.2}}
+                    :whileHover (when-not reduced-motion {:scale 1.02})
+                    :transition (motion-utils/fade-transition reduced-motion 0.2)}
         children])
 
-(defn ExpandedBackdrop [{:keys [on-close]}]
+(defn ExpandedBackdrop [{:keys [on-close reduced-motion]}]
   #jsx [motion.div {:className "fixed inset-0 z-[100] bg-black/40 backdrop-blur-md"
                     :role "presentation"
                     :initial {:opacity 0}
                     :animate {:opacity 1}
-                    :transition {:duration 0.2}
+                    :exit {:opacity 0}
+                    :transition (motion-utils/fade-transition reduced-motion 0.2)
                     :onClick on-close}])
 
-(defn ExpandedOverlay [{:keys [id on-close component]}]
-  (react/useEffect
-   (fn []
-     (let [handle-key (fn [e]
-                        (when (= (.-key e) "Escape")
-                          (on-close)))]
-       (.addEventListener js/document "keydown" handle-key)
-       (fn [] (.removeEventListener js/document "keydown" handle-key))))
-   #js [on-close])
-  #jsx [motion.div {:className "fixed inset-0 z-[101] flex items-center justify-center p-4 md:p-8 pointer-events-none"
-                    :initial {:opacity 0}
-                    :animate {:opacity 1}
-                    :exit {:opacity 0}
-                    :transition {:duration 0.2}}
-        #jsx [motion.div {:role "dialog"
-                          :aria-modal "true"
-                          :className "relative w-full max-w-5xl h-[85vh] bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col pointer-events-auto"
-                          :initial {:opacity 0 :scale 0.96}
-                          :animate {:opacity 1 :scale 1}
-                          :exit {:opacity 0 :scale 0.96}
-                          :transition {:type "spring" :stiffness 400 :damping 32}}
-              [:button {:type "button"
-                        :aria-label "Close"
-                        :className "absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
-                        :onClick on-close}
-               #jsx [X {:size 24 :className "text-gray-600"}]]
-              [:div {:className "h-full overflow-y-auto"}
-               component]]])
+(defn ExpandedOverlay [{:keys [id on-close component reduced-motion]}]
+  (let [layout-id (motion-utils/card-layout-id id)
+        content-delay (motion-utils/content-fade-delay reduced-motion)]
+    (react/useEffect
+     (fn []
+       (let [handle-key (fn [e]
+                          (when (= (.-key e) "Escape")
+                            (on-close)))]
+         (.addEventListener js/document "keydown" handle-key)
+         (fn [] (.removeEventListener js/document "keydown" handle-key))))
+     #js [on-close])
+    #jsx [motion.div {:className "fixed inset-0 z-[101] flex items-center justify-center p-4 md:p-8 pointer-events-none"
+                      :initial {:opacity 0}
+                      :animate {:opacity 1}
+                      :exit {:opacity 0}
+                      :transition (motion-utils/fade-transition reduced-motion 0.2)}
+          #jsx [motion.div {:role "dialog"
+                            :aria-modal "true"
+                            :layoutId layout-id
+                            :layout (motion-utils/layout-transition reduced-motion)
+                            :className "relative w-full max-w-5xl h-[85vh] bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col pointer-events-auto"
+                            :style {:originX 0.5 :originY 0.5}}
+                [:button {:type "button"
+                          :aria-label "Close"
+                          :className "absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
+                          :onClick on-close}
+                 #jsx [X {:size 24 :className "text-gray-600"}]]
+                #jsx [motion.div {:className "h-full overflow-y-auto"
+                                  :initial {:opacity (if reduced-motion 1 0)}
+                                  :animate {:opacity 1}
+                                  :transition (if reduced-motion
+                                                {:duration 0}
+                                                {:delay content-delay :duration 0.2})}
+                      component]]]))
 
 (def expanded-components
   {"info" info/info-expanded
@@ -75,20 +83,12 @@
    "emacs" emacs/emacs-expanded
    "todo" todo/todo-expanded})
 
-(def container-variants
-  {:hidden {:opacity 0}
-   :visible {:opacity 1
-             :transition {:staggerChildren 0.1
-                          :delayChildren 0.2}}})
-
-(def item-variants
-  {:hidden {:opacity 0 :y 20}
-   :visible {:opacity 1 :y 0}})
-
-(defn dashboard [{:keys [heroMode]}]
+(defn dashboard [{:keys [heroMode reduced-motion]}]
   (let [[selected-id set-selected-id] (react/useState nil)
-        SelectedComponent (get expanded-components selected-id)]
-    
+        SelectedComponent (get expanded-components selected-id)
+        container-v (motion-utils/container-variants reduced-motion)
+        item-v (motion-utils/item-variants reduced-motion)]
+
     (react/useEffect
      (fn []
        (if selected-id
@@ -98,77 +98,90 @@
      #js [selected-id])
 
     #jsx [:div {:className "min-h-screen w-full p-4 md:p-8 lg:p-12 flex justify-center bg-bg font-sans"}
-          [motion.div {:className "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-[1400px]"
-                       :variants container-variants
-                       :initial "hidden"
-                       :animate (if heroMode "hidden" "visible")}
-           
-           (if heroMode
-             #jsx [:div {:className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2"}]
-             #jsx [CardWrapper {:id "info" 
-                                :className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2 h-full"
-                                :on-click set-selected-id}
-                   [info/info {:layoutId "info-card"}]])
-           
-           #jsx [motion.div {:variants item-variants
-                             :className "col-span-1 row-span-1"}
-                 [icon/icon]]
+          #jsx [LayoutGroup
+                #jsx [motion.div {:className "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-[1400px]"
+                                  :variants container-v
+                                  :initial "hidden"
+                                  :animate (if heroMode "hidden" "visible")}
 
-           [CardWrapper {:id "todo" 
-                         :className "col-span-1 row-span-1"
-                         :variants item-variants
-                         :on-click set-selected-id}
-            [todo/todo]]
+                     (if heroMode
+                       #jsx [:div {:className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2"}]
+                       #jsx [CardWrapper {:id "info"
+                                          :className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2 h-full"
+                                          :on-click set-selected-id
+                                          :reduced-motion reduced-motion}
+                             [info/info {:layoutId "info-card"}]])
 
-           [CardWrapper {:id "projects" 
-                         :className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2"
-                         :variants item-variants
-                         :on-click set-selected-id}
-            [projects/projects]]
+                     #jsx [motion.div {:variants item-v
+                                       :className "col-span-1 row-span-1"}
+                           [icon/icon]]
 
-           [CardWrapper {:id "nix" 
-                         :className "col-span-1 row-span-1"
-                         :variants item-variants
-                         :on-click set-selected-id}
-            [nix/nix]]
+                     [CardWrapper {:id "todo"
+                                   :className "col-span-1 row-span-1"
+                                   :variants item-v
+                                   :on-click set-selected-id
+                                   :reduced-motion reduced-motion}
+                      [todo/todo {:layoutId "todo-card"}]]
 
-           [CardWrapper {:id "emacs" 
-                         :className "col-span-1 row-span-1"
-                         :variants item-variants
-                         :on-click set-selected-id}
-            [emacs/emacs]]
+                     [CardWrapper {:id "projects"
+                                   :className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2"
+                                   :variants item-v
+                                   :on-click set-selected-id
+                                   :reduced-motion reduced-motion}
+                      [projects/projects {:layoutId "projects-card"}]]
 
-           [CardWrapper {:id "skills" 
-                         :className "col-span-1 row-span-2"
-                         :variants item-variants
-                         :on-click set-selected-id}
-            [skills/skills]]
+                     [CardWrapper {:id "nix"
+                                   :className "col-span-1 row-span-1"
+                                   :variants item-v
+                                   :on-click set-selected-id
+                                   :reduced-motion reduced-motion}
+                      [nix/nix {:layoutId "nix-card"}]]
 
-           [CardWrapper {:id "experience" 
-                         :className "col-span-1 row-span-2"
-                         :variants item-variants
-                         :on-click set-selected-id}
-            [experience/experience]]
+                     [CardWrapper {:id "emacs"
+                                   :className "col-span-1 row-span-1"
+                                   :variants item-v
+                                   :on-click set-selected-id
+                                   :reduced-motion reduced-motion}
+                      [emacs/emacs {:layoutId "emacs-card"}]]
 
-           [CardWrapper {:id "edu" 
-                         :className "col-span-1 md:col-span-2 row-span-1"
-                         :variants item-variants
-                         :on-click set-selected-id}
-            [edu/edu]]
+                     [CardWrapper {:id "skills"
+                                   :className "col-span-1 row-span-2"
+                                   :variants item-v
+                                   :on-click set-selected-id
+                                   :reduced-motion reduced-motion}
+                      [skills/skills {:layoutId "skills-card"}]]
 
-           [CardWrapper {:id "contact" 
-                         :className "col-span-1 md:col-span-2 row-span-1"
-                         :variants item-variants
-                         :on-click set-selected-id}
-            [contact/contact]]]
+                     [CardWrapper {:id "experience"
+                                   :className "col-span-1 row-span-2"
+                                   :variants item-v
+                                   :on-click set-selected-id
+                                   :reduced-motion reduced-motion}
+                      [experience/experience {:layoutId "experience-card"}]]
 
-          (when selected-id
-            #jsx [ExpandedBackdrop {:on-close #(set-selected-id nil)}])
+                     [CardWrapper {:id "edu"
+                                   :className "col-span-1 md:col-span-2 row-span-1"
+                                   :variants item-v
+                                   :on-click set-selected-id
+                                   :reduced-motion reduced-motion}
+                      [edu/edu {:layoutId "edu-card"}]]
 
-          [AnimatePresence
-           (when selected-id
-             #jsx [ExpandedOverlay {:key selected-id
-                                    :id selected-id
-                                    :on-close #(set-selected-id nil)
-                                    :component (when SelectedComponent
-                                                 (react/createElement SelectedComponent))}])]]))
+                     [CardWrapper {:id "contact"
+                                   :className "col-span-1 md:col-span-2 row-span-1"
+                                   :variants item-v
+                                   :on-click set-selected-id
+                                   :reduced-motion reduced-motion}
+                      [contact/contact {:layoutId "contact-card"}]]]
+
+                (when selected-id
+                  #jsx [ExpandedBackdrop {:on-close #(set-selected-id nil)
+                                           :reduced-motion reduced-motion}])
+
+                #jsx [AnimatePresence
+                      (when selected-id
+                        #jsx [ExpandedOverlay {:key selected-id
+                                               :id selected-id
+                                               :on-close #(set-selected-id nil)
+                                               :reduced-motion reduced-motion
+                                               :component (when SelectedComponent
+                                                            (react/createElement SelectedComponent
+                                                                                 #js {:reducedMotion reduced-motion}))}])]]]))

@@ -20,7 +20,7 @@ This is a high-performance personal portfolio website built with a modern, funct
 The design is inspired by Apple's clean, grid-based aesthetics, combined with a cinematic "Hero Camera" perspective.
 
 ** 1. Hero Camera Perspective
-- **Initial View**: A full-screen hero section with a fixed background image.
+- **Initial View**: A full-screen hero section with a fixed background image and subtle Ken Burns zoom.
 - **Parallax Effect**: The background stays fixed while the content slides over it.
 - **Cinematic Transition**: As the user scrolls, the dashboard content slides up from the bottom, smoothly covering the hero section like a shutter.
 - **Glassmorphism**: The dashboard container uses a backdrop blur (`backdrop-blur-xl`) to create a frosted glass effect over the hero image.
@@ -33,8 +33,9 @@ The design is inspired by Apple's clean, grid-based aesthetics, combined with a 
   - Minimalist typography (System UI fonts).
   - Consistent spacing and padding.
 - **Interactivity**:
-  - **Hover Effects**: Cards scale slightly (`scale-1.02`) on hover.
-  - **Expansion**: Clicking a card triggers a seamless layout animation (using `framer-motion`'s `layoutId`), expanding it into a full-screen modal with detailed content.
+  - **Hover Effects**: Cards scale slightly (`scale 1.02`) on hover via Framer Motion.
+  - **Expansion**: Clicking any expandable Bento card triggers a shared-element layout animation (`layoutId`), morphing the card into a full-screen modal with detailed content.
+  - **Accessibility**: All Framer Motion animations respect `prefers-reduced-motion`, disabling stagger, hover scale, and spring transitions when enabled.
 
 * Project Structure
 #+BEGIN_SRC text
@@ -48,6 +49,7 @@ src/
 ├── main.cljs           # Router entry
 ├── pages/              # Dashboard, blog pages
 ├── components/         # Bento cards
+├── utils/              # Shared helpers (motion variants, site data)
 └── assets/             # Images
 
 build.clj               # Babashka content builder

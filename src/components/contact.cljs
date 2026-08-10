@@ -1,5 +1,7 @@
 (ns components.contact
-  (:require ["lucide-react" :refer [Mail Github Linkedin FileText Send]]))
+  (:require ["framer-motion" :refer [motion]]
+            ["lucide-react" :refer [Mail Github Linkedin FileText Send]]
+            [utils.motion :as motion-utils]))
 
 (defn ContactCard [{:keys [icon title value link color]}]
   #jsx [:a {:href link 
@@ -12,40 +14,46 @@
          [:h3 {:className "font-bold text-text-primary"} title]
          [:p {:className "text-text-secondary text-sm break-all"} value]]]) ;; Added break-all for long emails
 
-(defn contact-expanded []
-  #jsx [:div {:className "p-8 md:p-12"}
-        [:div {:className "max-w-3xl mb-12"}
-         [:h2 {:className "text-4xl md:text-5xl font-bold text-text-primary mb-4"} "Get in Touch"]
-         [:p {:className "text-xl text-text-secondary leading-relaxed"}
-          "I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions."]]
-        
-        [:div {:className "grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto"}
-         [ContactCard {:icon #jsx [Mail {:size 24}]
-                       :title "Email"
-                       :value "dw@dezzw.com"
-                       :link "mailto:dw@dezzw.com"
-                       :color "bg-gray-800"}]
-         
-         [ContactCard {:icon #jsx [Github {:size 24}]
-                       :title "GitHub"
-                       :value "@dezzw"
-                       :link "https://github.com/dezzw"
-                       :color "bg-gray-700"}]
-         
-         [ContactCard {:icon #jsx [Linkedin {:size 24}]
-                       :title "LinkedIn"
-                       :value "Desmond Wang"
-                       :link "https://linkedin.com/in/desmond-wang"
-                       :color "bg-[#0077b5]"}]
-         
-         [ContactCard {:icon #jsx [FileText {:size 24}]
-                       :title "Resume"
-                       :value "View PDF"
-                       :link "/resume.pdf"
-                       :color "bg-accent-blue"}]]])
+(defn contact-expanded [{:keys [reducedMotion]}]
+  (let [container-v (motion-utils/list-container-variants reducedMotion)
+        item-v (motion-utils/list-item-variants reducedMotion)
+        cards [{:icon #jsx [Mail {:size 24}]
+                :title "Email"
+                :value "dw@dezzw.com"
+                :link "mailto:dw@dezzw.com"
+                :color "bg-gray-800"}
+               {:icon #jsx [Github {:size 24}]
+                :title "GitHub"
+                :value "@dezzw"
+                :link "https://github.com/dezzw"
+                :color "bg-gray-700"}
+               {:icon #jsx [Linkedin {:size 24}]
+                :title "LinkedIn"
+                :value "Desmond Wang"
+                :link "https://linkedin.com/in/desmond-wang"
+                :color "bg-[#0077b5]"}
+               {:icon #jsx [FileText {:size 24}]
+                :title "Resume"
+                :value "View PDF"
+                :link "/resume.pdf"
+                :color "bg-accent-blue"}]]
+    #jsx [:div {:className "p-8 md:p-12"}
+          [:div {:className "max-w-3xl mb-12"}
+           [:h2 {:className "text-4xl md:text-5xl font-bold text-text-primary mb-4"} "Get in Touch"]
+           [:p {:className "text-xl text-text-secondary leading-relaxed"}
+            "I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions."]]
+          #jsx [motion.div {:className "grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto"
+                            :variants container-v
+                            :initial "hidden"
+                            :animate "visible"}
+                (map (fn [card]
+                       #jsx [motion.div {:key (:title card) :variants item-v}
+                             [ContactCard card]])
+                     cards)]]))
 
-(defn contact []
-  #jsx [:div {:className "bento-card h-full flex flex-col justify-center items-center p-6 relative group"}
+(defn contact [{:keys [layoutId]}]
+  #jsx [motion.div {:layoutId layoutId
+                    :className "bento-card h-full flex flex-col justify-center items-center p-6 relative group"}
         [:div {:className "absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}
          #jsx [Send {:size 20 :className "text-text-secondary"}]]
         

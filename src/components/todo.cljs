@@ -1,5 +1,6 @@
 (ns components.todo
-  (:require ["lucide-react" :refer [ListTodo CheckCircle2]]))
+  (:require ["framer-motion" :refer [motion]]
+            ["lucide-react" :refer [ListTodo CheckCircle2]]))
 
 (defn todo-expanded []
   #jsx [:div {:className "p-8 md:p-12"}
@@ -30,8 +31,9 @@
            [:div "NixOS System Configuration"]
            [:div "Basic 3D Modeling"]]]]])
 
-(defn todo []
-  #jsx [:div {:className "bento-card h-full flex flex-col justify-between p-5 bg-black text-white relative group"}
+(defn todo [{:keys [layoutId]}]
+  #jsx [motion.div {:layoutId layoutId
+                    :className "bento-card h-full flex flex-col justify-between p-5 bg-black text-white relative group"}
         [:div {:className "absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}
          #jsx [ListTodo {:size 16 :className "text-gray-400"}]]
         

@@ -1,5 +1,6 @@
 (ns components.edu
-  (:require ["lucide-react" :refer [GraduationCap BookOpen Award]]))
+  (:require ["framer-motion" :refer [motion]]
+            ["lucide-react" :refer [GraduationCap BookOpen Award]]))
 
 (def uoft (js* "new URL('../../assets/uoft.png', import.meta.url).href"))
 
@@ -36,8 +37,9 @@
            [:li "• Research Assistantship in Formal Methods"]
            [:li "• Hackathon Winner (UofT Hacks 2023)"]]]]])
 
-(defn edu []
-  #jsx [:div {:className "bento-card h-full flex flex-col md:flex-row items-center p-6 gap-6 relative group"}
+(defn edu [{:keys [layoutId]}]
+  #jsx [motion.div {:layoutId layoutId
+                    :className "bento-card h-full flex flex-col md:flex-row items-center p-6 gap-6 relative group"}
         [:div {:className "absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}
          #jsx [GraduationCap {:size 20 :className "text-text-secondary"}]]
         

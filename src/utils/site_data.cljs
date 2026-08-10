@@ -2,30 +2,34 @@
   (:require ["react" :as react]))
 
 (defn use-json [url]
-  (let [[data set-data] (react/useState nil)
-        [loading set-loading] (react/useState true)
-        [error set-error] (react/useState nil)]
+  (let [[state set-state] (react/useState #js {:data nil :loading true :error nil})]
     (react/useEffect
      (fn []
-       (-> (js/fetch url)
-           (.then #(.json %))
-           (.then (fn [json]
-                    (set-data (js->clj json :keywordize-keys true))
-                    (set-loading false)))
-           (.catch (fn [err]
-                     (set-error (.-message err))
-                     (set-loading false)))))
+       (let [mounted (atom true)]
+         (-> (js/fetch url)
+             (.then #(.json %))
+             (.then (fn [json]
+                      (when @mounted
+                        (set-state #js {:data json
+                                        :loading false
+                                        :error nil}))))
+             (.catch (fn [err]
+                       (when @mounted
+                         (set-state #js {:data nil
+                                         :loading false
+                                         :error (.-message err)})))))
+         (fn [] (reset! mounted false))))
      #js [url])
-    {:data data :loading loading :error error}))
+    state))
 
 (defn use-projects []
-  (:data (use-json "/data/projects.json")))
+  (use-json "/data/projects.json"))
 
 (defn use-experience []
-  (:data (use-json "/data/experience.json")))
+  (use-json "/data/experience.json"))
 
 (defn use-blog-manifest []
-  (:data (use-json "/blog/manifest.json")))
+  (use-json "/blog/manifest.json"))
 
 (defn use-blog-post [slug]
   (let [[data set-data] (react/useState nil)
@@ -37,7 +41,7 @@
          (-> (js/fetch (str "/blog/" slug ".json"))
              (.then #(.json %))
              (.then (fn [json]
-                      (set-data (js->clj json :keywordize-keys true))
+                      (set-data json)
                       (set-loading false)))
              (.catch (fn [err]
                        (set-error (.-message err))

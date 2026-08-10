@@ -53,13 +53,13 @@
               tags)]])
 
 (defn dot-color [color]
-  (cond
-    (str/includes? color "green") "bg-green-500"
-    (str/includes? color "purple") "bg-purple-500"
-    (str/includes? color "blue") "bg-blue-500"
-    (str/includes? color "red") "bg-red-500"
-    :else "bg-gray-400"))
-
+  (when color
+    (cond
+      (.includes color "green") "bg-green-500"
+      (.includes color "purple") "bg-purple-500"
+      (.includes color "blue") "bg-blue-500"
+      (.includes color "red") "bg-red-500"
+      :else "bg-gray-400")))
 (defn projects-expanded []
   (let [{:keys [data loading]} (site-data/use-projects)]
     #jsx [:div {:className "p-8 md:p-12"}

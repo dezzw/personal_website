@@ -24,6 +24,7 @@
                     :tabIndex 0
                     :data-card-id id
                     :className (str "cursor-pointer " className)
+                    :style #js {:outline "none" :outlineOffset "0"}
                     :onPointerDown (fn [e]
                                      (when (zero? (.-button e))
                                        (on-save-viewport id)
@@ -128,8 +129,14 @@
 
 (defn- schedule-scroll-restore! [scroll-container-ref saved-scroll-top saved-card-id saved-card-top]
   (let [restore! #(restore-card-viewport! scroll-container-ref saved-scroll-top saved-card-id saved-card-top)]
+    (restore!)
     (doseq [ms [50 150 350 600 900]]
       (js/setTimeout restore! ms))))
+
+(defn- blur-active-element! []
+  (when-let [active (.-activeElement js/document)]
+    (when (.-blur active)
+      (.blur active))))
 
 (defn dashboard [{:keys [heroMode reduced-motion scroll-container-ref]}]
   (let [[selected-id set-selected-id] (react/useState nil)
@@ -145,7 +152,10 @@
                                 (set! (.-current saved-card-id) id)
                                 (set! (.-current saved-card-top) (card-viewport-top el id))))
         open-card! (fn [id]
-                     (set-selected-id id))]
+                     (set-selected-id id))
+        close-card! (fn []
+                      (blur-active-element!)
+                      (set-selected-id nil))]
 
     (react/useEffect
      (fn []
@@ -156,6 +166,7 @@
            (set! (.-scrollTop el) (.-current saved-scroll-top))))
        (fn []
          (when (.-current saved-card-id)
+           (restore-card-viewport! scroll-container-ref saved-scroll-top saved-card-id saved-card-top)
            (set! (.-overflow (.-style js/document.body)) "")
            (when-let [el (.-current scroll-container-ref)]
              (.removeProperty (.-style el) "overflow")
@@ -247,6 +258,6 @@
                       [contact/contact {:layoutId "contact-card"}]]]
 
                 [ExpandedLayer {:selected-id selected-id
-                                :on-close #(set-selected-id nil)
+                                :on-close close-card!
                                 :SelectedComponent SelectedComponent
                                 :reduced-motion reduced-motion}]]]))

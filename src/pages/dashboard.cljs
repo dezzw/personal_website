@@ -18,15 +18,21 @@
 (defn Portal [{:keys [children]}]
   (react-dom/createPortal children js/document.body))
 
-(defn CardWrapper [{:keys [id className children on-click variants reduced-motion]}]
+(defn CardWrapper [{:keys [id className children on-click on-save-viewport variants reduced-motion]}]
   #jsx [motion.div {:variants variants
                     :role "button"
                     :tabIndex 0
+                    :data-card-id id
                     :className (str "cursor-pointer " className)
-                    :onClick #(on-click id)
+                    :style #js {:outline "none" :outlineOffset "0"}
+                    :onPointerDown (fn [e]
+                                     (when (zero? (.-button e))
+                                       (on-save-viewport id)
+                                       (on-click id)))
                     :onKeyDown (fn [e]
                                  (when (contains? #{"Enter" " "} (.-key e))
                                    (.preventDefault e)
+                                   (on-save-viewport id)
                                    (on-click id)))
                     :whileHover (when-not reduced-motion {:scale 1.02})
                     :transition (motion-utils/fade-transition reduced-motion 0.2)}
@@ -108,27 +114,63 @@
                            (react/createElement SelectedComponent
                                                 #js {:reducedMotion reduced-motion}))})))})))
 
+(defn- card-viewport-top [scroll-el card-id]
+  (when-let [card-el (.querySelector scroll-el (str "[data-card-id=\"" card-id "\"]"))]
+    (.-top (.getBoundingClientRect card-el))))
+
+(defn- restore-card-viewport! [scroll-container-ref saved-scroll-top saved-card-id saved-card-top]
+  (when-let [scroll-el (.-current scroll-container-ref)]
+    (if (and (.-current saved-card-id) (some? (.-current saved-card-top)))
+      (when-let [current-top (card-viewport-top scroll-el (.-current saved-card-id))]
+        (let [delta (- current-top (.-current saved-card-top))]
+          (when (not= delta 0)
+            (set! (.-scrollTop scroll-el) (+ (.-scrollTop scroll-el) delta)))))
+      (set! (.-scrollTop scroll-el) (.-current saved-scroll-top)))))
+
+(defn- schedule-scroll-restore! [scroll-container-ref saved-scroll-top saved-card-id saved-card-top]
+  (let [restore! #(restore-card-viewport! scroll-container-ref saved-scroll-top saved-card-id saved-card-top)]
+    (restore!)
+    (doseq [ms [50 150 350 600 900]]
+      (js/setTimeout restore! ms))))
+
+(defn- blur-active-element! []
+  (when-let [active (.-activeElement js/document)]
+    (when (.-blur active)
+      (.blur active))))
+
 (defn dashboard [{:keys [heroMode reduced-motion scroll-container-ref]}]
   (let [[selected-id set-selected-id] (react/useState nil)
+        saved-scroll-top (react/useRef 0)
+        saved-card-id (react/useRef nil)
+        saved-card-top (react/useRef nil)
         SelectedComponent (get expanded-components selected-id)
         container-v (motion-utils/container-variants reduced-motion)
-        item-v (motion-utils/item-variants reduced-motion)]
+        item-v (motion-utils/item-variants reduced-motion)
+        save-card-viewport! (fn [id]
+                              (when-let [el (.-current scroll-container-ref)]
+                                (set! (.-current saved-scroll-top) (.-scrollTop el))
+                                (set! (.-current saved-card-id) id)
+                                (set! (.-current saved-card-top) (card-viewport-top el id))))
+        open-card! (fn [id]
+                     (set-selected-id id))
+        close-card! (fn []
+                      (blur-active-element!)
+                      (set-selected-id nil))]
 
     (react/useEffect
      (fn []
-       (if selected-id
-         (do
-           (set! (.-overflow (.-style js/document.body)) "hidden")
-           (when-let [el (.-current scroll-container-ref)]
-             (set! (.-overflow (.-style el)) "hidden")))
-         (do
-           (set! (.-overflow (.-style js/document.body)) "unset")
-           (when-let [el (.-current scroll-container-ref)]
-             (set! (.-overflow (.-style el)) "unset"))))
-       (fn []
-         (set! (.-overflow (.-style js/document.body)) "unset")
+       (when selected-id
+         (set! (.-overflow (.-style js/document.body)) "hidden")
          (when-let [el (.-current scroll-container-ref)]
-           (set! (.-overflow (.-style el)) "unset"))))
+           (set! (.-overflow (.-style el)) "hidden")
+           (set! (.-scrollTop el) (.-current saved-scroll-top))))
+       (fn []
+         (when (.-current saved-card-id)
+           (restore-card-viewport! scroll-container-ref saved-scroll-top saved-card-id saved-card-top)
+           (set! (.-overflow (.-style js/document.body)) "")
+           (when-let [el (.-current scroll-container-ref)]
+             (.removeProperty (.-style el) "overflow")
+             (schedule-scroll-restore! scroll-container-ref saved-scroll-top saved-card-id saved-card-top)))))
      #js [selected-id scroll-container-ref])
 
     #jsx [:div {:className "min-h-screen w-full p-4 md:p-8 lg:p-12 flex justify-center bg-bg font-sans"}
@@ -142,7 +184,8 @@
                        #jsx [:div {:className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2"}]
                        #jsx [CardWrapper {:id "info"
                                           :className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2 h-full"
-                                          :on-click set-selected-id
+                                          :on-click open-card!
+                                          :on-save-viewport save-card-viewport!
                                           :reduced-motion reduced-motion}
                              [info/info {:layoutId "info-card"}]])
 
@@ -153,60 +196,68 @@
                      [CardWrapper {:id "todo"
                                    :className "col-span-1 row-span-1"
                                    :variants item-v
-                                   :on-click set-selected-id
+                                   :on-click open-card!
+                                   :on-save-viewport save-card-viewport!
                                    :reduced-motion reduced-motion}
                       [todo/todo {:layoutId "todo-card"}]]
 
                      [CardWrapper {:id "projects"
                                    :className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2"
                                    :variants item-v
-                                   :on-click set-selected-id
+                                   :on-click open-card!
+                                   :on-save-viewport save-card-viewport!
                                    :reduced-motion reduced-motion}
                       [projects/projects {:layoutId "projects-card"}]]
 
                      [CardWrapper {:id "nix"
                                    :className "col-span-1 row-span-1"
                                    :variants item-v
-                                   :on-click set-selected-id
+                                   :on-click open-card!
+                                   :on-save-viewport save-card-viewport!
                                    :reduced-motion reduced-motion}
                       [nix/nix {:layoutId "nix-card"}]]
 
                      [CardWrapper {:id "emacs"
                                    :className "col-span-1 row-span-1"
                                    :variants item-v
-                                   :on-click set-selected-id
+                                   :on-click open-card!
+                                   :on-save-viewport save-card-viewport!
                                    :reduced-motion reduced-motion}
                       [emacs/emacs {:layoutId "emacs-card"}]]
 
                      [CardWrapper {:id "skills"
                                    :className "col-span-1 row-span-2"
                                    :variants item-v
-                                   :on-click set-selected-id
+                                   :on-click open-card!
+                                   :on-save-viewport save-card-viewport!
                                    :reduced-motion reduced-motion}
                       [skills/skills {:layoutId "skills-card"}]]
 
                      [CardWrapper {:id "experience"
                                    :className "col-span-1 row-span-2"
                                    :variants item-v
-                                   :on-click set-selected-id
+                                   :on-click open-card!
+                                   :on-save-viewport save-card-viewport!
                                    :reduced-motion reduced-motion}
                       [experience/experience {:layoutId "experience-card"}]]
 
                      [CardWrapper {:id "edu"
                                    :className "col-span-1 md:col-span-2 row-span-1"
                                    :variants item-v
-                                   :on-click set-selected-id
+                                   :on-click open-card!
+                                   :on-save-viewport save-card-viewport!
                                    :reduced-motion reduced-motion}
                       [edu/edu {:layoutId "edu-card"}]]
 
                      [CardWrapper {:id "contact"
                                    :className "col-span-1 md:col-span-2 row-span-1"
                                    :variants item-v
-                                   :on-click set-selected-id
+                                   :on-click open-card!
+                                   :on-save-viewport save-card-viewport!
                                    :reduced-motion reduced-motion}
                       [contact/contact {:layoutId "contact-card"}]]]
 
                 [ExpandedLayer {:selected-id selected-id
-                                :on-close #(set-selected-id nil)
+                                :on-close close-card!
                                 :SelectedComponent SelectedComponent
                                 :reduced-motion reduced-motion}]]]))

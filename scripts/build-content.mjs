@@ -84,11 +84,24 @@ function parseOrgFile(filePath) {
   return { slug, title, date, html: orgBodyToHtml(bodyLines) };
 }
 
+function ednKey(key) {
+  if (key && typeof key === 'object' && 'key' in key) {
+    const name = key.key;
+    return name.startsWith(':') ? name.slice(1) : name;
+  }
+  return typeof key === 'string' && key.startsWith(':') ? key.slice(1) : String(key);
+}
+
 function keywordize(value) {
   if (Array.isArray(value)) {
     return value.map(keywordize);
   }
   if (value && typeof value === 'object') {
+    if ('map' in value && Array.isArray(value.map)) {
+      return Object.fromEntries(
+        value.map.map(([key, val]) => [ednKey(key), keywordize(val)]),
+      );
+    }
     return Object.fromEntries(
       Object.entries(value).map(([key, val]) => [
         key.startsWith(':') ? key.slice(1) : key,

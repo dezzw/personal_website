@@ -110,6 +110,7 @@
 
 (defn dashboard [{:keys [heroMode reduced-motion scroll-container-ref]}]
   (let [[selected-id set-selected-id] (react/useState nil)
+        saved-scroll-top (react/useRef 0)
         SelectedComponent (get expanded-components selected-id)
         container-v (motion-utils/container-variants reduced-motion)
         item-v (motion-utils/item-variants reduced-motion)]
@@ -120,15 +121,24 @@
          (do
            (set! (.-overflow (.-style js/document.body)) "hidden")
            (when-let [el (.-current scroll-container-ref)]
-             (set! (.-overflow (.-style el)) "hidden")))
-         (do
-           (set! (.-overflow (.-style js/document.body)) "unset")
-           (when-let [el (.-current scroll-container-ref)]
-             (set! (.-overflow (.-style el)) "unset"))))
-       (fn []
-         (set! (.-overflow (.-style js/document.body)) "unset")
+             (set! (.-current saved-scroll-top) (.-scrollTop el))
+             (set! (.-overflow (.-style el)) "hidden")
+             (set! (.-scrollTop el) (.-current saved-scroll-top))))
          (when-let [el (.-current scroll-container-ref)]
-           (set! (.-overflow (.-style el)) "unset"))))
+           (when (= (.-overflow (.-style el)) "hidden")
+             (set! (.-overflow (.-style js/document.body)) "")
+             (let [st (.-current saved-scroll-top)]
+               (.removeProperty (.-style el) "overflow")
+               (set! (.-scrollTop el) st)
+               (js/requestAnimationFrame
+                (fn []
+                  (when-let [el (.-current scroll-container-ref)]
+                    (set! (.-scrollTop el) st))))))))
+       (fn []
+         (set! (.-overflow (.-style js/document.body)) "")
+         (when-let [el (.-current scroll-container-ref)]
+           (when (= (.-overflow (.-style el)) "hidden")
+             (.removeProperty (.-style el) "overflow")))))
      #js [selected-id scroll-container-ref])
 
     #jsx [:div {:className "min-h-screen w-full p-4 md:p-8 lg:p-12 flex justify-center bg-bg font-sans"}

@@ -49,5 +49,5 @@
                                                 [:h2 {:className "text-xl font-bold text-text-primary mb-2"}
                                                  (:title post)]
                                                 (when (:date post)
-                                                  [:p {:className "text-sm text-text-secondary mb-2"} (:date post)])
+                                                  #jsx [:p {:className "text-sm text-text-secondary mb-2"} (:date post)])
                                                 [:p {:className "text-sm text-accent-blue"} "Read more →"]]])))])]]))

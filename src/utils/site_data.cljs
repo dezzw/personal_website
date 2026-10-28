@@ -46,6 +46,7 @@
              (.catch (fn [err]
                        (set-error (.-message err))
                        (set-loading false))))
-         (do (set-loading false) (set-data nil))))
+         (do (set-loading false) (set-data nil)))
+       js/undefined)
      #js [slug])
     {:data data :loading loading :error error}))

@@ -9,7 +9,8 @@
     (react/useEffect
      (fn []
        (when (:title data)
-         (set! (.-title js/document) (str (:title data) " | Desmond Wang"))))
+         (set! (.-title js/document) (str (:title data) " | Desmond Wang")))
+       js/undefined)
      #js [data])
     #jsx [:div {:className "min-h-screen bg-bg font-sans"}
           [:div {:className "max-w-3xl mx-auto px-6 py-16"}

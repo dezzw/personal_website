@@ -1,5 +1,6 @@
 (ns pages.blog-list
-  (:require ["framer-motion" :refer [motion]]
+  (:require ["react" :as react]
+            ["framer-motion" :refer [motion]]
             ["react-router-dom" :refer [Link]]
             [utils.site-data :as site-data]
             [utils.motion :as motion-utils]))
@@ -10,6 +11,11 @@
         reduced-motion (motion-utils/use-reduced-motion)
         container-v (motion-utils/list-container-variants reduced-motion)
         item-v (motion-utils/list-item-variants reduced-motion)]
+    (react/useEffect
+     (fn []
+       (set! (.-title js/document) "Desmond Wang | Full Stack Developer")
+       js/undefined)
+     #js [])
     #jsx [:div {:className "min-h-screen bg-bg font-sans"}
           #jsx [motion.div {:className "max-w-4xl mx-auto px-6 py-16"
                             :variants container-v

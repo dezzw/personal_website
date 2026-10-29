@@ -34,10 +34,10 @@
           [:div
            [:h3 {:className "font-bold text-xl text-text-primary"} title]
            (when status
-             [:div {:className "flex items-center gap-1 mt-1"}
-              (status-icon status)
-              [:span {:className (str "text-xs font-medium " (status-color status))}
-               (status-label status)]])]]
+             #jsx [:div {:className "flex items-center gap-1 mt-1"}
+                   (status-icon status)
+                   [:span {:className (str "text-xs font-medium " (status-color status))}
+                    (status-label status)]])]]
          [:div {:className "flex gap-2"}
           (when github
             #jsx [:a {:href github :target "_blank" :rel "noopener noreferrer"

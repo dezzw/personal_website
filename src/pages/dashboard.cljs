@@ -49,7 +49,7 @@
                     :onPointerDown (fn [e]
                                      (.preventDefault e)
                                      (.stopPropagation e)
-                                     (on-close))}])
+                                     (on-close "backdrop"))}])
 
 (defn- dialog-motion-props [skip-layout-morph layout-id reduced-motion exit-transition]
   (let [props #js {:role "dialog"
@@ -76,7 +76,7 @@
                           (when (= (.-key e) "Escape")
                             (.preventDefault e)
                             (.stopPropagation e)
-                            (on-close)))]
+                            (on-close "esc")))]
          (.addEventListener js/document "keydown" handle-key true)
          (fn [] (.removeEventListener js/document "keydown" handle-key true))))
      #js [on-close])
@@ -93,7 +93,7 @@
             #js {:type "button"
                  :aria-label "Close"
                  :className "absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
-                 :onClick on-close}
+                 :onClick #(on-close "button")}
             (react/createElement X #js {:size 24 :className "text-gray-600"}))
            (react/createElement
             motion/div
@@ -158,10 +158,23 @@
     (when (.-blur active)
       (.blur active))))
 
+(defn- restore-focus-after-close! [closing-card-id close-via]
+  (let [via (.-current close-via)
+        id (.-current closing-card-id)]
+    (cond
+      (= via "esc")
+      (when id
+        (when-let [el (.querySelector js/document (str "[data-card-id=\"" id "\"]"))]
+          (.focus el #js {:preventScroll true})))
+      (#{"backdrop" "button"} via)
+      (blur-active-element!))))
+
 (defn dashboard [{:keys [heroMode reduced-motion scroll-container-ref]}]
   (let [[selected-id set-selected-id] (react/useState nil)
         [skip-layout-exit set-skip-layout-exit] (react/useState false)
         saved-scroll-top (react/useRef 0)
+        closing-card-id (react/useRef nil)
+        close-via (react/useRef nil)
         container-v (motion-utils/container-variants reduced-motion)
         item-v (motion-utils/item-variants reduced-motion)
         save-scroll-top! (fn [_id]
@@ -173,17 +186,19 @@
                            (.removeProperty (.-style el) "overflow")))
         exit-complete! (fn []
                          (unlock-scroll!)
-                         (blur-active-element!)
                          (restore-scroll-top! scroll-container-ref saved-scroll-top)
                          (restore-scroll-top-after-layout!
                           scroll-container-ref
                           saved-scroll-top
-                          (fn [] (set-skip-layout-exit false))))
+                          (fn []
+                            (restore-focus-after-close! closing-card-id close-via)
+                            (set-skip-layout-exit false))))
         open-card! (fn [id]
                      (set-skip-layout-exit false)
                      (set-selected-id id))
-        close-card! (fn []
-                      (blur-active-element!)
+        close-card! (fn [via]
+                      (set! (.-current close-via) via)
+                      (set! (.-current closing-card-id) selected-id)
                       (set-skip-layout-exit true)
                       (js/requestAnimationFrame #(set-selected-id nil)))]
 

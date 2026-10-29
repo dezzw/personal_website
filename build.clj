@@ -33,33 +33,65 @@
   (-> s escape-html
       (str/replace #"\*\*(.+?)\*\*" "<strong>$1</strong>")))
 
+(defn close-open-list [html open-list]
+  (if open-list
+    [(conj html (str "</" open-list ">")) nil]
+    [html nil]))
+
 (defn org-body->html [lines]
   (loop [lines lines
          html []
-         in-list false]
+         open-list nil]
     (if (empty? lines)
-      (str (str/join "\n" html) (when in-list "</ul>"))
+      (str (str/join "\n" html) (when open-list (str "</" open-list ">")))
       (let [line (str/trim (first lines))
             rest-lines (rest lines)]
         (cond
           (str/blank? line)
-          (recur rest-lines html in-list)
+          (recur rest-lines html open-list)
 
           (str/starts-with? line "* ")
-          (recur rest-lines
-                 (conj html (str "<h2>" (inline-format (subs line 2)) "</h2>"))
-                 false)
+          (let [[html' _] (close-open-list html open-list)]
+            (recur rest-lines
+                   (conj html' (str "<h2>" (inline-format (subs line 2)) "</h2>"))
+                   nil))
 
           (str/starts-with? line "- ")
-          (let [item (str "<li>" (inline-format (subs line 2)) "</li>")]
-            (if in-list
-              (recur rest-lines (conj html item) true)
-              (recur rest-lines (conj html "<ul>" item) true)))
+          (let [item (str "<li>" (inline-format (subs line 2)) "</li>")
+                [html' open-list']
+                (if (= open-list "ul")
+                  [html open-list]
+                  (close-open-list html open-list))
+                html'' (if open-list'
+                         (conj html' item)
+                         (conj html' "<ul>" item))]
+            (recur rest-lines html'' "ul"))
+
+          (re-find #"^\d+\.\s+(.*)" line)
+          (let [[_ text] (re-find #"^\d+\.\s+(.*)" line)
+                item (str "<li>" (inline-format text) "</li>")
+                [html' open-list']
+                (if (= open-list "ol")
+                  [html open-list]
+                  (close-open-list html open-list))
+                html'' (if open-list'
+                         (conj html' item)
+                         (conj html' "<ol>" item))]
+            (recur rest-lines html'' "ol"))
 
           :else
-          (recur rest-lines
-                 (conj html (str "<p>" (inline-format line) "</p>"))
-                 in-list))))))
+          (let [[html' _] (close-open-list html open-list)]
+            (recur rest-lines
+                   (conj html' (str "<p>" (inline-format line) "</p>"))
+                   nil)))))))
+
+(defn assert-paired-list-tags! [html slug]
+  (doseq [[open close] [["<ul>" "</ul>"] ["<ol>" "</ol>"]]]
+    (let [opens (count (re-seq (re-pattern (str "\\Q" open "\\E")) html))
+          closes (count (re-seq (re-pattern (str "\\Q" close "\\E")) html))]
+      (when (not= opens closes)
+        (throw (ex-info (str "Unbalanced " open " in " slug)
+                        {:slug slug :open opens :close closes}))))))
 
 (defn slug-from-filename [file]
   (-> file .getName (str/replace #"\.org$" "")))
@@ -74,6 +106,7 @@
                            lines)
         html (org-body->html body-lines)
         slug (slug-from-filename file)]
+    (assert-paired-list-tags! html slug)
     {:slug slug
      :title title
      :date date

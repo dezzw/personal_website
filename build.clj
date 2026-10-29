@@ -84,20 +84,24 @@
 
 (defn build-blog! []
   (let [blog-dir (str content-dir "/blog")
-        out-dir (str public-dir "/blog")]
+        out-dir (str public-dir "/blog")
+        blog-file (io/file blog-dir)]
     (ensure-dir out-dir)
-    (when (.exists (io/file blog-dir))
-      (let [posts (->> (file-seq (io/file blog-dir))
-                       (filter #(.endsWith (.getName %) ".org"))
-                       (map parse-org-file)
-                       (sort-by :slug)
-                       vec)]
-        (doseq [post posts]
-          (spit (str out-dir "/" (:slug post) ".json")
-                (edn->json post)))
-        (spit (str out-dir "/manifest.json")
-              (edn->json {:posts (mapv #(select-keys % [:slug :title :date]) posts)}))
-        (println "Built" (count posts) "blog posts")))))
+    (when-not (.exists blog-file)
+      (binding [*err* *err*]
+        (println "ERROR: content/blog directory is missing")
+        (System/exit 1)))
+    (let [posts (->> (file-seq blog-file)
+                     (filter #(.endsWith (.getName %) ".org"))
+                     (map parse-org-file)
+                     (sort-by :slug)
+                     vec)]
+      (doseq [post posts]
+        (spit (str out-dir "/" (:slug post) ".json")
+              (edn->json post)))
+      (spit (str out-dir "/manifest.json")
+            (edn->json {:posts (mapv #(select-keys % [:slug :title :date]) posts)}))
+      (println "Built" (count posts) "blog posts"))))
 
 (defn build-site-data! []
   (let [out-dir (str public-dir "/data")]

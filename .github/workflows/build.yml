@@ -14,5 +14,9 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2
 
+      - uses: turtlequeue/setup-babashka@v1.6.2
+        with:
+          babashka-version: 1.13.229
+
       - run: bun install --frozen-lockfile
       - run: bun run build

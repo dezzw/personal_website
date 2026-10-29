@@ -91,8 +91,8 @@
                     #jsx [ChevronDown {:size 48 :strokeWidth 1.5}]]])]
 
           [motion.div {:ref dashboardRef
-                       :layoutScroll true
                        :className "absolute inset-0 z-30 w-full h-full overflow-y-auto bg-bg/95 backdrop-blur-xl rounded-t-[3rem] shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)] border-t border-white/20"
+                       :style #js {:overflowAnchor "none"}
                        :initial {:y "100vh"}
                        :animate {:y (if heroMode "100vh" "0")}
                        :transition (motion-utils/spring-transition reduced-motion

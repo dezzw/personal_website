@@ -27,6 +27,7 @@
                     :style #js {:outline "none" :outlineOffset "0"}
                     :onPointerDown (fn [e]
                                      (when (zero? (.-button e))
+                                       (.preventDefault e)
                                        (on-save-viewport id)
                                        (on-click id)))
                     :onKeyDown (fn [e]
@@ -45,7 +46,10 @@
                     :animate {:opacity 1}
                     :exit {:opacity 0}
                     :transition (motion-utils/fade-transition reduced-motion 0.2)
-                    :onClick on-close}])
+                    :onPointerDown (fn [e]
+                                     (.preventDefault e)
+                                     (.stopPropagation e)
+                                     (on-close))}])
 
 (defn- dialog-motion-props [skip-layout-morph layout-id reduced-motion exit-transition]
   (let [props #js {:role "dialog"
@@ -70,9 +74,11 @@
      (fn []
        (let [handle-key (fn [e]
                           (when (= (.-key e) "Escape")
+                            (.preventDefault e)
+                            (.stopPropagation e)
                             (on-close)))]
-         (.addEventListener js/document "keydown" handle-key)
-         (fn [] (.removeEventListener js/document "keydown" handle-key))))
+         (.addEventListener js/document "keydown" handle-key true)
+         (fn [] (.removeEventListener js/document "keydown" handle-key true))))
      #js [on-close])
     #jsx [motion.div {:className "fixed inset-0 z-[101] flex items-center justify-center p-4 md:p-8 pointer-events-none"
                       :initial {:opacity 0}
@@ -135,24 +141,17 @@
                                (react/createElement Selected
                                                     #js {:reducedMotion reduced-motion}))}))))}))))
 
-(defn- card-viewport-top [scroll-el card-id]
-  (when-let [card-el (.querySelector scroll-el (str "[data-card-id=\"" card-id "\"]"))]
-    (.-top (.getBoundingClientRect card-el))))
-
-(defn- restore-card-viewport! [scroll-container-ref saved-scroll-top saved-card-id saved-card-top]
+(defn- restore-scroll-top! [scroll-container-ref saved-scroll-top]
   (when-let [scroll-el (.-current scroll-container-ref)]
-    (if (and (.-current saved-card-id) (some? (.-current saved-card-top)))
-      (when-let [current-top (card-viewport-top scroll-el (.-current saved-card-id))]
-        (let [delta (- current-top (.-current saved-card-top))]
-          (when (not= delta 0)
-            (set! (.-scrollTop scroll-el) (+ (.-scrollTop scroll-el) delta)))))
-      (set! (.-scrollTop scroll-el) (.-current saved-scroll-top)))))
+    (set! (.-scrollTop scroll-el) (.-current saved-scroll-top))))
 
-(defn- schedule-scroll-restore! [scroll-container-ref saved-scroll-top saved-card-id saved-card-top]
-  (let [restore! #(restore-card-viewport! scroll-container-ref saved-scroll-top saved-card-id saved-card-top)]
-    (restore!)
-    (doseq [ms [50 150 350 600 900]]
-      (js/setTimeout restore! ms))))
+(defn- restore-scroll-top-after-layout! [scroll-container-ref saved-scroll-top on-done]
+  (let [restore! #(restore-scroll-top! scroll-container-ref saved-scroll-top)]
+    (js/requestAnimationFrame
+     #(js/requestAnimationFrame
+       (fn []
+         (restore!)
+         (when on-done (on-done)))))))
 
 (defn- blur-active-element! []
   (when-let [active (.-activeElement js/document)]
@@ -163,52 +162,51 @@
   (let [[selected-id set-selected-id] (react/useState nil)
         [skip-layout-exit set-skip-layout-exit] (react/useState false)
         saved-scroll-top (react/useRef 0)
-        saved-card-id (react/useRef nil)
-        saved-card-top (react/useRef nil)
         container-v (motion-utils/container-variants reduced-motion)
         item-v (motion-utils/item-variants reduced-motion)
-        save-card-viewport! (fn [id]
-                              (when-let [el (.-current scroll-container-ref)]
-                                (set! (.-current saved-scroll-top) (.-scrollTop el))
-                                (set! (.-current saved-card-id) id)
-                                (set! (.-current saved-card-top) (card-viewport-top el id))))
+        save-scroll-top! (fn [_id]
+                           (when-let [el (.-current scroll-container-ref)]
+                             (set! (.-current saved-scroll-top) (.-scrollTop el))))
         unlock-scroll! (fn []
                          (set! (.-overflow (.-style js/document.body)) "")
                          (when-let [el (.-current scroll-container-ref)]
                            (.removeProperty (.-style el) "overflow")))
         exit-complete! (fn []
-                         (set-skip-layout-exit false)
                          (unlock-scroll!)
-                         (schedule-scroll-restore! scroll-container-ref
-                                                   saved-scroll-top
-                                                   saved-card-id
-                                                   saved-card-top))
+                         (blur-active-element!)
+                         (restore-scroll-top! scroll-container-ref saved-scroll-top)
+                         (restore-scroll-top-after-layout!
+                          scroll-container-ref
+                          saved-scroll-top
+                          (fn [] (set-skip-layout-exit false))))
         open-card! (fn [id]
                      (set-skip-layout-exit false)
                      (set-selected-id id))
         close-card! (fn []
                       (blur-active-element!)
-                      (restore-card-viewport! scroll-container-ref
-                                             saved-scroll-top
-                                             saved-card-id
-                                             saved-card-top)
                       (set-skip-layout-exit true)
                       (js/requestAnimationFrame #(set-selected-id nil)))]
 
     (react/useEffect
      (fn []
-       (when (or selected-id skip-layout-exit)
-         (set! (.-overflow (.-style js/document.body)) "hidden")
+       (if (or selected-id skip-layout-exit)
          (when-let [el (.-current scroll-container-ref)]
+           (set! (.-overflow (.-style js/document.body)) "hidden")
            (set! (.-overflow (.-style el)) "hidden")
-           (when selected-id
-             (set! (.-scrollTop el) (.-current saved-scroll-top)))))
-       js/undefined)
+           (set! (.-scrollTop el) (.-current saved-scroll-top))
+           (let [lock-scroll! (fn []
+                                (set! (.-scrollTop el) (.-current saved-scroll-top)))]
+             (.addEventListener el "scroll" lock-scroll!)
+             (fn []
+               (.removeEventListener el "scroll" lock-scroll!))))
+         js/undefined))
      #js [selected-id skip-layout-exit scroll-container-ref])
 
     #jsx [:div {:className "min-h-screen w-full p-4 md:p-8 lg:p-12 flex justify-center bg-bg font-sans"}
           #jsx [LayoutGroup
-                #jsx [motion.div {:className "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-[1400px]"
+                #jsx [motion.div {:className (str "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-[1400px]"
+                                                   (when (or selected-id skip-layout-exit)
+                                                     " pointer-events-none"))
                                   :variants container-v
                                   :initial "hidden"
                                   :animate (if heroMode "hidden" "visible")}
@@ -218,7 +216,7 @@
                        #jsx [CardWrapper {:id "info"
                                           :className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2 h-full"
                                           :on-click open-card!
-                                          :on-save-viewport save-card-viewport!
+                                          :on-save-viewport save-scroll-top!
                                           :reduced-motion reduced-motion}
                              [info/info {:layoutId "info-card"}]])
 
@@ -230,7 +228,7 @@
                                    :className "col-span-1 row-span-1"
                                    :variants item-v
                                    :on-click open-card!
-                                   :on-save-viewport save-card-viewport!
+                                   :on-save-viewport save-scroll-top!
                                    :reduced-motion reduced-motion}
                       [todo/todo {:layoutId "todo-card"}]]
 
@@ -238,7 +236,7 @@
                                    :className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2"
                                    :variants item-v
                                    :on-click open-card!
-                                   :on-save-viewport save-card-viewport!
+                                   :on-save-viewport save-scroll-top!
                                    :reduced-motion reduced-motion}
                       [projects/projects {:layoutId "projects-card"}]]
 
@@ -246,7 +244,7 @@
                                    :className "col-span-1 row-span-1"
                                    :variants item-v
                                    :on-click open-card!
-                                   :on-save-viewport save-card-viewport!
+                                   :on-save-viewport save-scroll-top!
                                    :reduced-motion reduced-motion}
                       [nix/nix {:layoutId "nix-card"}]]
 
@@ -254,7 +252,7 @@
                                    :className "col-span-1 row-span-1"
                                    :variants item-v
                                    :on-click open-card!
-                                   :on-save-viewport save-card-viewport!
+                                   :on-save-viewport save-scroll-top!
                                    :reduced-motion reduced-motion}
                       [emacs/emacs {:layoutId "emacs-card"}]]
 
@@ -262,7 +260,7 @@
                                    :className "col-span-1 row-span-2"
                                    :variants item-v
                                    :on-click open-card!
-                                   :on-save-viewport save-card-viewport!
+                                   :on-save-viewport save-scroll-top!
                                    :reduced-motion reduced-motion}
                       [skills/skills {:layoutId "skills-card"}]]
 
@@ -270,7 +268,7 @@
                                    :className "col-span-1 row-span-2"
                                    :variants item-v
                                    :on-click open-card!
-                                   :on-save-viewport save-card-viewport!
+                                   :on-save-viewport save-scroll-top!
                                    :reduced-motion reduced-motion}
                       [experience/experience {:layoutId "experience-card"}]]
 
@@ -278,7 +276,7 @@
                                    :className "col-span-1 md:col-span-2 row-span-1"
                                    :variants item-v
                                    :on-click open-card!
-                                   :on-save-viewport save-card-viewport!
+                                   :on-save-viewport save-scroll-top!
                                    :reduced-motion reduced-motion}
                       [edu/edu {:layoutId "edu-card"}]]
 
@@ -286,7 +284,7 @@
                                    :className "col-span-1 md:col-span-2 row-span-1"
                                    :variants item-v
                                    :on-click open-card!
-                                   :on-save-viewport save-card-viewport!
+                                   :on-save-viewport save-scroll-top!
                                    :reduced-motion reduced-motion}
                       [contact/contact {:layoutId "contact-card"}]]]
 

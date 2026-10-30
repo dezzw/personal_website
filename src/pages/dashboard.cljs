@@ -18,6 +18,10 @@
 (defn Portal [{:keys [children]}]
   (react-dom/createPortal children js/document.body))
 
+(defn- event-from-interactive? [e]
+  (when-let [t (.-target e)]
+    (.closest t "a, button")))
+
 (defn CardWrapper [{:keys [id className children on-click on-save-viewport variants reduced-motion disable-hover]}]
   #jsx [motion.div {:variants variants
                     :role "button"
@@ -26,12 +30,14 @@
                     :className (str "cursor-pointer " className)
                     :style #js {:outline "none" :outlineOffset "0"}
                     :onPointerDown (fn [e]
-                                     (when (zero? (.-button e))
+                                     (when (and (zero? (.-button e))
+                                                (not (event-from-interactive? e)))
                                        (.preventDefault e)
                                        (on-save-viewport id)
                                        (on-click id)))
                     :onKeyDown (fn [e]
-                                 (when (contains? #{"Enter" " "} (.-key e))
+                                 (when (and (contains? #{"Enter" " "} (.-key e))
+                                            (not (event-from-interactive? e)))
                                    (.preventDefault e)
                                    (on-save-viewport id)
                                    (on-click id)))

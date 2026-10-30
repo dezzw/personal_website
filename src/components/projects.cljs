@@ -44,7 +44,7 @@
           (when github
             #jsx [:a {:href github :target "_blank" :rel "noopener noreferrer"
                       :aria-label (str title " on GitHub")
-                      :className "group flex shrink-0 items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 md:min-w-0 md:min-h-0 md:w-auto md:h-auto md:p-2 rounded-full bg-transparent max-md:[-webkit-tap-highlight-color:transparent] max-md:hover:bg-transparent max-md:active:bg-transparent max-md:focus:bg-transparent max-md:focus-visible:bg-transparent focus:outline-none md:bg-white md:hover:bg-gray-200 transition-colors text-text-secondary md:hover:text-text-primary"}
+                      :className "group flex shrink-0 items-center justify-center max-md:justify-end min-w-[44px] min-h-[44px] w-11 h-11 md:min-w-0 md:min-h-0 md:w-auto md:h-auto md:p-2 rounded-full bg-transparent max-md:[-webkit-tap-highlight-color:transparent] max-md:hover:bg-transparent max-md:active:bg-transparent md:bg-white md:hover:bg-gray-200 transition-colors text-text-secondary md:hover:text-text-primary"}
                   [:span {:className "flex shrink-0 items-center justify-center w-[34px] h-[34px] min-w-[34px] min-h-[34px] rounded-full bg-white max-md:group-active:bg-gray-200 md:hidden"}
                    #jsx [Github {:size 18}]]
                   #jsx [Github {:size 18 :className "hidden md:block"}]])

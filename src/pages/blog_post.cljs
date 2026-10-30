@@ -5,14 +5,17 @@
             [utils.site-data :as site-data]
             [utils.error-page-seo :as error-page-seo]))
 
-(def ^:private back-link-touch-base
+(def ^:private back-link-touch-16
   "text-accent-blue hover:underline inline-block max-md:inline-flex max-md:items-center max-md:h-11 max-md:px-2 max-md:-mx-2 max-md:-mt-[10px] max-md:text-base")
 
+(def ^:private back-link-touch-14
+  "text-accent-blue hover:underline inline-block max-md:inline-flex max-md:items-center max-md:h-11 max-md:px-2 max-md:-mx-2 max-md:-mt-3 max-md:text-sm")
+
 (def ^:private back-link-to-title
-  (str back-link-touch-base " mb-8 max-md:mb-[22px]"))
+  (str back-link-touch-16 " mb-8 max-md:mb-[22px]"))
 
 (def ^:private back-link-to-card
-  (str back-link-touch-base " mb-6 max-md:mb-[14px] text-sm md:text-base"))
+  (str back-link-touch-14 " mb-6 max-md:mb-3 md:text-base"))
 
 (defn missing-post-view [pathname posts]
   #jsx [:div {:className "min-h-screen bg-bg font-sans px-4 py-8 md:px-6 md:py-16"}

@@ -29,7 +29,10 @@
   (use-json "/data/experience.json"))
 
 (defn use-blog-manifest []
-  (use-json "/blog/manifest.json"))
+  (let [{:keys [data loading error]} (use-json "/blog/manifest.json")]
+    {:data data
+     :manifest-loading loading
+     :manifest-error error}))
 
 (defn use-blog-post [slug]
   (let [[data set-data] (react/useState nil)
@@ -39,14 +42,18 @@
      (fn []
        (if slug
          (-> (js/fetch (str "/blog/" slug ".json"))
-             (.then #(.json %))
-             (.then (fn [json]
-                      (set-data json)
-                      (set-loading false)))
+             (.then (fn [res]
+                      (if (.-ok res)
+                        (-> (.json res)
+                            (.then (fn [json]
+                                     (set-data json)
+                                     (set-loading false))))
+                        (do (set-error "Failed to load post")
+                            (set-loading false)))))
              (.catch (fn [err]
                        (set-error (.-message err))
                        (set-loading false))))
          (do (set-loading false) (set-data nil)))
        js/undefined)
      #js [slug])
-    {:data data :loading loading :error error}))
+    {:data data :post-loading loading :post-error error}))

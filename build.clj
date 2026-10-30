@@ -146,6 +146,18 @@
         (spit (str out-dir "/" out-name) (edn->json data))
         (println "Built" out-name)))))
 
+(defn build-redirects! []
+  (let [manifest-path (str public-dir "/blog/manifest.json")
+        posts (if (.exists (io/file manifest-path))
+                (:posts (json/parse-string (slurp manifest-path) true))
+                [])
+        lines (concat ["/blog /index.html 200"]
+                      (map (fn [post]
+                             (str "/blog/" (:slug post) " /index.html 200"))
+                           posts))]
+    (spit (str public-dir "/_redirects") (str/join "\n" lines))
+    (println "Built _redirects with" (count lines) "rules")))
+
 (defn build-seo! []
   (spit (str public-dir "/robots.txt")
         "User-agent: *\nAllow: /\n\nSitemap: https://www.dezzw.com/sitemap.xml\n")
@@ -171,6 +183,7 @@
   (ensure-dir public-dir)
   (build-blog!)
   (build-site-data!)
+  (build-redirects!)
   (build-seo!)
   (println "Build complete."))
 

@@ -22,6 +22,7 @@ public/blog/
 public/data/
 public/sitemap.xml
 public/robots.txt
+public/_redirects
 
 # Squint/ClojureScript Generated Files
 src/gen/

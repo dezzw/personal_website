@@ -1,3 +1,5 @@
+import { copyFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -13,10 +15,15 @@ function siteBuildPlugin() {
       run('node scripts/prebuild.mjs');
       run('npx squint compile');
     },
+    closeBundle() {
+      const outDir = join(process.cwd(), 'dist');
+      copyFileSync(join(outDir, 'index.html'), join(outDir, '404.html'));
+    },
   };
 }
 
 export default defineConfig({
+  base: '/',
   plugins: [react(), siteBuildPlugin()],
   build: {
     outDir: './dist',

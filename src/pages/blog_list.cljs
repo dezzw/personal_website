@@ -6,7 +6,9 @@
             [utils.motion :as motion-utils]))
 
 (defn blog-list []
-  (let [{:keys [data loading error]} (site-data/use-blog-manifest)
+  (let [{:keys [data manifest-loading manifest-error]} (site-data/use-blog-manifest)
+        loading manifest-loading
+        error manifest-error
         posts (when data (:posts data))
         reduced-motion (motion-utils/use-reduced-motion)
         container-v (motion-utils/list-container-variants reduced-motion)

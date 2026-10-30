@@ -92,7 +92,7 @@
             "button"
             #js {:type "button"
                  :aria-label "Close"
-                 :className "group absolute top-6 right-6 z-10 p-2 max-md:rounded-none md:rounded-full max-md:bg-transparent max-md:[-webkit-tap-highlight-color:transparent] max-md:hover:bg-transparent max-md:active:bg-transparent max-md:before:content-[''] max-md:before:absolute max-md:before:-inset-[2px] max-md:before:z-10 max-md:after:content-[''] max-md:after:absolute max-md:after:inset-0 max-md:after:rounded-full max-md:after:bg-gray-100 max-md:after:pointer-events-none max-md:group-active:after:bg-gray-200 md:bg-gray-100 md:hover:bg-gray-200 transition-colors"
+                 :className "absolute top-6 right-6 z-10 p-2 max-md:rounded-none md:rounded-full max-md:bg-transparent max-md:[-webkit-tap-highlight-color:transparent] max-md:hover:bg-transparent max-md:active:bg-transparent max-md:before:content-[''] max-md:before:absolute max-md:before:-inset-[2px] max-md:before:z-10 max-md:after:content-[''] max-md:after:absolute max-md:after:inset-0 max-md:after:rounded-full max-md:after:bg-gray-100 max-md:after:pointer-events-none max-md:active:after:bg-gray-200 md:bg-gray-100 md:hover:bg-gray-200 transition-colors"
                  :onClick #(on-close "button")}
             (react/createElement X #js {:size 24 :className "text-gray-600 max-md:relative max-md:z-[1]"}))
            (react/createElement

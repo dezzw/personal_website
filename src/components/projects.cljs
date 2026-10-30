@@ -43,7 +43,7 @@
           (when github
             #jsx [:a {:href github :target "_blank" :rel "noopener noreferrer"
                       :aria-label (str title " on GitHub")
-                      :className "group max-md:relative md:static p-2 max-md:rounded-none max-md:bg-transparent max-md:[-webkit-tap-highlight-color:transparent] max-md:hover:bg-transparent max-md:active:bg-transparent max-md:before:content-[''] max-md:before:absolute max-md:before:-inset-[5px] max-md:before:z-10 max-md:after:content-[''] max-md:after:absolute max-md:after:inset-0 max-md:after:rounded-full max-md:after:bg-white max-md:after:pointer-events-none max-md:group-active:after:bg-gray-200 rounded-full bg-white hover:bg-gray-200 transition-colors text-text-secondary hover:text-text-primary"}
+                      :className "max-md:relative md:static p-2 max-md:rounded-none max-md:bg-transparent max-md:[-webkit-tap-highlight-color:transparent] max-md:hover:bg-transparent max-md:active:bg-transparent max-md:before:content-[''] max-md:before:absolute max-md:before:-inset-[5px] max-md:before:z-10 max-md:after:content-[''] max-md:after:absolute max-md:after:inset-0 max-md:after:rounded-full max-md:after:bg-white max-md:after:pointer-events-none max-md:active:after:bg-gray-200 rounded-full bg-white hover:bg-gray-200 transition-colors text-text-secondary hover:text-text-primary"}
                   #jsx [Github {:size 18 :className "max-md:relative max-md:z-[1]"}]])
           (when link
             #jsx [:a {:href link :target "_blank" :rel "noopener noreferrer"

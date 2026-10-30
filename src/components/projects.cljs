@@ -44,7 +44,7 @@
           (when github
             #jsx [:a {:href github :target "_blank" :rel "noopener noreferrer"
                       :aria-label (str title " on GitHub")
-                      :className "flex shrink-0 items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 md:min-w-0 md:min-h-0 md:w-auto md:h-auto md:p-2 rounded-full bg-transparent md:bg-white hover:bg-gray-200 transition-colors text-text-secondary hover:text-text-primary"}
+                      :className "flex shrink-0 items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 md:min-w-0 md:min-h-0 md:w-auto md:h-auto md:p-2 rounded-full bg-transparent md:bg-white md:hover:bg-gray-200 transition-colors text-text-secondary md:hover:text-text-primary"}
                   [:span {:className "flex shrink-0 items-center justify-center w-[34px] h-[34px] min-w-[34px] min-h-[34px] rounded-full bg-white md:hidden"}
                    #jsx [Github {:size 18}]]
                   #jsx [Github {:size 18 :className "hidden md:block"}]])

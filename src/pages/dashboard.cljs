@@ -92,7 +92,7 @@
             "button"
             #js {:type "button"
                  :aria-label "Close"
-                 :className "absolute top-[22px] right-[22px] md:top-6 md:right-6 z-10 flex shrink-0 items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 md:min-w-0 md:min-h-0 md:w-auto md:h-auto p-0 md:p-2 rounded-full bg-transparent md:bg-gray-100 hover:bg-gray-200 transition-colors"
+                 :className "absolute top-[22px] right-[22px] md:top-6 md:right-6 z-10 flex shrink-0 items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 md:min-w-0 md:min-h-0 md:w-auto md:h-auto p-0 md:p-2 rounded-full bg-transparent md:bg-gray-100 md:hover:bg-gray-200 transition-colors"
                  :onClick #(on-close "button")}
             (react/createElement
              "span"

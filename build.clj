@@ -154,9 +154,9 @@
         ;; Cloudflare Pages currently treats `200` rules to `/index.html` as 308
         ;; redirects to `/`. Blog SPA entrypoints are emitted as physical
         ;; `blog/**/index.html` copies in vite.config.js instead.
-        rules (concat ["/blog /index.html 200"]
+        rules (concat ["/blog / 200"]
                         (map (fn [post]
-                               (str "/blog/" (:slug post) " /index.html 200"))
+                               (str "/blog/" (:slug post) " / 200"))
                              posts))
         body (str/join "\n" rules)]
     (spit (str public-dir "/_redirects") body)

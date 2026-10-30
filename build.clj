@@ -151,10 +151,12 @@
         posts (if (.exists (io/file manifest-path))
                 (:posts (json/parse-string (slurp manifest-path) true))
                 [])
-        lines (concat ["/blog /index.html 200"]
-                      (map (fn [post]
-                             (str "/blog/" (:slug post) " /index.html 200"))
-                           posts))]
+        lines (concat ["/blog /index.html 200"
+                      "/blog/ /index.html 200"]
+                      (mapcat (fn [post]
+                                [(str "/blog/" (:slug post) " /index.html 200")
+                                 (str "/blog/" (:slug post) "/ /index.html 200")])
+                              posts))]
     (spit (str public-dir "/_redirects") (str/join "\n" lines))
     (println "Built _redirects with" (count lines) "rules")))
 

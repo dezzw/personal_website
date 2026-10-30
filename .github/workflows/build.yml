@@ -16,9 +16,22 @@ jobs:
         with:
           bun-version: 1.4.4
 
-      - uses: turtlequeue/setup-babashka@v1.8.1
-        with:
-          babashka-version: 1.13.229
+      - name: Install Babashka (sha256-verified)
+        shell: bash
+        run: |
+          set -euo pipefail
+          BB_VERSION=1.13.229
+          BB_SHA256=64fb984991c6e68f44e8a9391176a9bb411f9b9ae9959a6bca5307c75a7414da
+          BB_TAR="babashka-${BB_VERSION}-linux-amd64-static.tar.gz"
+          BB_URL="https://github.com/babashka/babashka/releases/download/v${BB_VERSION}/${BB_TAR}"
+          BB_DIR="${RUNNER_TEMP}/bb"
+          mkdir -p "${BB_DIR}"
+          cd "${BB_DIR}"
+          curl -fsSL -o "${BB_TAR}" "${BB_URL}"
+          echo "${BB_SHA256}  ${BB_TAR}" | sha256sum -c -
+          tar -xzf "${BB_TAR}"
+          echo "${BB_DIR}" >> "${GITHUB_PATH}"
+          bb --version
 
       - run: bun install --frozen-lockfile
       - run: bun run build

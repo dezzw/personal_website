@@ -151,9 +151,8 @@
         posts (if (.exists (io/file manifest-path))
                 (:posts (json/parse-string (slurp manifest-path) true))
                 [])
-        ;; Cloudflare Pages currently treats `200` rules to `/index.html` as 308
-        ;; redirects to `/`. Blog SPA entrypoints are emitted as physical
-        ;; `blog/**/index.html` copies in vite.config.js instead.
+        ;; Cloudflare Pages 308s `200` rewrites to `/index.html` to `/`; use `/` instead.
+        ;; Unknown paths use dist/404.html (vite.config.js). No blog/**/index.html copies.
         rules (concat ["/blog / 200"]
                         (map (fn [post]
                                (str "/blog/" (:slug post) " / 200"))

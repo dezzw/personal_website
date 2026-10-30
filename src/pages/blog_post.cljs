@@ -49,12 +49,7 @@
     (react/useEffect
      (fn []
        (when (and (not manifest-loading) (not slug-known?))
-         (set! (.-title js/document) "404 | Desmond Wang")
-         (let [existing (.querySelector js/document "meta[name=\"robots\"]")
-               meta (or existing (.createElement js/document "meta"))]
-           (.setAttribute meta "name" "robots")
-           (.setAttribute meta "content" "noindex")
-           (when-not existing (.appendChild (.-head js/document) meta))))
+         (set! (.-title js/document) "404 | Desmond Wang"))
        js/undefined)
      #js [manifest-loading slug-known?])
     (cond

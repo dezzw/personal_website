@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 import { defineConfig } from 'vite';
@@ -18,21 +18,13 @@ function siteBuildPlugin() {
     closeBundle() {
       const outDir = join(process.cwd(), 'dist');
       const indexHtml = join(outDir, 'index.html');
-      copyFileSync(indexHtml, join(outDir, '404.html'));
-
-      const blogDir = join(outDir, 'blog');
-      mkdirSync(blogDir, { recursive: true });
-      copyFileSync(indexHtml, join(blogDir, 'index.html'));
-
-      const manifestPath = join(blogDir, 'manifest.json');
-      if (existsSync(manifestPath)) {
-        const { posts } = JSON.parse(readFileSync(manifestPath, 'utf8'));
-        for (const post of posts) {
-          const slugDir = join(blogDir, post.slug);
-          mkdirSync(slugDir, { recursive: true });
-          copyFileSync(indexHtml, join(slugDir, 'index.html'));
-        }
-      }
+      const indexSource = readFileSync(indexHtml, 'utf8');
+      const robotsMeta = '    <meta name="robots" content="noindex" />\n';
+      const notFoundHtml = indexSource.replace(
+        '<meta name="viewport"',
+        `${robotsMeta}    <meta name="viewport"`,
+      );
+      writeFileSync(join(outDir, '404.html'), notFoundHtml);
     },
   };
 }

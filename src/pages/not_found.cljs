@@ -3,7 +3,7 @@
             ["react-router-dom" :refer [Link useLocation]]
             ["lucide-react" :refer [ChevronRight]]))
 
-(def memoji-img (js* "new URL('../assets/Image.png', import.meta.url).href"))
+(def memoji-img (js* "new URL('../../assets/Image.png', import.meta.url).href"))
 
 (defn not-found []
   (let [pathname (.-pathname (useLocation))]

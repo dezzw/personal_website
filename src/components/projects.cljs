@@ -4,12 +4,13 @@
             [utils.site-data :as site-data]
             [utils.motion :as motion-utils]))
 
-(defn status-icon [status]
-  (case status
-    "in-progress" #jsx [Clock {:size 12 :className "text-yellow-500"}]
-    "finished" #jsx [CheckCircle2 {:size 12 :className "text-green-500"}]
-    "archived" #jsx [AlertCircle {:size 12 :className "text-gray-400"}]
-    nil))
+(defn status-icon [status & [{:keys [compact-mobile]}]]
+  (let [extra (if compact-mobile " w-3.5 h-3.5 md:w-3 md:h-3" "")]
+    (case status
+      "in-progress" #jsx [Clock {:size 12 :className (str "text-yellow-500" extra)}]
+      "finished" #jsx [CheckCircle2 {:size 12 :className (str "text-green-500" extra)}]
+      "archived" #jsx [AlertCircle {:size 12 :className (str "text-gray-400" extra)}]
+      nil)))
 
 (defn status-label [status]
   (case status
@@ -31,19 +32,22 @@
          [:div {:className "flex items-center gap-3"}
           [:div {:className (str "w-10 h-10 rounded-full flex items-center justify-center " color)}
            #jsx [FolderGit2 {:size 20 :className "text-white"}]]
-          [:div
+          [:div {:className (str "min-w-0 flex-1 "
+                                 (when github "max-md:pr-[52px] md:pr-0"))}
            [:h3 {:className "font-bold text-xl text-text-primary"} title]
            (when status
              #jsx [:div {:className "flex items-center gap-1 mt-1"}
                    (status-icon status)
                    [:span {:className (str "text-xs font-medium " (status-color status))}
                     (status-label status)]])]]
-         [:div {:className "flex gap-2"}
+         [:div {:className "flex gap-2 shrink-0"}
           (when github
             #jsx [:a {:href github :target "_blank" :rel "noopener noreferrer"
                       :aria-label (str title " on GitHub")
-                      :className "p-2 rounded-full bg-white hover:bg-gray-200 transition-colors text-text-secondary hover:text-text-primary"}
-                  #jsx [Github {:size 18}]])
+                      :className "flex shrink-0 items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 md:min-w-0 md:min-h-0 md:w-auto md:h-auto md:p-2 rounded-full bg-transparent md:bg-white hover:bg-gray-200 transition-colors text-text-secondary hover:text-text-primary"}
+                  [:span {:className "flex shrink-0 items-center justify-center w-[34px] h-[34px] min-w-[34px] min-h-[34px] rounded-full bg-white md:hidden"}
+                   #jsx [Github {:size 18}]]
+                  #jsx [Github {:size 18 :className "hidden md:block"}]])
           (when link
             #jsx [:a {:href link :target "_blank" :rel "noopener noreferrer"
                       :aria-label (str title " website")
@@ -107,9 +111,10 @@
                                [:div {:className "flex items-center gap-2 mb-2"}
                                 [:div {:className (str "w-2 h-2 rounded-full " (dot-color (:color project)))}]
                                 [:h3 {:className "font-bold text-text-primary"} (:title project)]]
-                               [:div {:className "flex items-center gap-1 mb-2"}
-                                (status-icon (:status project))
-                                [:span {:className (str "text-[10px] font-medium " (status-color (:status project)))}
+                               [:div {:className "flex items-center gap-1 max-md:gap-1 mb-2"}
+                                (status-icon (:status project) {:compact-mobile true})
+                                [:span {:className (str "max-md:text-xs max-md:leading-4 md:text-[10px] font-medium "
+                                                        (status-color (:status project)))}
                                  (status-label (:status project))]]
                                [:p {:className "text-sm text-text-secondary line-clamp-2"} (:short-desc project)]])
                        (or data []))])]))

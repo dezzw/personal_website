@@ -15,7 +15,7 @@
     #jsx [:div {:className "min-h-screen bg-bg font-sans"}
           [:div {:className "max-w-3xl mx-auto px-6 py-16"}
            [:Link {:to "/blog"
-                   :className "text-accent-blue hover:underline mb-8 inline-block"}
+                   :className "text-accent-blue hover:underline mb-8 inline-block max-md:inline-flex max-md:items-center max-md:h-11 max-md:px-2 max-md:-mx-2 max-md:-my-[10px] max-md:text-base"}
             "← Back to blog"]
            (cond
              loading

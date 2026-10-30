@@ -146,6 +146,21 @@
         (spit (str out-dir "/" out-name) (edn->json data))
         (println "Built" out-name)))))
 
+(defn build-redirects! []
+  (let [manifest-path (str public-dir "/blog/manifest.json")
+        posts (if (.exists (io/file manifest-path))
+                (:posts (json/parse-string (slurp manifest-path) true))
+                [])
+        ;; Cloudflare Pages 308s `200` rewrites to `/index.html` to `/`; use `/` instead.
+        ;; Unknown paths use dist/404.html (vite.config.js). No blog/**/index.html copies.
+        rules (concat ["/blog / 200"]
+                        (map (fn [post]
+                               (str "/blog/" (:slug post) " / 200"))
+                             posts))
+        body (str/join "\n" rules)]
+    (spit (str public-dir "/_redirects") body)
+    (println "Built _redirects (" (count rules) "active SPA rules)")))
+
 (defn build-seo! []
   (spit (str public-dir "/robots.txt")
         "User-agent: *\nAllow: /\n\nSitemap: https://www.dezzw.com/sitemap.xml\n")
@@ -171,6 +186,7 @@
   (ensure-dir public-dir)
   (build-blog!)
   (build-site-data!)
+  (build-redirects!)
   (build-seo!)
   (println "Build complete."))
 

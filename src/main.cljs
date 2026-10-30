@@ -4,7 +4,8 @@
             ["../index.css"]
             [app :as app]
             [pages.blog-list :as blog-list]
-            [pages.blog-post :as blog-post]))
+            [pages.blog-post :as blog-post]
+            [pages.not-found :as not-found]))
 
 (let [root (rdom/createRoot (.getElementById js/document "root"))]
   (.render root
@@ -12,4 +13,5 @@
                  #jsx [Routes
                        #jsx [Route {:path "/" :element #jsx [app/app]}]
                        #jsx [Route {:path "/blog" :element #jsx [blog-list/blog-list]}]
-                       #jsx [Route {:path "/blog/:slug" :element #jsx [blog-post/blog-post]}]]]))
+                       #jsx [Route {:path "/blog/:slug" :element #jsx [blog-post/blog-post]}]
+                       #jsx [Route {:path "*" :element #jsx [not-found/not-found]}]]]))

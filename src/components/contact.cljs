@@ -46,9 +46,9 @@
                             :variants container-v
                             :initial "hidden"
                             :animate "visible"}
-                (map (fn [card]
-                       #jsx [motion.div {:key (:title card) :variants item-v}
-                             [ContactCard card]])
+                (map (fn [{:keys [icon title value link color]}]
+                       #jsx [motion.div {:key title :variants item-v}
+                             [ContactCard {:icon icon :title title :value value :link link :color color}]])
                      cards)]]))
 
 (defn contact [{:keys [layoutId]}]

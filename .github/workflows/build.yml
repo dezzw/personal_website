@@ -30,6 +30,7 @@ jobs:
           curl -fsSL -o "${BB_TAR}" "${BB_URL}"
           echo "${BB_SHA256}  ${BB_TAR}" | sha256sum -c -
           tar -xzf "${BB_TAR}"
+          export PATH="${BB_DIR}:${PATH}"
           echo "${BB_DIR}" >> "${GITHUB_PATH}"
           bb --version
 

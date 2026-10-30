@@ -32,22 +32,19 @@
          [:div {:className "flex items-center gap-3"}
           [:div {:className (str "w-10 h-10 rounded-full flex items-center justify-center " color)}
            #jsx [FolderGit2 {:size 20 :className "text-white"}]]
-          [:div {:className (str "min-w-0 flex-1 "
-                                 (when github "max-md:pr-[52px] md:pr-0"))}
+          [:div
            [:h3 {:className "font-bold text-xl text-text-primary"} title]
            (when status
              #jsx [:div {:className "flex items-center gap-1 mt-1"}
                    (status-icon status)
                    [:span {:className (str "text-xs font-medium " (status-color status))}
                     (status-label status)]])]]
-         [:div {:className "flex gap-2 shrink-0"}
+         [:div {:className "flex gap-2"}
           (when github
             #jsx [:a {:href github :target "_blank" :rel "noopener noreferrer"
                       :aria-label (str title " on GitHub")
-                      :className "group flex shrink-0 items-center justify-center max-md:justify-end min-w-[44px] min-h-[44px] w-11 h-11 md:min-w-0 md:min-h-0 md:w-auto md:h-auto md:p-2 rounded-full bg-transparent max-md:[-webkit-tap-highlight-color:transparent] max-md:hover:bg-transparent max-md:active:bg-transparent md:bg-white md:hover:bg-gray-200 transition-colors text-text-secondary md:hover:text-text-primary"}
-                  [:span {:className "flex shrink-0 items-center justify-center w-[34px] h-[34px] min-w-[34px] min-h-[34px] rounded-full bg-white max-md:group-active:bg-gray-200 md:hidden"}
-                   #jsx [Github {:size 18}]]
-                  #jsx [Github {:size 18 :className "hidden md:block"}]])
+                      :className "group max-md:relative md:static p-2 max-md:rounded-none max-md:bg-transparent max-md:[-webkit-tap-highlight-color:transparent] max-md:hover:bg-transparent max-md:active:bg-transparent max-md:before:content-[''] max-md:before:absolute max-md:before:-inset-[5px] max-md:before:z-10 max-md:after:content-[''] max-md:after:absolute max-md:after:inset-0 max-md:after:rounded-full max-md:after:bg-white max-md:after:pointer-events-none max-md:group-active:after:bg-gray-200 rounded-full bg-white hover:bg-gray-200 transition-colors text-text-secondary hover:text-text-primary"}
+                  #jsx [Github {:size 18 :className "relative z-[1] max-md:z-[1]"}]])
           (when link
             #jsx [:a {:href link :target "_blank" :rel "noopener noreferrer"
                       :aria-label (str title " website")

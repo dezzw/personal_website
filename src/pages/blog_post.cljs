@@ -6,7 +6,7 @@
 
 (defn missing-post-view [pathname posts]
   #jsx [:div {:className "min-h-screen bg-bg font-sans px-4 py-8 md:px-6 md:py-16"}
-        [:div {:className "max-w-2xl mx-auto"}
+        [:div {:className "max-w-3xl mx-auto"}
          [:Link {:to "/blog"
                  :className "text-accent-blue hover:underline mb-6 inline-block text-sm md:text-base"}
           "← Back to blog"]
@@ -18,7 +18,7 @@
           [:code {:className "inline-block bg-gray-100 text-text-secondary text-sm font-mono px-4 py-2 rounded-full mb-8"}
            pathname]
           [:p {:className "text-text-secondary mb-4"} "Try one of these instead:"]
-          [:ul {:className "space-y-3 mb-8"}
+          [:ul {:className "space-y-3 mb-6"}
            (-> (vec (sort-by :date #(compare %2 %1) posts))
                (.map (fn [post]
                        #jsx [:li {:key (:slug post)}

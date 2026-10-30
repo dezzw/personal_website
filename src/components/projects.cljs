@@ -4,12 +4,13 @@
             [utils.site-data :as site-data]
             [utils.motion :as motion-utils]))
 
-(defn status-icon [status]
-  (case status
-    "in-progress" #jsx [Clock {:size 12 :className "text-yellow-500"}]
-    "finished" #jsx [CheckCircle2 {:size 12 :className "text-green-500"}]
-    "archived" #jsx [AlertCircle {:size 12 :className "text-gray-400"}]
-    nil))
+(defn status-icon [status & [{:keys [compact-mobile]}]]
+  (let [extra (if compact-mobile " w-3.5 h-3.5 md:w-3 md:h-3" "")]
+    (case status
+      "in-progress" #jsx [Clock {:size 12 :className (str "text-yellow-500" extra)}]
+      "finished" #jsx [CheckCircle2 {:size 12 :className (str "text-green-500" extra)}]
+      "archived" #jsx [AlertCircle {:size 12 :className (str "text-gray-400" extra)}]
+      nil)))
 
 (defn status-label [status]
   (case status
@@ -42,8 +43,8 @@
           (when github
             #jsx [:a {:href github :target "_blank" :rel "noopener noreferrer"
                       :aria-label (str title " on GitHub")
-                      :className "p-2 rounded-full bg-white hover:bg-gray-200 transition-colors text-text-secondary hover:text-text-primary"}
-                  #jsx [Github {:size 18}]])
+                      :className "max-md:relative md:static p-2 max-md:rounded-none max-md:bg-transparent max-md:[-webkit-tap-highlight-color:transparent] max-md:hover:bg-transparent max-md:active:bg-transparent max-md:before:content-[''] max-md:before:absolute max-md:before:-inset-[5px] max-md:before:z-10 max-md:after:content-[''] max-md:after:absolute max-md:after:inset-0 max-md:after:rounded-full max-md:after:bg-white max-md:after:pointer-events-none max-md:active:after:bg-gray-200 rounded-full bg-white hover:bg-gray-200 transition-colors text-text-secondary hover:text-text-primary"}
+                  #jsx [Github {:size 18 :className "max-md:relative max-md:z-[1]"}]])
           (when link
             #jsx [:a {:href link :target "_blank" :rel "noopener noreferrer"
                       :aria-label (str title " website")
@@ -107,9 +108,10 @@
                                [:div {:className "flex items-center gap-2 mb-2"}
                                 [:div {:className (str "w-2 h-2 rounded-full " (dot-color (:color project)))}]
                                 [:h3 {:className "font-bold text-text-primary"} (:title project)]]
-                               [:div {:className "flex items-center gap-1 mb-2"}
-                                (status-icon (:status project))
-                                [:span {:className (str "text-[10px] font-medium " (status-color (:status project)))}
+                               [:div {:className "flex items-center gap-1 max-md:gap-1 mb-2"}
+                                (status-icon (:status project) {:compact-mobile true})
+                                [:span {:className (str "max-md:text-xs max-md:leading-4 md:text-[10px] font-medium "
+                                                        (status-color (:status project)))}
                                  (status-label (:status project))]]
                                [:p {:className "text-sm text-text-secondary line-clamp-2"} (:short-desc project)]])
                        (or data []))])]))

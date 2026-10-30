@@ -5,11 +5,23 @@
             [utils.site-data :as site-data]
             [utils.error-page-seo :as error-page-seo]))
 
+(def ^:private back-link-touch-16
+  "text-accent-blue hover:underline inline-block max-md:inline-flex max-md:items-center max-md:h-11 max-md:px-2 max-md:-mx-2 max-md:-mt-[10px] max-md:text-base")
+
+(def ^:private back-link-touch-14
+  "text-accent-blue hover:underline inline-block max-md:inline-flex max-md:items-center max-md:h-11 max-md:px-2 max-md:-mx-2 max-md:-mt-3 max-md:text-sm")
+
+(def ^:private back-link-to-title
+  (str back-link-touch-16 " mb-8 max-md:mb-[22px]"))
+
+(def ^:private back-link-to-card
+  (str back-link-touch-14 " mb-6 max-md:mb-3 md:text-base"))
+
 (defn missing-post-view [pathname posts]
   #jsx [:div {:className "min-h-screen bg-bg font-sans px-4 py-8 md:px-6 md:py-16"}
         [:div {:className "max-w-3xl mx-auto"}
          [:Link {:to "/blog"
-                 :className "text-accent-blue hover:underline mb-6 inline-block text-sm md:text-base"}
+                 :className back-link-to-card}
           "← Back to blog"]
          [:div {:className "bento-card p-6 md:p-10"}
           [:p {:className "text-xs font-medium uppercase tracking-wide text-text-secondary mb-4"}
@@ -40,7 +52,8 @@
         {:keys [data manifest-loading manifest-error]} (site-data/use-blog-manifest)
         posts (when data (:posts data))
         slug-known? (boolean (some #(= (:slug %) slug) posts))
-        {:keys [data post-loading post-error]} (site-data/use-blog-post (when slug-known? slug))]
+        {:keys [data post-loading post-error]} (site-data/use-blog-post (when slug-known? slug))
+        back-to-blog back-link-to-title]
     (react/useEffect
      (fn []
        (when (and slug-known? (:title data))
@@ -64,25 +77,19 @@
       post-loading
       #jsx [:div {:className "min-h-screen bg-bg font-sans px-6 py-16"}
             [:div {:className "max-w-3xl mx-auto"}
-             [:Link {:to "/blog"
-                     :className "text-accent-blue hover:underline mb-8 inline-block"}
-              "← Back to blog"]
+             [:Link {:to "/blog" :className back-to-blog} "← Back to blog"]
              [:p {:className "text-text-secondary"} "Loading..."]]]
 
       post-error
       #jsx [:div {:className "min-h-screen bg-bg font-sans px-6 py-16"}
             [:div {:className "max-w-3xl mx-auto"}
-             [:Link {:to "/blog"
-                     :className "text-accent-blue hover:underline mb-8 inline-block"}
-              "← Back to blog"]
+             [:Link {:to "/blog" :className back-to-blog} "← Back to blog"]
              [:p {:className "text-red-500"} post-error]]]
 
       :else
       #jsx [:div {:className "min-h-screen bg-bg font-sans"}
             [:div {:className "max-w-3xl mx-auto px-6 py-16"}
-             [:Link {:to "/blog"
-                     :className "text-accent-blue hover:underline mb-8 inline-block"}
-              "← Back to blog"]
+             [:Link {:to "/blog" :className back-to-blog} "← Back to blog"]
              [:article
               [:h1 {:className "text-4xl md:text-5xl font-bold text-text-primary mb-4"}
                (:title data)]

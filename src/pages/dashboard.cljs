@@ -18,7 +18,7 @@
 (defn Portal [{:keys [children]}]
   (react-dom/createPortal children js/document.body))
 
-(defn CardWrapper [{:keys [id className children on-click on-save-viewport variants reduced-motion]}]
+(defn CardWrapper [{:keys [id className children on-click on-save-viewport variants reduced-motion disable-hover]}]
   #jsx [motion.div {:variants variants
                     :role "button"
                     :tabIndex 0
@@ -35,7 +35,7 @@
                                    (.preventDefault e)
                                    (on-save-viewport id)
                                    (on-click id)))
-                    :whileHover (when-not reduced-motion {:scale 1.02})
+                    :whileHover (when (and (not reduced-motion) (not disable-hover)) {:scale 1.02})
                     :transition (motion-utils/fade-transition reduced-motion 0.2)}
         children])
 
@@ -63,13 +63,11 @@
       (set! (.-layout props) (motion-utils/layout-transition reduced-motion)))
     props))
 
-(defn ExpandedOverlay [{:keys [id on-close component reduced-motion skip-layout-morph]}]
+(defn ExpandedOverlay [{:keys [id on-close component reduced-motion]}]
   (let [layout-id (motion-utils/card-layout-id id)
         content-delay (motion-utils/content-fade-delay reduced-motion)
-        exit-transition (if skip-layout-morph
-                          #js {:opacity #js {:duration 0.1}}
-                          (motion-utils/fade-transition reduced-motion 0.2))
-        dialog-props (dialog-motion-props skip-layout-morph layout-id reduced-motion exit-transition)]
+        exit-transition (motion-utils/fade-transition reduced-motion 0.2)
+        dialog-props (dialog-motion-props false layout-id reduced-motion exit-transition)]
     (react/useEffect
      (fn []
        (let [handle-key (fn [e]
@@ -124,8 +122,15 @@
         (react/createElement
          react/Fragment
          nil
-         (when selected-id
-           (ExpandedBackdrop {:on-close on-close :reduced-motion reduced-motion}))
+         (react/createElement
+          AnimatePresence
+          nil
+          (when selected-id
+            (react/createElement
+             ExpandedBackdrop
+             #js {:key "backdrop"
+                  :on-close on-close
+                  :reduced-motion reduced-motion})))
          (react/createElement
           AnimatePresence
           #js {:onExitComplete on-exit-complete}
@@ -136,7 +141,6 @@
                   :id selected-id
                   :on-close on-close
                   :reduced-motion reduced-motion
-                  :skip-layout-morph skip-layout-exit
                   :component (when Selected
                                (react/createElement Selected
                                                     #js {:reducedMotion reduced-motion}))}))))}))))
@@ -177,6 +181,7 @@
         close-via (react/useRef nil)
         container-v (motion-utils/container-variants reduced-motion)
         item-v (motion-utils/item-variants reduced-motion)
+        card-hover-disabled? (or selected-id skip-layout-exit)
         save-scroll-top! (fn [_id]
                            (when-let [el (.-current scroll-container-ref)]
                              (set! (.-current saved-scroll-top) (.-scrollTop el))))
@@ -200,7 +205,7 @@
                       (set! (.-current close-via) via)
                       (set! (.-current closing-card-id) selected-id)
                       (set-skip-layout-exit true)
-                      (js/requestAnimationFrame #(set-selected-id nil)))]
+                      (set-selected-id nil))]
 
     (react/useEffect
      (fn []
@@ -232,7 +237,8 @@
                                           :className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2 h-full"
                                           :on-click open-card!
                                           :on-save-viewport save-scroll-top!
-                                          :reduced-motion reduced-motion}
+                                          :reduced-motion reduced-motion
+                                          :disable-hover card-hover-disabled?}
                              [info/info {:layoutId "info-card"}]])
 
                      #jsx [motion.div {:variants item-v
@@ -244,7 +250,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [todo/todo {:layoutId "todo-card"}]]
 
                      [CardWrapper {:id "projects"
@@ -252,7 +259,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [projects/projects {:layoutId "projects-card"}]]
 
                      [CardWrapper {:id "nix"
@@ -260,7 +268,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [nix/nix {:layoutId "nix-card"}]]
 
                      [CardWrapper {:id "emacs"
@@ -268,7 +277,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [emacs/emacs {:layoutId "emacs-card"}]]
 
                      [CardWrapper {:id "skills"
@@ -276,7 +286,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [skills/skills {:layoutId "skills-card"}]]
 
                      [CardWrapper {:id "experience"
@@ -284,7 +295,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [experience/experience {:layoutId "experience-card"}]]
 
                      [CardWrapper {:id "edu"
@@ -292,7 +304,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [edu/edu {:layoutId "edu-card"}]]
 
                      [CardWrapper {:id "contact"
@@ -300,7 +313,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [contact/contact {:layoutId "contact-card"}]]]
 
                 [ExpandedLayer {:selected-id selected-id

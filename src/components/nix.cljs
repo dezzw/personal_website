@@ -35,4 +35,4 @@
                     :className "bento-card h-full flex items-center justify-center bg-[#f0f8ff] hover:bg-[#e6f2ff] transition-colors group relative"}
         [:div {:className "absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}
          #jsx [Settings {:size 16 :className "text-blue-400"}]]
-        [:img {:src nix-img :className "w-16 h-16 md:w-20 md:h-20 opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"}]])
+        [:img {:src nix-img :className "w-16 h-16 md:w-20 md:h-20 opacity-80 group-hover:opacity-100 transition-opacity duration-300"}]])

@@ -154,17 +154,13 @@
         ;; Cloudflare Pages currently treats `200` rules to `/index.html` as 308
         ;; redirects to `/`. Blog SPA entrypoints are emitted as physical
         ;; `blog/**/index.html` copies in vite.config.js instead.
-        intended (concat ["/blog /index.html 200"]
-                         (map (fn [post]
-                                (str "/blog/" (:slug post) " /index.html 200"))
-                              posts))
-        body (str/join "\n"
-                       (concat (map #(str "# " %) intended)
-                               [""
-                                "# Active 200 rules omitted: Cloudflare Pages rewrites 308 to /."
-                                "# SPA: dist/404.html + blog/**/index.html (vite.config.js)."]))]
+        rules (concat ["/blog /index.html 200"]
+                        (map (fn [post]
+                               (str "/blog/" (:slug post) " /index.html 200"))
+                             posts))
+        body (str/join "\n" rules)]
     (spit (str public-dir "/_redirects") body)
-    (println "Built _redirects (" (count intended) "intended SPA rules documented)")))
+    (println "Built _redirects (" (count rules) "active SPA rules)")))
 
 (defn build-seo! []
   (spit (str public-dir "/robots.txt")

@@ -4,7 +4,8 @@
 (defn use-error-page-seo! [active?]
   (react/useEffect
    (fn []
-     (when active?
+     (if (not active?)
+       nil
        (let [prev-title (.-title js/document)
              existing (.querySelector js/document "meta[name=\"robots\"]")
              meta (or existing (.createElement js/document "meta"))
@@ -16,6 +17,5 @@
          (set! (.-title js/document) "404 | Desmond Wang")
          (fn []
            (.remove meta)
-           (set! (.-title js/document) prev-title))))
-     js/undefined)
+           (set! (.-title js/document) prev-title)))))
    #js [active?]))

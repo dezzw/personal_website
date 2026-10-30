@@ -62,22 +62,38 @@
          "Feel free to reach out for collaborations or just a friendly hello."]
         
         [:div {:className "flex flex-wrap justify-center gap-4"}
-         [:a {:href "mailto:dw@dezzw.com" 
+         [:a {:href "mailto:dw@dezzw.com"
+              :aria-label "Email"
               :className "px-6 py-3 rounded-full bg-text-primary text-white font-medium hover:bg-gray-800 transition-colors shadow-sm min-w-[120px] text-center" ;; Added min-w and text-center
-              :onClick #(.stopPropagation %)} 
+              :onPointerDown #(.stopPropagation %)
+              :onKeyDown #(.stopPropagation %)
+              :onClick #(.stopPropagation %)}
           "Email"]
-         [:a {:href "https://github.com/dezzw" 
+         [:a {:href "https://github.com/dezzw"
+              :aria-label "GitHub"
+              :target "_blank"
+              :rel "noopener noreferrer"
               :className "px-6 py-3 rounded-full bg-gray-100 text-text-primary font-medium hover:bg-gray-200 transition-colors shadow-sm min-w-[120px] text-center"
-              :onClick #(.stopPropagation %)} 
+              :onPointerDown #(.stopPropagation %)
+              :onKeyDown #(.stopPropagation %)
+              :onClick #(.stopPropagation %)}
           "GitHub"]
-         [:a {:href "https://www.linkedin.com/in/dezzw" 
+         [:a {:href "https://www.linkedin.com/in/dezzw"
+              :aria-label "LinkedIn"
+              :target "_blank"
+              :rel "noopener noreferrer"
               :className "px-6 py-3 rounded-full bg-[#0077b5] text-white font-medium hover:bg-[#006396] transition-colors shadow-sm min-w-[120px] text-center"
-              :onClick #(.stopPropagation %)} 
+              :onPointerDown #(.stopPropagation %)
+              :onKeyDown #(.stopPropagation %)
+              :onClick #(.stopPropagation %)}
           "LinkedIn"]
-         [:a {:href "/resume.pdf" 
+         [:a {:href "/resume.pdf"
+              :aria-label "Resume"
               :target "_blank"
               :rel "noopener noreferrer"
               :className "px-6 py-3 rounded-full bg-accent-blue text-white font-medium hover:bg-blue-600 transition-colors shadow-sm flex items-center justify-center gap-2 min-w-[120px]"
-              :onClick #(.stopPropagation %)} 
+              :onPointerDown #(.stopPropagation %)
+              :onKeyDown #(.stopPropagation %)
+              :onClick #(.stopPropagation %)}
           "Resume"
           [:span {:className "text-lg"} "→"]]]])

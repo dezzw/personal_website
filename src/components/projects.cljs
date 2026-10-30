@@ -41,10 +41,12 @@
          [:div {:className "flex gap-2"}
           (when github
             #jsx [:a {:href github :target "_blank" :rel "noopener noreferrer"
+                      :aria-label (str title " on GitHub")
                       :className "p-2 rounded-full bg-white hover:bg-gray-200 transition-colors text-text-secondary hover:text-text-primary"}
                   #jsx [Github {:size 18}]])
           (when link
             #jsx [:a {:href link :target "_blank" :rel "noopener noreferrer"
+                      :aria-label (str title " website")
                       :className "p-2 rounded-full bg-white hover:bg-gray-200 transition-colors text-text-secondary hover:text-text-primary"}
                   #jsx [ExternalLink {:size 18}]])]]
         [:p {:className "text-text-secondary leading-relaxed mb-6 flex-grow"} desc]

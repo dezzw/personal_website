@@ -2,7 +2,8 @@
   (:require ["react" :as react]
             ["react-router-dom" :refer [Link useParams useLocation]]
             ["lucide-react" :refer [ChevronRight]]
-            [utils.site-data :as site-data]))
+            [utils.site-data :as site-data]
+            [utils.error-page-seo :as error-page-seo]))
 
 (defn missing-post-view [pathname posts]
   #jsx [:div {:className "min-h-screen bg-bg font-sans px-4 py-8 md:px-6 md:py-16"}
@@ -46,12 +47,8 @@
          (set! (.-title js/document) (str (:title data) " | Desmond Wang")))
        js/undefined)
      #js [data slug-known?])
-    (react/useEffect
-     (fn []
-       (when (and (not manifest-loading) (not slug-known?))
-         (set! (.-title js/document) "404 | Desmond Wang"))
-       js/undefined)
-     #js [manifest-loading slug-known?])
+    (error-page-seo/use-error-page-seo!
+     (and (not manifest-loading) (not slug-known?)))
     (cond
       manifest-loading
       #jsx [:div {:className "min-h-screen bg-bg font-sans px-6 py-16"}

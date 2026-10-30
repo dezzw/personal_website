@@ -1,17 +1,14 @@
 (ns pages.not-found
   (:require ["react" :as react]
             ["react-router-dom" :refer [Link useLocation]]
-            ["lucide-react" :refer [ChevronRight]]))
+            ["lucide-react" :refer [ChevronRight]]
+            [utils.error-page-seo :as error-page-seo]))
 
 (def memoji-img (js* "new URL('../../assets/Image.png', import.meta.url).href"))
 
 (defn not-found []
   (let [pathname (.-pathname (useLocation))]
-    (react/useEffect
-     (fn []
-       (set! (.-title js/document) "404 | Desmond Wang")
-       js/undefined)
-     #js [])
+    (error-page-seo/use-error-page-seo! true)
     #jsx [:div {:className "min-h-screen bg-bg font-sans px-4 py-8 md:px-8 md:py-12"}
           [:div {:className "max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5"}
            [:div {:className "bento-card !border !border-gray-100 !shadow-[0_4px_24px_rgba(0,0,0,0.06)] flex flex-col items-center text-center px-6 py-10 md:py-12 md:row-span-2"}

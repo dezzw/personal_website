@@ -151,14 +151,20 @@
         posts (if (.exists (io/file manifest-path))
                 (:posts (json/parse-string (slurp manifest-path) true))
                 [])
-        lines (concat ["/blog /blog/index.html 200"
-                      "/blog/ /blog/index.html 200"]
-                      (mapcat (fn [post]
-                                [(str "/blog/" (:slug post) " /blog/" (:slug post) "/index.html 200")
-                                 (str "/blog/" (:slug post) "/ /blog/" (:slug post) "/index.html 200")])
-                              posts))]
-    (spit (str public-dir "/_redirects") (str/join "\n" lines))
-    (println "Built _redirects with" (count lines) "rules")))
+        ;; Cloudflare Pages currently treats `200` rules to `/index.html` as 308
+        ;; redirects to `/`. Blog SPA entrypoints are emitted as physical
+        ;; `blog/**/index.html` copies in vite.config.js instead.
+        intended (concat ["/blog /index.html 200"]
+                         (map (fn [post]
+                                (str "/blog/" (:slug post) " /index.html 200"))
+                              posts))
+        body (str/join "\n"
+                       (concat (map #(str "# " %) intended)
+                               [""
+                                "# Active 200 rules omitted: Cloudflare Pages rewrites 308 to /."
+                                "# SPA: dist/404.html + blog/**/index.html (vite.config.js)."]))]
+    (spit (str public-dir "/_redirects") body)
+    (println "Built _redirects (" (count intended) "intended SPA rules documented)")))
 
 (defn build-seo! []
   (spit (str public-dir "/robots.txt")

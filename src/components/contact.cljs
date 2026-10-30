@@ -30,7 +30,7 @@
                {:icon #jsx [Linkedin {:size 24}]
                 :title "LinkedIn"
                 :value "Desmond Wang"
-                :link "https://linkedin.com/in/desmond-wang"
+                :link "https://www.linkedin.com/in/dezzw"
                 :color "bg-[#0077b5]"}
                {:icon #jsx [FileText {:size 24}]
                 :title "Resume"
@@ -70,7 +70,7 @@
               :className "px-6 py-3 rounded-full bg-gray-100 text-text-primary font-medium hover:bg-gray-200 transition-colors shadow-sm min-w-[120px] text-center"
               :onClick #(.stopPropagation %)} 
           "GitHub"]
-         [:a {:href "https://linkedin.com/in/desmond-wang" 
+         [:a {:href "https://www.linkedin.com/in/dezzw" 
               :className "px-6 py-3 rounded-full bg-[#0077b5] text-white font-medium hover:bg-[#006396] transition-colors shadow-sm min-w-[120px] text-center"
               :onClick #(.stopPropagation %)} 
           "LinkedIn"]

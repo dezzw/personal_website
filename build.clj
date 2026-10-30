@@ -152,11 +152,16 @@
                 (:posts (json/parse-string (slurp manifest-path) true))
                 [])
         ;; Cloudflare Pages 308s `200` rewrites to `/index.html` to `/`; use `/` instead.
+        ;; Trailing-slash redirects must precede SPA 200 rewrites (first match wins).
         ;; Unknown paths use dist/404.html (vite.config.js). No blog/**/index.html copies.
-        rules (concat ["/blog / 200"]
-                        (map (fn [post]
-                               (str "/blog/" (:slug post) " / 200"))
-                             posts))
+        rules (concat ["/blog/ /blog 308"]
+                      (map (fn [post]
+                             (str "/blog/" (:slug post) "/ /blog/" (:slug post) " 308"))
+                           posts)
+                      ["/blog / 200"]
+                      (map (fn [post]
+                             (str "/blog/" (:slug post) " / 200"))
+                           posts))
         body (str/join "\n" rules)]
     (spit (str public-dir "/_redirects") body)
     (println "Built _redirects (" (count rules) "active SPA rules)")))

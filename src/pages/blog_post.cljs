@@ -19,7 +19,7 @@
            pathname]
           [:p {:className "text-text-secondary mb-4"} "Try one of these instead:"]
           [:ul {:className "space-y-3 mb-8"}
-           (-> posts
+           (-> (vec (sort-by :date #(compare %2 %1) posts))
                (.map (fn [post]
                        #jsx [:li {:key (:slug post)}
                              [:Link {:to (str "/blog/" (:slug post))

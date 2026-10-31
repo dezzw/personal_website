@@ -49,21 +49,22 @@
   #jsx [motion.div {:className "fixed inset-0 z-[100] bg-black/40 backdrop-blur-md"
                     :role "presentation"
                     :initial {:opacity 0}
-                    :animate {:opacity 1}
-                    :exit {:opacity 0}
-                    :transition (motion-utils/fade-transition reduced-motion 0.2)
+                    :animate {:opacity 1
+                              :transition (motion-utils/fade-transition reduced-motion 0.2)}
+                    :exit #js {:opacity 0
+                               :transition (motion-utils/close-fade-transition reduced-motion 0.12)}
                     :onPointerDown (fn [e]
                                      (.preventDefault e)
                                      (.stopPropagation e)
                                      (on-close "backdrop"))}])
 
-(defn- dialog-motion-props [skip-layout-morph layout-id reduced-motion exit-transition]
+(defn- dialog-motion-props [skip-layout-morph layout-id reduced-motion]
   (let [props #js {:role "dialog"
                    :aria-modal "true"
                    :className "relative w-full max-w-5xl h-[85vh] bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col pointer-events-auto"
                    :style #js {:originX 0.5 :originY 0.5}
-                   :exit #js {:opacity 0}
-                   :transition exit-transition}]
+                   :exit #js {:opacity 0
+                               :transition (motion-utils/close-fade-transition reduced-motion 0.12)}}]
     (when-not skip-layout-morph
       (set! (.-layoutId props) layout-id)
       (set! (.-layout props) (motion-utils/layout-transition reduced-motion)))
@@ -72,8 +73,7 @@
 (defn ExpandedOverlay [{:keys [id on-close component reduced-motion]}]
   (let [layout-id (motion-utils/card-layout-id id)
         content-delay (motion-utils/content-fade-delay reduced-motion)
-        exit-transition (motion-utils/fade-transition reduced-motion 0.2)
-        dialog-props (dialog-motion-props false layout-id reduced-motion exit-transition)]
+        dialog-props (dialog-motion-props false layout-id reduced-motion)]
     (react/useEffect
      (fn []
        (let [handle-key (fn [e]
@@ -86,9 +86,10 @@
      #js [on-close])
     #jsx [motion.div {:className "fixed inset-0 z-[101] flex items-center justify-center p-4 md:p-8 pointer-events-none"
                       :initial {:opacity 0}
-                      :animate {:opacity 1}
-                      :exit {:opacity 0}
-                      :transition exit-transition}
+                      :animate {:opacity 1
+                                :transition (motion-utils/fade-transition reduced-motion 0.2)}
+                      :exit #js {:opacity 0
+                                 :transition (motion-utils/close-fade-transition reduced-motion 0.12)}}
           (react/createElement
            motion/div
            dialog-props

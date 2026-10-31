@@ -44,7 +44,13 @@
   (if reduced? instant-item-variants list-stagger-item-variants))
 
 (defn fade-transition [reduced? duration]
+  (if reduced? #js {:duration 0} #js {:duration duration})
+
+(defn close-fade-transition [reduced? duration]
   (if reduced? #js {:duration 0} #js {:duration duration}))
+
+(defn close-layout-transition [reduced?]
+  (if reduced? #js {:duration 0} #js {:type "spring" :stiffness 520 :damping 38}))
 
 (defn spring-transition [reduced? {:keys [stiffness damping mass]}]
   (if reduced?

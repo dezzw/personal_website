@@ -22,6 +22,14 @@
   (when-let [t (.-target e)]
     (.closest t "a, button")))
 
+(defn- suppress-next-synthetic-click! []
+  (let [opts #js {:capture true :once true}
+        handler (fn [e]
+                  (.preventDefault e)
+                  (.stopPropagation e))]
+    (.addEventListener js/document "click" handler opts)
+    (js/setTimeout #(.removeEventListener js/document "click" handler true) 500)))
+
 (defn CardWrapper [{:keys [id className children on-click on-save-viewport variants reduced-motion disable-hover]}]
   #jsx [motion.div {:variants variants
                     :role "button"
@@ -34,7 +42,8 @@
                                                 (not (event-from-interactive? e)))
                                        (.preventDefault e)
                                        (on-save-viewport id)
-                                       (on-click id)))
+                                       (on-click id)
+                                       (suppress-next-synthetic-click!)))
                     :onKeyDown (fn [e]
                                  (when (and (contains? #{"Enter" " "} (.-key e))
                                             (not (event-from-interactive? e)))

@@ -41,7 +41,8 @@
                                    (.preventDefault e)
                                    (on-save-viewport id)
                                    (on-click id)))
-                    :whileHover (when (and (not reduced-motion) (not disable-hover)) {:scale 1.02})
+                    :whileHover (when-not reduced-motion {:scale 1.02})
+                    :animate (when (and (not reduced-motion) disable-hover) {:scale 1})
                     :transition (motion-utils/fade-transition reduced-motion 0.2)}
         children])
 

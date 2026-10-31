@@ -23,7 +23,7 @@
 
 (defn emacs [{:keys [layoutId]}]
   #jsx [motion.div {:layoutId layoutId
-                    :className "bento-card h-full flex items-center justify-center bg-gradient-to-br from-[#e6e4ff] to-[#f3e6ff] hover:from-[#dcd9ff] hover:to-[#ebd9ff] transition-colors group relative"}
+                    :className "bento-card h-full flex items-center justify-center bg-gradient-to-br from-[#e6e4ff] to-[#f3e6ff] hover:from-[#dcd9ff] hover:to-[#ebd9ff] transition-all group relative"}
         [:div {:className "absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"}
          #jsx [Command {:size 16 :className "text-purple-400"}]]
         [:img {:src emacs-img :alt "GNU Emacs logo" :className "w-16 h-16 md:w-20 md:h-20 opacity-90 group-hover:opacity-100 group-hover:rotate-12 transition-opacity duration-300"}]])

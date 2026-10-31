@@ -1,7 +1,7 @@
 (ns pages.dashboard
   (:require ["react" :as react]
             ["react-dom" :as react-dom]
-            ["framer-motion" :refer [motion AnimatePresence LayoutGroup]]
+            ["framer-motion" :refer [motion AnimatePresence LayoutGroup MotionConfig]]
             ["lucide-react" :refer [X]]
             [components.info :as info]
             [components.icon :as icon]
@@ -44,7 +44,11 @@
                     :whileHover (when-not reduced-motion {:scale 1.02})
                     :animate (when (and (not reduced-motion) disable-hover) {:scale 1})
                     :transition (motion-utils/fade-transition reduced-motion 0.2)}
-        children])
+        ;; Reduced motion: the card's own layoutId morph (it becomes the lead
+        ;; when the dialog closes) has no transition prop, so framer falls back
+        ;; to its 0.45s default layout transition. Make it instant.
+        #jsx [MotionConfig {:transition (when reduced-motion (motion-utils/layout-transition true))}
+              children]])
 
 (defn ExpandedBackdrop [{:keys [on-close reduced-motion]}]
   #jsx [motion.div {:className "fixed inset-0 z-[100] bg-black/40 backdrop-blur-md"

@@ -23,12 +23,17 @@
     (.closest t "a, button")))
 
 (defn- suppress-next-synthetic-click! []
-  (let [opts #js {:capture true :once true}
-        handler (fn [e]
-                  (.preventDefault e)
-                  (.stopPropagation e))]
-    (.addEventListener js/document "click" handler opts)
-    (js/setTimeout #(.removeEventListener js/document "click" handler true) 500)))
+  (let [ac (js/AbortController.)
+        opts #js {:capture true :signal (.-signal ac)}
+        disarm #(.abort ac)]
+    (.addEventListener js/document "click"
+                       (fn [e]
+                         (.preventDefault e)
+                         (.stopPropagation e)
+                         (disarm))
+                       opts)
+    (doseq [t #js ["pointercancel" "pointerdown" "keydown"]]
+      (.addEventListener js/document t disarm opts))))
 
 (defn CardWrapper [{:keys [id className children on-click on-save-viewport variants reduced-motion disable-hover]}]
   #jsx [motion.div {:variants variants

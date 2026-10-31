@@ -44,7 +44,7 @@
   (if reduced? instant-item-variants list-stagger-item-variants))
 
 (defn fade-transition [reduced? duration]
-  (if reduced? #js {:duration 0} #js {:duration duration})
+  (if reduced? #js {:duration 0} #js {:duration duration}))
 
 (defn close-fade-transition [reduced? duration]
   (if reduced? #js {:duration 0} #js {:duration duration}))

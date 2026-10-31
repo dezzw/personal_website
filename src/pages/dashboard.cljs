@@ -52,7 +52,7 @@
                     :animate {:opacity 1
                               :transition (motion-utils/fade-transition reduced-motion 0.2)}
                     :exit #js {:opacity 0
-                               :transition (motion-utils/close-fade-transition reduced-motion 0.08)}
+                               :transition (motion-utils/fade-transition reduced-motion 0.08)}
                     :onPointerDown (fn [e]
                                      (.preventDefault e)
                                      (.stopPropagation e)
@@ -65,7 +65,7 @@
                    :style #js {:originX 0.5 :originY 0.5}
                    :transition (motion-utils/fade-transition reduced-motion 0.2)
                    :exit #js {:opacity 0
-                               :transition (motion-utils/close-fade-transition reduced-motion 0.08)}}]
+                               :transition (motion-utils/fade-transition reduced-motion 0.08)}}]
     (when-not skip-layout-morph
       (set! (.-layoutId props) layout-id)
       (set! (.-layout props) (motion-utils/layout-transition reduced-motion)))
@@ -90,7 +90,7 @@
                       :animate {:opacity 1
                                 :transition (motion-utils/fade-transition reduced-motion 0.2)}
                       :exit #js {:opacity 0
-                                 :transition (motion-utils/close-fade-transition reduced-motion 0.08)}}
+                                 :transition (motion-utils/fade-transition reduced-motion 0.08)}}
           (react/createElement
            motion/div
            dialog-props

@@ -1,0 +1,1893 @@
+{
+  "url": "https://3b640435.personal-website-3s7.pages.dev",
+  "tag": "main",
+  "bundle": "assets/index-231acdfe.js",
+  "at": "2026-10-31T16:33:41.586Z",
+  "m390_reduce_tapBlank": {
+    "agg": {
+      "nix": {
+        "n": 5,
+        "through": 0,
+        "opened": 5
+      },
+      "contact": {
+        "n": 20,
+        "through": 0,
+        "opened": 20
+      },
+      "info": {
+        "n": 5,
+        "through": 0,
+        "opened": 5
+      },
+      "projects": {
+        "n": 5,
+        "through": 0,
+        "opened": 5
+      },
+      "edu": {
+        "n": 5,
+        "through": 0,
+        "opened": 5
+      }
+    },
+    "rows": [
+      {
+        "cardId": "nix",
+        "i": 0,
+        "pt": [
+          24,
+          374
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "nix",
+        "i": 1,
+        "pt": [
+          24,
+          374
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "nix",
+        "i": 2,
+        "pt": [
+          24,
+          374
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "nix",
+        "i": 3,
+        "pt": [
+          24,
+          374
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "nix",
+        "i": 4,
+        "pt": [
+          24,
+          374
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 0,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 1,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 2,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 3,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 4,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 5,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 6,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 7,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 8,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 9,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 10,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 11,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 12,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 13,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 14,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 15,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 16,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 17,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 18,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 19,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "info",
+        "i": 0,
+        "pt": [
+          24,
+          121
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "info",
+        "i": 1,
+        "pt": [
+          24,
+          121
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "info",
+        "i": 2,
+        "pt": [
+          24,
+          121
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "info",
+        "i": 3,
+        "pt": [
+          24,
+          121
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "info",
+        "i": 4,
+        "pt": [
+          24,
+          121
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "projects",
+        "i": 0,
+        "pt": [
+          24,
+          120
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "projects",
+        "i": 1,
+        "pt": [
+          24,
+          120
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "projects",
+        "i": 2,
+        "pt": [
+          24,
+          120
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "projects",
+        "i": 3,
+        "pt": [
+          24,
+          120
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "projects",
+        "i": 4,
+        "pt": [
+          24,
+          120
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "edu",
+        "i": 0,
+        "pt": [
+          24,
+          267
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "edu",
+        "i": 1,
+        "pt": [
+          24,
+          267
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "edu",
+        "i": 2,
+        "pt": [
+          24,
+          267
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "edu",
+        "i": 3,
+        "pt": [
+          24,
+          267
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "edu",
+        "i": 4,
+        "pt": [
+          24,
+          267
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      }
+    ]
+  },
+  "m390_reduce_noentry": {
+    "through": 0,
+    "n": 20,
+    "rows": [
+      {
+        "i": 0,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 1,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 2,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 3,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 4,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 5,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 6,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 7,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 8,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 9,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 10,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 11,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 12,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 13,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 14,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 15,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 16,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 17,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 18,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 19,
+        "pt": [
+          195,
+          678
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      }
+    ]
+  },
+  "m390_no-preference_tapBlank": {
+    "agg": {
+      "nix": {
+        "n": 5,
+        "through": 0,
+        "opened": 5
+      },
+      "contact": {
+        "n": 20,
+        "through": 0,
+        "opened": 20
+      },
+      "info": {
+        "n": 5,
+        "through": 0,
+        "opened": 5
+      },
+      "projects": {
+        "n": 5,
+        "through": 0,
+        "opened": 5
+      },
+      "edu": {
+        "n": 5,
+        "through": 0,
+        "opened": 5
+      }
+    },
+    "rows": [
+      {
+        "cardId": "nix",
+        "i": 0,
+        "pt": [
+          24,
+          374
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "nix",
+        "i": 1,
+        "pt": [
+          24,
+          374
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "nix",
+        "i": 2,
+        "pt": [
+          24,
+          374
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "nix",
+        "i": 3,
+        "pt": [
+          24,
+          374
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "nix",
+        "i": 4,
+        "pt": [
+          24,
+          374
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 0,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 1,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 2,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 3,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 4,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 5,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 6,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 7,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 8,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 9,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 10,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 11,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 12,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 13,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 14,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 15,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 16,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 17,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 18,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "contact",
+        "i": 19,
+        "pt": [
+          24,
+          478
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "info",
+        "i": 0,
+        "pt": [
+          24,
+          121
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "info",
+        "i": 1,
+        "pt": [
+          24,
+          121
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "info",
+        "i": 2,
+        "pt": [
+          24,
+          121
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "info",
+        "i": 3,
+        "pt": [
+          24,
+          121
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "info",
+        "i": 4,
+        "pt": [
+          24,
+          121
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "projects",
+        "i": 0,
+        "pt": [
+          24,
+          120
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "projects",
+        "i": 1,
+        "pt": [
+          24,
+          120
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "projects",
+        "i": 2,
+        "pt": [
+          24,
+          120
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "projects",
+        "i": 3,
+        "pt": [
+          24,
+          120
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "projects",
+        "i": 4,
+        "pt": [
+          24,
+          120
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "edu",
+        "i": 0,
+        "pt": [
+          24,
+          267
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "edu",
+        "i": 1,
+        "pt": [
+          24,
+          267
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "edu",
+        "i": 2,
+        "pt": [
+          24,
+          267
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "edu",
+        "i": 3,
+        "pt": [
+          24,
+          267
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "cardId": "edu",
+        "i": 4,
+        "pt": [
+          24,
+          267
+        ],
+        "opened": true,
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      }
+    ]
+  },
+  "m390_no-preference_noentry": {
+    "through": 0,
+    "n": 20,
+    "rows": [
+      {
+        "i": 0,
+        "pt": [
+          24,
+          540
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 1,
+        "pt": [
+          24,
+          540
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 2,
+        "pt": [
+          24,
+          512
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 3,
+        "pt": [
+          24,
+          540
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 4,
+        "pt": [
+          24,
+          512
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 5,
+        "pt": [
+          24,
+          526
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 6,
+        "pt": [
+          24,
+          526
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 7,
+        "pt": [
+          24,
+          540
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 8,
+        "pt": [
+          24,
+          512
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 9,
+        "pt": [
+          24,
+          526
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 10,
+        "pt": [
+          24,
+          526
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 11,
+        "pt": [
+          24,
+          526
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 12,
+        "pt": [
+          24,
+          512
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 13,
+        "pt": [
+          24,
+          540
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 14,
+        "pt": [
+          24,
+          526
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 15,
+        "pt": [
+          24,
+          540
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 16,
+        "pt": [
+          24,
+          540
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 17,
+        "pt": [
+          24,
+          526
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 18,
+        "pt": [
+          24,
+          540
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      },
+      {
+        "i": 19,
+        "pt": [
+          24,
+          540
+        ],
+        "popup": false,
+        "mainNav": false,
+        "extNav": false,
+        "clickLink": false,
+        "through": false
+      }
+    ]
+  },
+  "contactButtons": [
+    {
+      "label": "Email",
+      "href": "mailto:dw@dezzw.com",
+      "dialogOpened": false,
+      "navigated": true
+    },
+    {
+      "label": "GitHub",
+      "href": "https://github.com/dezzw",
+      "dialogOpened": false,
+      "navigated": true
+    },
+    {
+      "label": "LinkedIn",
+      "href": "https://www.linkedin.com/in/dezzw",
+      "dialogOpened": false,
+      "navigated": true
+    },
+    {
+      "label": "Resume",
+      "href": "/resume.pdf",
+      "dialogOpened": false,
+      "navigated": true
+    }
+  ],
+  "desk_latency": [
+    {
+      "cardId": "nix",
+      "input": "point",
+      "median": 4.7000000000116415,
+      "samples": [
+        12.200000000011642,
+        5.2000000000116415,
+        4.2000000000116415,
+        4.2999999999883585,
+        4.7000000000116415
+      ]
+    },
+    {
+      "cardId": "nix",
+      "input": "enter",
+      "median": 4.100000000034925,
+      "samples": [
+        4.399999999965075,
+        5.400000000023283,
+        4.099999999976717,
+        4.100000000034925,
+        4.099999999976717
+      ]
+    },
+    {
+      "cardId": "nix",
+      "input": "space",
+      "median": 4,
+      "samples": [
+        4.199999999953434,
+        4,
+        4,
+        4.2000000000116415,
+        4
+      ]
+    },
+    {
+      "cardId": "contact",
+      "input": "point",
+      "median": 4.7000000000116415,
+      "samples": [
+        7.099999999976717,
+        4.7000000000116415,
+        4.7000000000116415,
+        4.599999999976717,
+        4.5
+      ]
+    },
+    {
+      "cardId": "contact",
+      "input": "enter",
+      "median": 4.300000000046566,
+      "samples": [
+        5.399999999965075,
+        5.400000000023283,
+        4.2999999999883585,
+        4.2999999999883585,
+        4.300000000046566
+      ]
+    },
+    {
+      "cardId": "contact",
+      "input": "space",
+      "median": 4.2999999999883585,
+      "samples": [
+        4.099999999976717,
+        8.400000000023283,
+        4.199999999953434,
+        4.2999999999883585,
+        4.399999999965075
+      ]
+    },
+    {
+      "cardId": "info",
+      "input": "point",
+      "median": 4.099999999976717,
+      "samples": [
+        6.7999999999883585,
+        4.099999999976717,
+        4,
+        4.2999999999883585,
+        3.8999999999650754
+      ]
+    },
+    {
+      "cardId": "info",
+      "input": "enter",
+      "median": 3.8999999999650754,
+      "samples": [
+        3.900000000023283,
+        3.5,
+        4.2000000000116415,
+        3.8999999999650754,
+        3.6000000000349246
+      ]
+    },
+    {
+      "cardId": "info",
+      "input": "space",
+      "median": 3.599999999976717,
+      "samples": [
+        3.599999999976717,
+        3.5,
+        3.6000000000349246,
+        3.6000000000349246,
+        3.400000000023283
+      ]
+    },
+    {
+      "cardId": "projects",
+      "input": "point",
+      "median": 5.399999999965075,
+      "samples": [
+        7.2999999999883585,
+        9.599999999976717,
+        5.399999999965075,
+        4.400000000023283,
+        4.099999999976717
+      ]
+    },
+    {
+      "cardId": "projects",
+      "input": "enter",
+      "median": 4,
+      "samples": [
+        6.100000000034925,
+        4,
+        4,
+        3.599999999976717,
+        4.2999999999883585
+      ]
+    },
+    {
+      "cardId": "projects",
+      "input": "space",
+      "median": 4,
+      "samples": [
+        4,
+        4.100000000034925,
+        3.7000000000116415,
+        4.300000000046566,
+        3.7999999999883585
+      ]
+    },
+    {
+      "cardId": "edu",
+      "input": "point",
+      "median": 4,
+      "samples": [
+        4.599999999976717,
+        3.8999999999650754,
+        4,
+        3.7000000000116415,
+        4
+      ]
+    },
+    {
+      "cardId": "edu",
+      "input": "enter",
+      "median": 6.2000000000116415,
+      "samples": [
+        4.2999999999883585,
+        6.2000000000116415,
+        6.7000000000116415,
+        7.7000000000116415,
+        5
+      ]
+    },
+    {
+      "cardId": "edu",
+      "input": "space",
+      "median": 5.7999999999883585,
+      "samples": [
+        4.2000000000116415,
+        6,
+        5.7999999999883585,
+        6.199999999953434,
+        3.900000000023283
+      ]
+    }
+  ],
+  "hoverReset": {
+    "scaleBefore": "matrix(1.02, 0, 0, 1.02, 0, 0)",
+    "scaleAfter": "matrix(1.02, 0, 0, 1.02, 0, 0)",
+    "resetOk": true
+  }
+}

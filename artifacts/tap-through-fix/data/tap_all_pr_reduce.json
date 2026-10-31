@@ -1,0 +1,33 @@
+{
+  "URL": "https://3b640435.personal-website-3s7.pages.dev",
+  "bundle": "assets/index-231acdfe.js",
+  "TAG": "pr",
+  "RMQ": "reduce",
+  "agg": {
+    "nix": {
+      "n": 5,
+      "through": 0,
+      "opened": 5
+    },
+    "contact": {
+      "n": 20,
+      "through": 0,
+      "opened": 20
+    },
+    "info": {
+      "n": 5,
+      "through": 0,
+      "opened": 5
+    },
+    "projects": {
+      "n": 5,
+      "through": 0,
+      "opened": 5
+    },
+    "edu": {
+      "n": 5,
+      "through": 0,
+      "opened": 5
+    }
+  }
+}

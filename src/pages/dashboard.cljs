@@ -67,7 +67,7 @@
                                :transition (motion-utils/close-fade-transition reduced-motion 0.08)}}]
     (when-not skip-layout-morph
       (set! (.-layoutId props) layout-id)
-      (set! (.-layout props) (motion-utils/close-layout-transition reduced-motion)))
+      (set! (.-layout props) (motion-utils/layout-transition reduced-motion)))
     props))
 
 (defn ExpandedOverlay [{:keys [id on-close component reduced-motion]}]

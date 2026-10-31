@@ -1,7 +1,7 @@
 (ns pages.dashboard
   (:require ["react" :as react]
             ["react-dom" :as react-dom]
-            ["framer-motion" :refer [motion AnimatePresence LayoutGroup]]
+            ["framer-motion" :refer [motion AnimatePresence LayoutGroup MotionConfig]]
             ["lucide-react" :refer [X]]
             [components.info :as info]
             [components.icon :as icon]
@@ -22,7 +22,7 @@
   (when-let [t (.-target e)]
     (.closest t "a, button")))
 
-(defn CardWrapper [{:keys [id className children on-click on-save-viewport variants reduced-motion]}]
+(defn CardWrapper [{:keys [id className children on-click on-save-viewport variants reduced-motion disable-hover]}]
   #jsx [motion.div {:variants variants
                     :role "button"
                     :tabIndex 0
@@ -42,40 +42,44 @@
                                    (on-save-viewport id)
                                    (on-click id)))
                     :whileHover (when-not reduced-motion {:scale 1.02})
+                    :animate (when (and (not reduced-motion) disable-hover) {:scale 1})
                     :transition (motion-utils/fade-transition reduced-motion 0.2)}
-        children])
+        ;; Reduced motion: the card's own layoutId morph (it becomes the lead
+        ;; when the dialog closes) has no transition prop, so framer falls back
+        ;; to its 0.45s default layout transition. Make it instant.
+        #jsx [MotionConfig {:transition (when reduced-motion (motion-utils/layout-transition true))}
+              children]])
 
 (defn ExpandedBackdrop [{:keys [on-close reduced-motion]}]
   #jsx [motion.div {:className "fixed inset-0 z-[100] bg-black/40 backdrop-blur-md"
                     :role "presentation"
                     :initial {:opacity 0}
-                    :animate {:opacity 1}
-                    :exit {:opacity 0}
-                    :transition (motion-utils/fade-transition reduced-motion 0.2)
+                    :animate {:opacity 1
+                              :transition (motion-utils/fade-transition reduced-motion 0.2)}
+                    :exit #js {:opacity 0
+                               :transition (motion-utils/fade-transition reduced-motion 0.08)}
                     :onPointerDown (fn [e]
                                      (.preventDefault e)
                                      (.stopPropagation e)
                                      (on-close "backdrop"))}])
 
-(defn- dialog-motion-props [skip-layout-morph layout-id reduced-motion exit-transition]
+(defn- dialog-motion-props [skip-layout-morph layout-id reduced-motion]
   (let [props #js {:role "dialog"
                    :aria-modal "true"
                    :className "relative w-full max-w-5xl h-[85vh] bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col pointer-events-auto"
                    :style #js {:originX 0.5 :originY 0.5}
-                   :exit #js {:opacity 0}
-                   :transition exit-transition}]
+                   :transition (motion-utils/fade-transition reduced-motion 0.2)
+                   :exit #js {:opacity 0
+                               :transition (motion-utils/fade-transition reduced-motion 0.08)}}]
     (when-not skip-layout-morph
       (set! (.-layoutId props) layout-id)
       (set! (.-layout props) (motion-utils/layout-transition reduced-motion)))
     props))
 
-(defn ExpandedOverlay [{:keys [id on-close component reduced-motion skip-layout-morph]}]
+(defn ExpandedOverlay [{:keys [id on-close component reduced-motion]}]
   (let [layout-id (motion-utils/card-layout-id id)
         content-delay (motion-utils/content-fade-delay reduced-motion)
-        exit-transition (if skip-layout-morph
-                          #js {:opacity #js {:duration 0.1}}
-                          (motion-utils/fade-transition reduced-motion 0.2))
-        dialog-props (dialog-motion-props skip-layout-morph layout-id reduced-motion exit-transition)]
+        dialog-props (dialog-motion-props false layout-id reduced-motion)]
     (react/useEffect
      (fn []
        (let [handle-key (fn [e]
@@ -88,9 +92,10 @@
      #js [on-close])
     #jsx [motion.div {:className "fixed inset-0 z-[101] flex items-center justify-center p-4 md:p-8 pointer-events-none"
                       :initial {:opacity 0}
-                      :animate {:opacity 1}
-                      :exit {:opacity 0}
-                      :transition exit-transition}
+                      :animate {:opacity 1
+                                :transition (motion-utils/fade-transition reduced-motion 0.2)}
+                      :exit #js {:opacity 0
+                                 :transition (motion-utils/fade-transition reduced-motion 0.08)}}
           (react/createElement
            motion/div
            dialog-props
@@ -130,8 +135,15 @@
         (react/createElement
          react/Fragment
          nil
-         (when selected-id
-           (ExpandedBackdrop {:on-close on-close :reduced-motion reduced-motion}))
+         (react/createElement
+          AnimatePresence
+          nil
+          (when selected-id
+            (react/createElement
+             ExpandedBackdrop
+             #js {:key "backdrop"
+                  :on-close on-close
+                  :reduced-motion reduced-motion})))
          (react/createElement
           AnimatePresence
           #js {:onExitComplete on-exit-complete}
@@ -142,7 +154,6 @@
                   :id selected-id
                   :on-close on-close
                   :reduced-motion reduced-motion
-                  :skip-layout-morph skip-layout-exit
                   :component (when Selected
                                (react/createElement Selected
                                                     #js {:reducedMotion reduced-motion}))}))))}))))
@@ -183,6 +194,7 @@
         close-via (react/useRef nil)
         container-v (motion-utils/container-variants reduced-motion)
         item-v (motion-utils/item-variants reduced-motion)
+        card-hover-disabled? (or selected-id skip-layout-exit)
         save-scroll-top! (fn [_id]
                            (when-let [el (.-current scroll-container-ref)]
                              (set! (.-current saved-scroll-top) (.-scrollTop el))))
@@ -206,7 +218,7 @@
                       (set! (.-current close-via) via)
                       (set! (.-current closing-card-id) selected-id)
                       (set-skip-layout-exit true)
-                      (js/requestAnimationFrame #(set-selected-id nil)))]
+                      (set-selected-id nil))]
 
     (react/useEffect
      (fn []
@@ -238,7 +250,8 @@
                                           :className "col-span-1 md:col-span-2 lg:col-span-2 row-span-2 h-full"
                                           :on-click open-card!
                                           :on-save-viewport save-scroll-top!
-                                          :reduced-motion reduced-motion}
+                                          :reduced-motion reduced-motion
+                                          :disable-hover card-hover-disabled?}
                              [info/info {:layoutId "info-card"}]])
 
                      #jsx [motion.div {:variants item-v
@@ -250,7 +263,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [todo/todo {:layoutId "todo-card"}]]
 
                      [CardWrapper {:id "projects"
@@ -258,7 +272,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [projects/projects {:layoutId "projects-card"}]]
 
                      [CardWrapper {:id "nix"
@@ -266,7 +281,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [nix/nix {:layoutId "nix-card"}]]
 
                      [CardWrapper {:id "emacs"
@@ -274,7 +290,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [emacs/emacs {:layoutId "emacs-card"}]]
 
                      [CardWrapper {:id "skills"
@@ -282,7 +299,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [skills/skills {:layoutId "skills-card"}]]
 
                      [CardWrapper {:id "experience"
@@ -290,7 +308,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [experience/experience {:layoutId "experience-card"}]]
 
                      [CardWrapper {:id "edu"
@@ -298,7 +317,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [edu/edu {:layoutId "edu-card"}]]
 
                      [CardWrapper {:id "contact"
@@ -306,7 +326,8 @@
                                    :variants item-v
                                    :on-click open-card!
                                    :on-save-viewport save-scroll-top!
-                                   :reduced-motion reduced-motion}
+                                   :reduced-motion reduced-motion
+                                   :disable-hover card-hover-disabled?}
                       [contact/contact {:layoutId "contact-card"}]]]
 
                 [ExpandedLayer {:selected-id selected-id

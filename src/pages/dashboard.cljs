@@ -63,6 +63,7 @@
                    :aria-modal "true"
                    :className "relative w-full max-w-5xl h-[85vh] bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col pointer-events-auto"
                    :style #js {:originX 0.5 :originY 0.5}
+                   :transition (motion-utils/fade-transition reduced-motion 0.2)
                    :exit #js {:opacity 0
                                :transition (motion-utils/close-fade-transition reduced-motion 0.08)}}]
     (when-not skip-layout-morph

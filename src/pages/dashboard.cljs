@@ -22,6 +22,47 @@
   (when-let [t (.-target e)]
     (.closest t "a, button")))
 
+(defn- suppress-opening-gesture-click! [^js pd]
+  (let [open-pid (.-pointerId pd)
+        ac (js/AbortController.)
+        opts #js {:capture true :signal (.-signal ac)}
+        timer (atom nil)
+        opened-up? (atom false)]
+    (letfn [(disarm []
+              (when-let [id @timer]
+                (js/clearTimeout id)
+                (reset! timer nil))
+              (.abort ac))
+            (schedule! [ms]
+              (when-let [id @timer]
+                (js/clearTimeout id))
+              (reset! timer (js/setTimeout disarm ms)))]
+      ;; 850ms: longer than a typical ~700ms long-press before pointerup, so the guard still covers that tap.
+      (schedule! 850)
+      (.addEventListener js/document "click"
+                         (fn [^js e]
+                           (when (and (.-isTrusted e) @opened-up?)
+                             (.preventDefault e)
+                             (.stopPropagation e))
+                           (disarm))
+                         opts)
+      (.addEventListener js/document "pointerup"
+                         (fn [^js e]
+                           (when (= (.-pointerId e) open-pid)
+                             (reset! opened-up? true)
+                             ;; 400ms: ghost click follows pointerup quickly; drop guard if none arrives.
+                             (schedule! 400)))
+                         opts)
+      (doseq [t #js ["pointercancel" "pointerdown" "keydown"]]
+        (.addEventListener js/document t (fn [_] (disarm)) opts))
+      ;; Tab/window switch: avoid leaving the guard armed in the background.
+      (.addEventListener js/window "blur" (fn [_] (disarm)) opts)
+      (.addEventListener js/document "visibilitychange"
+                         (fn [_]
+                           (when (= (.-visibilityState js/document) "hidden")
+                             (disarm)))
+                         opts))))
+
 (defn CardWrapper [{:keys [id className children on-click on-save-viewport variants reduced-motion disable-hover]}]
   #jsx [motion.div {:variants variants
                     :role "button"
@@ -34,7 +75,8 @@
                                                 (not (event-from-interactive? e)))
                                        (.preventDefault e)
                                        (on-save-viewport id)
-                                       (on-click id)))
+                                       (on-click id)
+                                       (suppress-opening-gesture-click! e)))
                     :onKeyDown (fn [e]
                                  (when (and (contains? #{"Enter" " "} (.-key e))
                                             (not (event-from-interactive? e)))

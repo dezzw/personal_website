@@ -22,18 +22,36 @@
   (when-let [t (.-target e)]
     (.closest t "a, button")))
 
-(defn- suppress-next-synthetic-click! []
-  (let [ac (js/AbortController.)
+(defn- suppress-opening-gesture-click! [^js pd]
+  (let [ox (.-clientX pd)
+        oy (.-clientY pd)
+        open-pid (.-pointerId pd)
+        ac (js/AbortController.)
         opts #js {:capture true :signal (.-signal ac)}
-        disarm #(.abort ac)]
+        timer (atom nil)
+        disarm (fn []
+                 (when-let [id @timer]
+                   (js/clearTimeout id)
+                   (reset! timer nil))
+                 (.abort ac))
+        click-matches? (fn [^js e]
+                         (and (.-isTrusted e)
+                              (<= (js/Math.abs (- (.-clientX e) ox)) 10)
+                              (<= (js/Math.abs (- (.-clientY e) oy)) 10)))]
     (.addEventListener js/document "click"
-                       (fn [e]
-                         (.preventDefault e)
-                         (.stopPropagation e)
+                       (fn [^js e]
+                         (when (click-matches? e)
+                           (.preventDefault e)
+                           (.stopPropagation e))
                          (disarm))
                        opts)
+    (.addEventListener js/document "pointerup"
+                       (fn [^js e]
+                         (when (= (.-pointerId e) open-pid)
+                           (reset! timer (js/setTimeout disarm 400))))
+                       opts)
     (doseq [t #js ["pointercancel" "pointerdown" "keydown"]]
-      (.addEventListener js/document t disarm opts))))
+      (.addEventListener js/document t (fn [_] (disarm)) opts))))
 
 (defn CardWrapper [{:keys [id className children on-click on-save-viewport variants reduced-motion disable-hover]}]
   #jsx [motion.div {:variants variants
@@ -48,7 +66,7 @@
                                        (.preventDefault e)
                                        (on-save-viewport id)
                                        (on-click id)
-                                       (suppress-next-synthetic-click!)))
+                                       (suppress-opening-gesture-click! e)))
                     :onKeyDown (fn [e]
                                  (when (and (contains? #{"Enter" " "} (.-key e))
                                             (not (event-from-interactive? e)))

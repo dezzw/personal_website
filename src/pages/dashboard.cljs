@@ -37,8 +37,6 @@
               (when-let [id @timer]
                 (js/clearTimeout id))
               (reset! timer (js/setTimeout disarm ms)))]
-      ;; 850ms: longer than a typical ~700ms long-press before pointerup, so the guard still covers that tap.
-      (schedule! 850)
       (.addEventListener js/document "click"
                          (fn [^js e]
                            (when (and (.-isTrusted e) @opened-up?)

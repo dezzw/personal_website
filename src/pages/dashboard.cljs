@@ -53,8 +53,12 @@
                          opts)
       (doseq [t #js ["pointercancel" "pointerdown" "keydown"]]
         (.addEventListener js/document t (fn [_] (disarm)) opts))
-      ;; Tab/window switch: avoid leaving the guard armed in the background.
-      (.addEventListener js/window "blur" (fn [_] (disarm)) opts)
+      ;; Real window blur only (tab/window switch); element blur from focus moves must not disarm.
+      (.addEventListener js/window "blur"
+                         (fn [^js e]
+                           (when (identical? (.-target e) js/window)
+                             (disarm)))
+                         opts)
       (.addEventListener js/document "visibilitychange"
                          (fn [_]
                            (when (= (.-visibilityState js/document) "hidden")
